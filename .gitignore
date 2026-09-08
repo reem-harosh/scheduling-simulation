@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.DS_Store
+*.zip
+!dist/runtime/python_stdlib.zip
+!dist/printflow-source.zip
+.env

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="description" content="מעבדת סימולציה אינטראקטיבית לבית דפוס: עובדים, מכונות, תורים ורפליקציות.">
+  <title>PrintFlow | מעבדת סימולציה</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%230b1220'/%3E%3Cpath d='M10 28V12h13a6 6 0 0 1 0 12h-7' fill='none' stroke='%232dd4bf' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brandmark" aria-hidden="true">P<span>↗</span></span><div><span class="wordmark" dir="ltr">PRINT<span>FLOW</span></span><p>מעבדת סימולציה · בית דפוס</p></div></div>
+    <div class="header-meta"><span class="version">תרחיש 01 <span>•</span> 4 מנות / 3 מכונות / 2 עובדים</span><button class="icon-button" id="helpButton" aria-label="עזרה והנחות המודל">?</button><a class="source-link" href="./printflow-source.zip" download>הורדת הפרויקט <span aria-hidden="true">↙</span></a></div>
+  </header>
+  <main>
+    <section class="intro"><div><div class="eyebrow">SIMULATION WORKSPACE</div><h1>רצפת הייצור, בתנועה.</h1></div><div id="engineStatus" class="engine-status" role="status"><span class="status-dot loading"></span>טוען את מנוע הסימולציה…</div></section>
+    <div class="notice error hidden" id="errorBox" role="alert"><span id="errorText"></span><button id="retryButton">טעינה מחדש</button></div>
+    <section class="settings" aria-label="הגדרות התרחיש">
+      <div class="field"><label for="policy">כלל שיבוץ</label><select id="policy"><option value="fifo">סדר קבוע · A → D</option><option value="spt">הפעולה הקצרה תחילה</option><option value="edd">מועד היעד הקרוב תחילה</option></select></div>
+      <div class="field compact"><label for="horizon">אופק הרצה · דקות</label><input id="horizon" type="number" value="40" min="1" max="1000" step="1" inputmode="numeric"></div>
+      <div class="field compact"><label for="seed">זרע אקראי</label><input id="seed" type="number" value="42" min="0" max="2147483647" step="1" inputmode="numeric"></div>
+      <div class="field toggles"><label class="check"><input type="checkbox" id="walking" checked><span>זמן הליכה במודל</span></label><label class="check"><input type="checkbox" id="randomness"><span>זמני עבודה משתנים</span></label></div>
+      <div class="field variance"><label for="variation">טווח שונות <b id="variationLabel">±20%</b></label><input id="variation" type="range" min="0" max="50" value="20" step="5" disabled></div>
+      <button id="applyButton" class="secondary" disabled>החל והתחל מחדש</button>
+    </section>
+    <div id="configNotice" class="config-notice hidden" role="status">ההגדרות השתנו. יש להחיל אותן כדי לעדכן את ההרצה.</div>
+    <section class="metrics" aria-label="מדדים בזמן הצפייה">
+      <div class="metric clock"><span>זמן מדומה</span><div><strong id="clock" dir="ltr">00:00</strong><small>דק׳:שנ׳</small></div></div>
+      <div class="metric"><span>מנות שהושלמו</span><div><strong id="completed">0</strong><small>/ 4</small></div></div>
+      <div class="metric"><span>זמן שהייה · מנות שהושלמו</span><div><strong id="flow">—</strong><small>דקות</small></div></div>
+      <div class="metric"><span>עובדים בפעילות</span><div><strong id="activeWorkers">0</strong><small>/ 2</small></div></div>
+    </section>
+    <div class="workspace">
+      <section class="floor-panel panel" aria-label="תצוגת רצפת הייצור">
+        <div class="panel-head"><div><span class="live-badge" id="playState">מוכן לצפייה</span><h2>בית הדפוס</h2></div><span class="subtle">לחץ על עובד או מכונה לפרטים</span></div>
+        <div class="canvas-wrap"><canvas id="floor" width="900" height="560" aria-label="מפת בית הדפוס המונפשת; מידע מפורט זמין בלשונית משאבים"></canvas><div class="floor-tip hidden" id="floorTip"></div><div class="canvas-loading" id="canvasLoading"><span class="spinner"></span><span>מכין את ההרצה הראשונה…</span><small>הטעינה הראשונה עשויה לקחת כמה שניות</small></div></div>
+        <div class="legend"><span><i class="legend-dot teal"></i>עובדת</span><span><i class="legend-dot amber"></i>ממתינה לעובד</span><span><i class="legend-dot slate"></i>פנויה</span><span class="legend-note" id="walkingNote">זמן התנועה נכלל בתוצאות ההרצה</span></div>
+        <div class="transport">
+          <div class="transport-buttons"><button class="primary play" id="playButton" disabled><span id="playIcon">▶</span><span id="playLabel">הפעל</span></button><button class="icon-button" id="resetButton" aria-label="חזרה לתחילת ההרצה" title="חזרה להתחלה" disabled>↺</button><button class="step-button" id="stepButton" disabled>אירוע הבא <span aria-hidden="true">▸|</span></button></div>
+          <label class="speed" for="speed">מהירות <select id="speed" dir="ltr"><option value="1">1×</option><option value="5">5×</option><option value="15">15×</option><option value="30">30×</option><option value="60" selected>60×</option><option value="120">120×</option></select></label>
+        </div>
+        <div class="scrubber"><span id="seekStart" dir="ltr">00:00</span><input id="seek" type="range" min="0" max="40" step="0.01" value="0" aria-label="בחירת נקודת זמן בסימולציה" disabled><span id="seekEnd" dir="ltr">40:00</span></div>
+        <div class="worker-strip" id="workerStrip"></div>
+      </section>
+      <aside class="sidebar panel" aria-label="מצב המערכת">
+        <div class="tabs" role="tablist" aria-label="פאנל המעקב"><button role="tab" aria-selected="true" aria-controls="jobsPanel" id="jobsTab" data-tab="jobs">עבודות <span>4</span></button><button role="tab" aria-selected="false" aria-controls="resourcesPanel" id="resourcesTab" data-tab="resources" tabindex="-1">משאבים</button><button role="tab" aria-selected="false" aria-controls="experimentsPanel" id="experimentsTab" data-tab="experiments" tabindex="-1">ניסויים</button></div>
+        <div id="jobsPanel" class="tab-panel" role="tabpanel" aria-labelledby="jobsTab"><div class="side-heading"><h2>מנות הייצור</h2><span>מצב בזמן הצפייה</span></div><div id="jobCards"></div><div class="small-note">כל מנה נשקלת באופן שווה במדד זמן השהייה. הדחיפות משפיעה על ההחלטות לפי כלל השיבוץ שנבחר.</div></div>
+        <div id="resourcesPanel" class="tab-panel hidden" role="tabpanel" aria-labelledby="resourcesTab"><div class="side-heading"><h2>מכונות ועובדים</h2><span>מצב בזמן הצפייה</span></div><div id="resourceCards"></div></div>
+        <div id="experimentsPanel" class="tab-panel hidden" role="tabpanel" aria-labelledby="experimentsTab">
+          <div class="side-heading"><h2>רפליקציות</h2><span>הרצות עצמאיות של אותו תרחיש</span></div>
+          <label class="field" for="replications">מספר הרצות<input type="number" id="replications" min="1" max="500" step="1" value="20"></label>
+          <p class="small-note" id="repNote">בזמנים קבועים, כל הרפליקציות מחזירות אותה תוצאה. אפשר להפעיל זמני עבודה משתנים בהגדרות.</p>
+          <button class="primary wide" id="batchButton" disabled>הרץ ניסוי</button><button class="secondary wide hidden" id="cancelBatch">בטל ניסוי</button>
+          <div id="batchProgress" class="batch-progress hidden" role="status"></div>
+          <div id="batchResults" class="hidden"></div>
+        </div>
+      </aside>
+    </div>
+    <div class="lower-grid">
+      <section class="panel timeline-panel"><div class="panel-head"><div><span class="eyebrow">RESOURCE TIMELINE</span><h2>ציר הזמן של המשאבים</h2></div><span class="subtle">מקווקו: הליכה · מלא: עבודה</span></div><div id="timeline" class="timeline"></div><p class="timeline-note">מוצג גם המשך התרחיש המחושב. הקו הלבן מסמן את זמן הצפייה.</p></section>
+      <section class="panel event-panel"><div class="panel-head"><h2>יומן אירועים</h2><span id="eventCount" class="subtle">0 אירועים</span></div><div id="eventLog" class="event-log" aria-label="אירועי הסימולציה עד לזמן הצפייה"></div></section>
+    </div>
+    <footer><span>תרחיש אזרחי סינתטי · מנוע Python · זמנים בדקות</span><span>הממוצע בזמן צפייה מתייחס למנות שהושלמו בלבד; המדד הסופי תקף לאחר השלמת כולן.</span></footer>
+  </main>
+  <dialog id="helpDialog"><button class="dialog-close icon-button" id="closeHelp" aria-label="סגירת עזרה">×</button><div class="eyebrow">PRINTFLOW / MODEL NOTES</div><h2>איך עובדים עם הסימולציה?</h2><p>הפעל כדי לראות עובדים נעים בין העמדות ומבצעים פעולות. ניתן להשהות, לשנות מהירות, לגרור את ציר הזמן או להתקדם לאירוע הבא. מקש רווח מפעיל ומשהה.</p><ul><li>רק W2 מוסמך לכריכה. פעולה דורשת מכונה ועובד לאורך כל משכה.</li><li>כשזמן הליכה פעיל, המכונה נשמרת לעובד בזמן שהוא הולך אליה. המסלולים עוברים במעבר המרכזי; המרחקים סכמטיים.</li><li>כיבוי זמן הליכה ושונות, עם הסדר הקבוע ואופק של 26 דקות לפחות, משחזר זמן שהייה ממוצע של 17.5 דקות.</li><li>אופק הרצה קצר יכול לעצור לפני שכל המנות הסתיימו. במקרה זה אין מדד סופי לכל המערכת.</li><li>ברפליקציות, הזרע גדל באחד בכל הרצה. השונות היא התפלגות אחידה סביב זמן הפעולה המקורי.</li><li>התצוגה מנגנת את יומן האירועים שמנוע הפייתון מחשב. שינוי מהירות הצפייה אינו משנה את התוצאות.</li><li>אין תקלות, הפסקות, פיצול מנות או זמני הכנה נפרדים בגרסה זו. אין טענה לפתרון אופטימלי.</li></ul><a href="./model.md" target="_blank" rel="noopener">פתיחת מפרט התרחיש המקורי ↗</a></dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
