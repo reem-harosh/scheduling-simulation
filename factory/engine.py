@@ -7,12 +7,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timedelta
 import heapq
+import copy
 import math
 import platform
 import statistics
 import numpy as np
 from .data import InputError
 from .randomness import Streams
+from .policies import BaselinePolicy
 
 HANDLING_MEAN = 11 / 6
 MANUAL = {'LOADING', 'UNLOADING', 'CYCLE_CHANGE'}
@@ -118,9 +120,11 @@ def cycle_budget(unit_time, remaining):
 
 
 class Simulation:
-    def __init__(self, calibration, config=None, manual_jobs=None):
+    def __init__(self, calibration, config=None, manual_jobs=None, policy=None, cancel=None):
         self.data, self.config = calibration, config or Config()
         self.config.validate()
+        self.policy = policy or BaselinePolicy(self.config.algorithm)
+        self.cancel = cancel or (lambda: False)
         self.start = datetime.fromisoformat(self.config.start_date)
         self.streams = Streams(self.config.seed, self.config.scenario_id,
                                self.config.replication, self.config.namespace)
@@ -129,6 +133,8 @@ class Simulation:
         self.time = 0.0
         self.events, self.sequence = [], 0
         self.jobs, self.batches, self.ready = {}, {}, []
+        self.output_ids = set()
+        self.transfer_groups = {}
         self.requests, self.request_seq = {}, 0
         self.samples = {}
         self.intervals, self.log = [], []
@@ -270,26 +276,103 @@ class Simulation:
         self._log('ready', batch=bid, job=job, operation=self.jobs[job].route[oi], lo=lo, hi=hi)
         return b
 
-    def _priority(self, batch):
-        j = self.jobs[batch.job]
-        key = (batch.ready, j.release, batch.id)
-        if self.config.algorithm == 'SPT':
-            model = self.data.models[(j.item, j.route[batch.op_index])]
-            expected = model['model']['mean'] * model.get('scale_to_standard', 1)
-            return (expected * (batch.hi - batch.lo),) + key
-        return key
+    def public_state(self):
+        """Fresh plain data: released jobs, current states, known distribution means."""
+        ready = []
+        for bid in self.ready:
+            b = self.batches[bid]
+            j = self.jobs[b.job]
+            key = (j.item, j.route[b.op_index])
+            model = self.data.models[key]
+            ready.append(dict(id=bid, job=b.job, lo=b.lo, hi=b.hi, target=b.target,
+                ready_time=b.ready, release_time=j.release, operation=key[1],
+                expected_processing_min=model['model']['mean']*model.get('scale_to_standard',1)*(b.hi-b.lo),
+                processing_distribution=copy.deepcopy(model['model']),scale_to_standard=model.get('scale_to_standard',1),
+                eligible_machines=list(self.data.eligibility[key])))
+        outputs = []
+        for bid in sorted(self.output_ids):
+            b = self.batches[bid]
+            if b.available_output:
+                j = self.jobs[b.job]
+                outputs.append(dict(id=b.id, state=b.state, ranges=[list(r) for r in b.available_output],
+                    eligible_machines=list(self.data.eligibility[(j.item,j.route[b.op_index+1])])) )
+        return dict(time=self.time, ready=ready, outputs=outputs,
+            calendar=dict(start_date=self.config.start_date,day_weekdays=[6,0,1,2,3],night_start_weekdays=[5,6,0,1,2,3],
+                day_hours=[7,16],extended_hours=[7,19],night_hours=[19,7],
+                day_breaks=[[10,0,20],[13,0,30]],extended_breaks=[[16,0,20]],night_breaks=[[22,0,20],[1,0,30],[4,0,20]]),
+            jobs=[dict(id=j.id,item=j.item,quantity=j.quantity,route=list(j.route),release=j.release,completed=j.completed)
+                  for j in self.jobs.values()],
+            machines=[dict(id=m.id,department=m.department,state=m.state,batch=m.batch,
+                           setup=m.setup,available_since=m.available_since,elapsed_in_state=self.time-m.since) for m in self.machines.values()],
+            workers=[dict(id=w.id,department=w.department,skills=sorted(w.skills),state=w.state,
+                          active=w.active,node=w.node,shift=w.shift,elapsed_in_state=self.time-w.since,extended=w.extended) for w in self.workers.values()],
+            ownership=[dict(batch=m.batch,worker=self.batches[m.batch].owner,shift=self.batches[m.batch].owner_shift) for m in self.machines.values() if m.batch and self.batches[m.batch].owner])
 
     def _allocate(self):
-        for bid in sorted(self.ready, key=lambda x: self._priority(self.batches[x])):
-            b, j = self.batches[bid], self.jobs[self.batches[bid].job]
-            eligible = self.data.eligibility[(j.item, j.route[b.op_index])]
-            choices = [self.machines[mid] for mid in eligible if self.machines[mid].batch is None
-                       and (b.target is None or mid == b.target)]
-            if not choices:
-                continue
-            m = min(choices, key=lambda x: (x.available_since, x.id))
-            self.ready.remove(bid)
-            self.accept_allocation(bid, m.id)
+        if not self.ready and not self.output_ids:
+            return
+        if type(self.policy) is BaselinePolicy:
+            movable = bool(self.output_ids) if self.policy.name=='CYCLE_TRANSFER' else any(self.batches[b].state=='COMPLETE' for b in self.output_ids)
+            idle = {m.id for m in self.machines.values() if m.batch is None}
+            allocatable = any((b.target in idle if b.target else bool(idle.intersection(self.data.eligibility[(self.jobs[b.job].item,self.jobs[b.job].route[b.op_index])])) ) for b in (self.batches[bid] for bid in self.ready))
+            if not movable and not allocatable:
+                return
+        # No callback receives the engine, private RNGs, event heap or samples.
+        for action in self.policy.decide(self.public_state()):
+            self.apply_action(action)
+
+    def apply_action(self, action):
+        kind = action.get('kind')
+        if kind == 'allocate':
+            return self.accept_allocation(action.get('batch'), action.get('machine'))
+        b = self.batches.get(action.get('batch'))
+        reason = None
+        if b is None:
+            reason = 'UNKNOWN_ENTITY'
+        elif kind == 'split':
+            sizes = action.get('quantities', [])
+            if b.state != 'READY' or b.id not in self.ready:
+                reason = 'RESOURCE_BUSY'
+            elif b.op_index == 0:
+                reason = 'SPLIT_ONLY_BETWEEN_OPERATIONS'
+            elif len(sizes)<2 or any(type(q) is not int or q<1 for q in sizes) or sum(sizes)!=b.hi-b.lo:
+                reason = 'QUANTITY_NOT_CONSERVED'
+            else:
+                self.ready.remove(b.id)
+                b.state = 'SPLIT'
+                lo = b.lo
+                for q in sizes:
+                    self._new_batch(b.job,b.op_index,lo,lo+q,b.location,b.target,b.id)
+                    lo += q
+                self.counters['splits'] += len(sizes)-1
+                self._log('split',batch=b.id,quantities=list(sizes))
+                return None
+        elif kind == 'transfer':
+            lo, hi, mid = action.get('lo'), action.get('hi'), action.get('machine')
+            j = self.jobs[b.job]
+            if b.op_index+1 >= len(j.route) or mid not in self.data.eligibility.get((j.item,j.route[b.op_index+1]),()):
+                reason = 'MACHINE_INELIGIBLE'
+            elif type(lo) is not int or type(hi) is not int or lo>=hi:
+                reason = 'INVALID_PART_RANGE'
+            elif sum(max(0,min(hi,z)-max(lo,a)) for a,z in b.available_output) != hi-lo:
+                reason = 'PRECEDENCE_NOT_MET'
+            else:
+                remaining=[]
+                for a,z in b.available_output:
+                    if z<=lo or a>=hi: remaining.append((a,z))
+                    else:
+                        if a<lo: remaining.append((a,lo))
+                        if z>hi: remaining.append((hi,z))
+                b.available_output=remaining
+                if not remaining:
+                    self.output_ids.discard(b.id)
+                self._transfer_output(b,self.machines[b.location],lo,hi,mid,action.get('preserve_batch',False))
+                return None
+        else:
+            reason = 'UNKNOWN_ACTION'
+        self.counters['rejections'][reason] = self.counters['rejections'].get(reason,0)+1
+        self._log('action_rejected',reason_code=reason,action=action)
+        return reason
 
     def validate_allocation(self, bid, mid):
         if bid not in self.batches or mid not in self.machines:
@@ -312,7 +395,10 @@ class Simulation:
             return reason
         b, m = self.batches[bid], self.machines[mid]
         j = self.jobs[b.job]
+        if bid in self.ready:
+            self.ready.remove(bid)
         m.batch = bid
+        b.location = mid
         b.state = 'WAITING_SETUP'
         new = (j.item, j.route[b.op_index])
         old = m.setup
@@ -462,25 +548,27 @@ class Simulation:
                 if self.measure_start <= self.time < self.arrivals_stop:
                     self.measured_completions_in_window += 1
                 self._log('job_complete', job=j.id, flow_time=self.time-j.release)
-        elif self.config.algorithm == 'CYCLE_TRANSFER':
-            self._transfer_output(b, m, lo, hi)
         else:
-            b.available_output.append((lo, hi))
+            self.output_ids.add(b.id)
+            if b.available_output and b.available_output[-1][1] == lo:
+                b.available_output[-1] = (b.available_output[-1][0], hi)
+            else:
+                b.available_output.append((lo, hi))
 
-    def _transfer_output(self, b, source, lo, hi):
+    def _transfer_output(self, b, source, lo, hi, target_id, preserve_batch=False):
         j = self.jobs[b.job]
-        eligible = self.data.eligibility[(j.item, j.route[b.op_index+1])]
-        # Public availability state; no private sampled completion timestamp.
-        target = min((self.machines[x] for x in eligible),
-                     key=lambda m: (m.batch is not None, m.available_since, m.id))
+        target = self.machines[target_id]
         portal = self.data.graph['handoff_node']
+        group = f'{b.id}/transfer/{lo}-{hi}' if preserve_batch else None
+        if group:
+            self.transfer_groups[group] = dict(job=j.id,op_index=b.op_index+1,lo=lo,hi=hi,target=target.id,parent=b.id,received=0)
         for start in range(lo, hi, 60):
             end = min(start+60, hi)
             self.counters['splits'] += int(start > lo or end < hi or hi-lo < b.hi-b.lo)
             cross = source.department != target.department
             self._request('transport', source.department, source.node,
                           destination=portal if cross else target.node, job=j.id, op_index=b.op_index+1,
-                          lo=start, hi=end, target=target.id, parent=b.id, second_leg=cross)
+                          lo=start, hi=end, target=target.id, parent=b.id, second_leg=cross, group=group)
 
     def _handle(self, kind, payload):
         if kind == 'calendar_day':
@@ -543,9 +631,6 @@ class Simulation:
                 self._finished_parts(b, m)
             self._rest(w)
             if r['kind'] == 'unload':
-                if b.available_output:
-                    self._transfer_output(b, m, b.lo, b.hi)
-                    b.available_output.clear()
                 b.state = 'COMPLETE'
                 m.batch = None
                 m.available_since = self.time
@@ -562,7 +647,13 @@ class Simulation:
                 target = self.machines[r['target']]
                 self._request('transport', target.department, w.node,
                               destination=target.node, job=r['job'], op_index=r['op_index'],
-                              lo=r['lo'], hi=r['hi'], target=target.id, parent=r['parent'], second_leg=False)
+                              lo=r['lo'], hi=r['hi'], target=target.id, parent=r['parent'], second_leg=False, group=r.get('group'))
+            elif r.get('group'):
+                group = self.transfer_groups[r['group']]
+                group['received'] += r['hi']-r['lo']
+                if group['received'] == group['hi']-group['lo']:
+                    self._new_batch(group['job'],group['op_index'],group['lo'],group['hi'],
+                                    location=group['target'],target=group['target'],parent=group['parent'])
             else:
                 self._new_batch(r['job'], r['op_index'], r['lo'], r['hi'],
                                 location=r['target'], target=r['target'], parent=r['parent'])
@@ -582,6 +673,9 @@ class Simulation:
         status = 'COMPLETE'
         last_progress = 0
         while self.events:
+            if self.cancel():
+                status = 'CANCELLED'
+                break
             t = self.events[0][0]
             if until is not None and t > until:
                 self._integrate(until)

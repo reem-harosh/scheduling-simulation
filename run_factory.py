@@ -49,13 +49,14 @@ class Service:
         task = self.tasks[tid]
         try:
             if mode == 'run':
-                result = Simulation(self.data, config, manual).run()
+                result = Simulation(self.data, config, manual, cancel=lambda: task['cancel']).run()
             else:
                 runner = ExperimentRunner(self.data, ROOT/'results'/'experiments',
                     progress=lambda message: task.update(message=message), cancel=lambda: task['cancel'])
                 result = runner.scenario(config) if mode == 'scenario' else runner.grid(config)
             atomic_json(ROOT/'results'/(tid+'.json'), result)
-            task.update(status='COMPLETE',result=result,message='Completed and saved')
+            task.update(status='CANCELLED' if result.get('status')=='CANCELLED' else 'COMPLETE',result=result,
+                        message='Cancelled; partial diagnostic saved' if result.get('status')=='CANCELLED' else 'Completed and saved')
         except InterruptedError as exc:
             task.update(status='CANCELLED',message=str(exc))
         except Exception as exc:

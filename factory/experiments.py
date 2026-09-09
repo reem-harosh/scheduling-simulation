@@ -1,6 +1,6 @@
 """Adaptive warm-up, common-random-number experiments and durable resumable runs."""
 from __future__ import annotations
-from dataclasses import replace, asdict
+from dataclasses import dataclass, replace, asdict
 import hashlib
 import json
 from pathlib import Path
@@ -8,6 +8,23 @@ import statistics
 import math
 from scipy.stats import t as student_t
 from .engine import Simulation, Config
+
+
+@dataclass(frozen=True)
+class WarmupProtocol:
+    pilots: int = 5
+    window_days: int = 7
+    minimum_days: int = 28
+    maximum_days: int = 182
+    consecutive_windows: int = 3
+    relative_tolerance: float = .05
+    utilization_tolerance: float = .02
+
+    def validate(self):
+        if self.pilots<1 or self.window_days!=7 or self.minimum_days<self.window_days or self.maximum_days<self.minimum_days:
+            raise ValueError('Invalid warm-up protocol; this engine monitors weekly windows')
+        if self.consecutive_windows<1 or not 0<=self.relative_tolerance<=1 or not 0<=self.utilization_tolerance<=1:
+            raise ValueError('Invalid stability tolerances')
 
 
 def atomic_json(path, value):
@@ -27,7 +44,7 @@ def confidence(values):
             'relative_half_width': half/abs(mean) if mean else None, 'ci95': [mean-half, mean+half]}
 
 
-def stability(windows, min_days=28, max_days=182):
+def stability(windows, min_days=28, max_days=182, consecutive_required=3, relative_tolerance=.05, utilization_tolerance=.02):
     consecutive, completed = 0, 0
     diagnostics = []
     for i, current in enumerate(windows):
@@ -38,11 +55,11 @@ def stability(windows, min_days=28, max_days=182):
         changes = {k: abs(current[k]-previous[k])/max(1, current[k], previous[k])
                    for k in ('wip', 'queue', 'throughput')}
         changes.update({k: abs(current[k]-previous[k]) for k in ('machine_utilization', 'worker_utilization')})
-        passed = all(v <= (.02 if 'utilization' in k else .05) for k,v in changes.items())
+        passed = all(v <= (utilization_tolerance if 'utilization' in k else relative_tolerance) for k,v in changes.items())
         consecutive = consecutive+1 if passed else 0
         days = current['time']/1440
         diagnostics.append({'day': days, 'changes': changes, 'passed': passed, 'consecutive': consecutive})
-        if days >= min_days and consecutive >= 3 and completed > 0:
+        if days >= min_days and consecutive >= consecutive_required and completed > 0:
             return {'status': 'STABILIZED', 'warmup_days': days, 'diagnostics': diagnostics}
         if days >= max_days:
             break
@@ -51,8 +68,10 @@ def stability(windows, min_days=28, max_days=182):
 
 
 class ExperimentRunner:
-    def __init__(self, calibration, directory='results/experiments', progress=None, cancel=None):
+    def __init__(self, calibration, directory='results/experiments', progress=None, cancel=None, warmup_protocol=None):
         self.data = calibration
+        self.warmup = warmup_protocol or WarmupProtocol()
+        self.warmup.validate()
         self.directory = Path(directory)
         self.progress = progress or (lambda message: None)
         self.cancel = cancel or (lambda: False)
@@ -66,7 +85,9 @@ class ExperimentRunner:
         path = self.directory / 'cache' / (key + '.json')
         if path.exists():
             return json.loads(path.read_text())
-        result = Simulation(self.data, config).run(until=until)
+        result = Simulation(self.data, config, cancel=self.cancel).run(until=until)
+        if result['status'] == 'CANCELLED':
+            raise InterruptedError('Experiment cancelled; completed replications retained')
         # Summary cache deliberately omits entity traces and source IDs.
         result = {k: v for k,v in result.items() if k not in ('trace','jobs','batches','machines','workers','state_minutes')}
         result['code_sha256'] = self.code_hash
@@ -84,18 +105,19 @@ class ExperimentRunner:
                  'scenario_id': config.scenario_id, 'world_version': 'v0.3',
                  'dataset_sha256': self.data.digest, 'code_sha256': self.code_hash,
                  'seed': config.seed, 'pilot_namespace': 'pilot', 'pilots': {}, 'algorithms': {},
-                 'status': 'RUNNING_PILOTS', 'protocol': '5 pilots; weekly stability; n30..100; nominal Student-t 95% CI'}
+                 'status': 'RUNNING_PILOTS', 'warmup_protocol': asdict(self.warmup), 'protocol': '5 pilots; weekly stability; n30..100; nominal Student-t 95% CI'}
         point_path = self.directory / (config.scenario_id.replace('/', '_').replace(':', '_') + '.json')
         warmups = []
         failed = False
         for algorithm in algorithms:
             point['pilots'][algorithm] = []
-            for i in range(5):
-                self.progress(f'{config.scenario_id} · {algorithm} · pilot {i+1}/5')
+            for i in range(self.warmup.pilots):
+                self.progress(f'{config.scenario_id} · {algorithm} · pilot {i+1}/{self.warmup.pilots}')
                 cfg = replace(config, algorithm=algorithm, namespace='pilot', replication=i,
-                              warmup_days=0, horizon_days=182, trace=False)
-                result = self._run(cfg, until=182*1440)
-                assessment = stability(result['weekly'])
+                              warmup_days=0, horizon_days=self.warmup.maximum_days, trace=False)
+                result = self._run(cfg, until=self.warmup.maximum_days*1440)
+                assessment = stability(result['weekly'],self.warmup.minimum_days,self.warmup.maximum_days,
+                    self.warmup.consecutive_windows,self.warmup.relative_tolerance,self.warmup.utilization_tolerance)
                 assessment['run_status'] = result['status']
                 assessment['replication_index'] = i
                 if result['status'] not in ('FINITE_HORIZON_DIAGNOSTIC', 'COMPLETE'):
