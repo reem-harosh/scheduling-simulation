@@ -12,7 +12,7 @@
 <body>
   <header class="topbar">
     <div class="brand"><span class="brandmark" aria-hidden="true">P<span>↗</span></span><div><span class="wordmark" dir="ltr">PRINT<span>FLOW</span></span><p>מעבדת סימולציה · בית דפוס</p></div></div>
-    <div class="header-meta"><span class="version">תרחיש 01 <span>•</span> 4 מנות / 3 מכונות / 2 עובדים</span><button class="icon-button" id="helpButton" aria-label="עזרה והנחות המודל">?</button><a class="source-link" href="./printflow-source.zip" download>הורדת הפרויקט <span aria-hidden="true">↙</span></a></div>
+    <div class="header-meta"><span class="version">תרחיש 01 <span>•</span> <b id="scenarioSummary">טוען תרחיש…</b></span><button class="icon-button" id="helpButton" aria-label="עזרה והנחות המודל">?</button><a class="source-link" href="./printflow-source.zip" download>הורדת הפרויקט <span aria-hidden="true">↙</span></a></div>
   </header>
   <main>
     <section class="intro"><div><div class="eyebrow">SIMULATION WORKSPACE</div><h1>רצפת הייצור, בתנועה.</h1></div><div id="engineStatus" class="engine-status" role="status"><span class="status-dot loading"></span>טוען את מנוע הסימולציה…</div></section>
@@ -28,9 +28,9 @@
     <div id="configNotice" class="config-notice hidden" role="status">ההגדרות השתנו. יש להחיל אותן כדי לעדכן את ההרצה.</div>
     <section class="metrics" aria-label="מדדים בזמן הצפייה">
       <div class="metric clock"><span>זמן מדומה</span><div><strong id="clock" dir="ltr">00:00</strong><small>דק׳:שנ׳</small></div></div>
-      <div class="metric"><span>מנות שהושלמו</span><div><strong id="completed">0</strong><small>/ 4</small></div></div>
+      <div class="metric"><span>מנות שהושלמו</span><div><strong id="completed">0</strong><small id="totalJobs">/ —</small></div></div>
       <div class="metric"><span>זמן שהייה · מנות שהושלמו</span><div><strong id="flow">—</strong><small>דקות</small></div></div>
-      <div class="metric"><span>עובדים בפעילות</span><div><strong id="activeWorkers">0</strong><small>/ 2</small></div></div>
+      <div class="metric"><span>עובדים בפעילות</span><div><strong id="activeWorkers">0</strong><small id="totalWorkers">/ —</small></div></div>
     </section>
     <div class="workspace">
       <section class="floor-panel panel" aria-label="תצוגת רצפת הייצור">
@@ -45,7 +45,7 @@
         <div class="worker-strip" id="workerStrip"></div>
       </section>
       <aside class="sidebar panel" aria-label="מצב המערכת">
-        <div class="tabs" role="tablist" aria-label="פאנל המעקב"><button role="tab" aria-selected="true" aria-controls="jobsPanel" id="jobsTab" data-tab="jobs">עבודות <span>4</span></button><button role="tab" aria-selected="false" aria-controls="resourcesPanel" id="resourcesTab" data-tab="resources" tabindex="-1">משאבים</button><button role="tab" aria-selected="false" aria-controls="experimentsPanel" id="experimentsTab" data-tab="experiments" tabindex="-1">ניסויים</button></div>
+        <div class="tabs" role="tablist" aria-label="פאנל המעקב"><button role="tab" aria-selected="true" aria-controls="jobsPanel" id="jobsTab" data-tab="jobs">עבודות <span id="jobCount">—</span></button><button role="tab" aria-selected="false" aria-controls="resourcesPanel" id="resourcesTab" data-tab="resources" tabindex="-1">משאבים</button><button role="tab" aria-selected="false" aria-controls="experimentsPanel" id="experimentsTab" data-tab="experiments" tabindex="-1">ניסויים</button></div>
         <div id="jobsPanel" class="tab-panel" role="tabpanel" aria-labelledby="jobsTab"><div class="side-heading"><h2>מנות הייצור</h2><span>מצב בזמן הצפייה</span></div><div id="jobCards"></div><div class="small-note">כל מנה נשקלת באופן שווה במדד זמן השהייה. הדחיפות משפיעה על ההחלטות לפי כלל השיבוץ שנבחר.</div></div>
         <div id="resourcesPanel" class="tab-panel hidden" role="tabpanel" aria-labelledby="resourcesTab"><div class="side-heading"><h2>מכונות ועובדים</h2><span>מצב בזמן הצפייה</span></div><div id="resourceCards"></div></div>
         <div id="experimentsPanel" class="tab-panel hidden" role="tabpanel" aria-labelledby="experimentsTab">
@@ -54,7 +54,7 @@
           <p class="small-note" id="repNote">בזמנים קבועים, כל הרפליקציות מחזירות אותה תוצאה. אפשר להפעיל זמני עבודה משתנים בהגדרות.</p>
           <button class="primary wide" id="batchButton" disabled>הרץ ניסוי</button><button class="secondary wide hidden" id="cancelBatch">בטל ניסוי</button>
           <div id="batchProgress" class="batch-progress hidden" role="status"></div>
-          <div id="batchResults" class="hidden"></div>
+          <div id="batchResults" class="hidden"></div><div id="comparisonResults" class="hidden"></div>
         </div>
       </aside>
     </div>
@@ -64,7 +64,7 @@
     </div>
     <footer><span>תרחיש אזרחי סינתטי · מנוע Python · זמנים בדקות</span><span>הממוצע בזמן צפייה מתייחס למנות שהושלמו בלבד; המדד הסופי תקף לאחר השלמת כולן.</span></footer>
   </main>
-  <dialog id="helpDialog"><button class="dialog-close icon-button" id="closeHelp" aria-label="סגירת עזרה">×</button><div class="eyebrow">PRINTFLOW / MODEL NOTES</div><h2>איך עובדים עם הסימולציה?</h2><p>הפעל כדי לראות עובדים נעים בין העמדות ומבצעים פעולות. ניתן להשהות, לשנות מהירות, לגרור את ציר הזמן או להתקדם לאירוע הבא. מקש רווח מפעיל ומשהה.</p><ul><li>רק W2 מוסמך לכריכה. פעולה דורשת מכונה ועובד לאורך כל משכה.</li><li>כשזמן הליכה פעיל, המכונה נשמרת לעובד בזמן שהוא הולך אליה. המסלולים עוברים במעבר המרכזי; המרחקים סכמטיים.</li><li>כיבוי זמן הליכה ושונות, עם הסדר הקבוע ואופק של 26 דקות לפחות, משחזר זמן שהייה ממוצע של 17.5 דקות.</li><li>אופק הרצה קצר יכול לעצור לפני שכל המנות הסתיימו. במקרה זה אין מדד סופי לכל המערכת.</li><li>ברפליקציות, הזרע גדל באחד בכל הרצה. השונות היא התפלגות אחידה סביב זמן הפעולה המקורי.</li><li>התצוגה מנגנת את יומן האירועים שמנוע הפייתון מחשב. שינוי מהירות הצפייה אינו משנה את התוצאות.</li><li>אין תקלות, הפסקות, פיצול מנות או זמני הכנה נפרדים בגרסה זו. אין טענה לפתרון אופטימלי.</li></ul><a href="./model.md" target="_blank" rel="noopener">פתיחת מפרט התרחיש המקורי ↗</a></dialog>
+  <dialog id="helpDialog"><button class="dialog-close icon-button" id="closeHelp" aria-label="סגירת עזרה">×</button><div class="eyebrow">PRINTFLOW / MODEL NOTES</div><h2>איך עובדים עם הסימולציה?</h2><p>הפעל כדי לראות עובדים נעים בין העמדות ומבצעים פעולות. ניתן להשהות, לשנות מהירות, לגרור את ציר הזמן או להתקדם לאירוע הבא. מקש רווח מפעיל ומשהה.</p><ul><li>בתרחיש ברירת המחדל רק W2 מוסמך לכריכה. הכשירויות בפועל מופיעות בלשונית משאבים. פעולה דורשת מכונה ועובד לאורך כל משכה.</li><li>כשזמן הליכה פעיל, המכונה נשמרת לעובד בזמן שהוא הולך אליה. המסלולים עוברים במעבר המרכזי; המרחקים סכמטיים.</li><li>כיבוי זמן הליכה ושונות, עם הסדר הקבוע ואופק של 26 דקות לפחות, משחזר זמן שהייה ממוצע של 17.5 דקות.</li><li>אופק הרצה קצר יכול לעצור לפני שכל המנות הסתיימו. במקרה זה אין מדד סופי לכל המערכת.</li><li>ברפליקציות, הזרע גדל באחד בכל הרצה. השונות היא התפלגות אחידה סביב זמן הפעולה המקורי.</li><li>התצוגה מנגנת את יומן האירועים שמנוע הפייתון מחשב. שינוי מהירות הצפייה אינו משנה את התוצאות.</li><li>כלל הפעולה הקצרה משתמש בזמנים שנדגמו מראש, בהנחה שהם ידועים בזמן השיבוץ. הוא אינו מדמה חוסר ודאות לגבי משך הפעולה לאחר שהחלה.</li><li>להשוואה, הרץ ניסוי, שנה רק את כלל השיבוץ, החל את ההגדרות והרץ שוב. הטבלה שומרת את שתי התוצאות באותה סדרה.</li><li>אין תקלות, הפסקות, פיצול מנות או זמני הכנה נפרדים בגרסה זו. אין טענה לפתרון אופטימלי.</li></ul><a href="./model.md" target="_blank" rel="noopener">פתיחת מפרט התרחיש המקורי ↗</a></dialog>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

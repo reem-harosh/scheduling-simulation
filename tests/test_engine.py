@@ -2,6 +2,7 @@
 import importlib.util
 import pathlib
 import unittest
+import copy
 
 spec = importlib.util.spec_from_file_location("engine", pathlib.Path(__file__).parents[1]/"dist"/"engine.py")
 engine = importlib.util.module_from_spec(spec)
@@ -68,6 +69,42 @@ class SimulationTests(unittest.TestCase):
     def test_invalid_input_rejected(self):
         for options in ({"horizon":0},{"horizon":float('nan')},{"variation":.6},{"policy":"unknown"}):
             with self.assertRaises(ValueError):engine.simulate(options)
+
+    def test_external_scenario_changes_counts_and_capabilities(self):
+        model = engine.load_scenario()
+        extra = copy.deepcopy(model['jobs'][1])
+        extra['id'] = 'E'
+        model['jobs'].append(extra)
+        model['machines'] = [model['machines'][0], model['machines'][2]]
+        model['workers'] = [model['workers'][0]]
+        model['workers'][0]['skills'] = ['print', 'bind']
+        result = engine.simulate({'walking': False, 'horizon': 100}, scenario=model)
+        self.assertEqual(result['metrics']['total'], 5)
+        self.assertTrue(result['metrics']['complete'])
+        self.assertEqual(len(result['machines']), 2)
+        self.assertEqual(len(result['workers']), 1)
+        self.assertTrue(all(t['worker'] == 'W1' for t in result['tasks']))
+        self.assertEqual(len(engine.DEFAULT_SCENARIO['jobs']), 4)
+        self.assertEqual(engine.simulate({'walking': False})['metrics']['mean_flow'], 17.5)
+
+    def test_unserviceable_scenario_is_rejected_before_scheduling(self):
+        model = engine.load_scenario()
+        for worker in model['workers']:
+            worker['skills'] = ['print']
+        with self.assertRaisesRegex(ValueError, 'No feasible'):
+            engine.simulate(scenario=model)
+        model = engine.load_scenario()
+        model['jobs'][0]['operations'][0][1] = 0
+        with self.assertRaises(ValueError):
+            engine.simulate(scenario=model)
+
+    def test_missing_optional_due_date_means_no_deadline(self):
+        model = engine.load_scenario()
+        del model['jobs'][2]['due']
+        result = engine.simulate({'walking': False}, scenario=model)
+        self.assertIsNone(result['jobs'][2]['due'])
+        self.assertEqual(result['metrics']['mean_flow'], 17.5)
+        self.assertEqual(result['metrics']['total_tardiness'], 14)
 
 if __name__ == "__main__":
     unittest.main()

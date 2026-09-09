@@ -1,10 +1,11 @@
 import {activeTask, workerPosition, jobState, progressAt, fmtTime, fmt} from './view-model.js';
+import {policyNames, comparisonKey, retainExperiment, comparisonRows} from './experiments.js';
 
 const $=id=>document.getElementById(id);
 const canvas=$('floor'),ctx=canvas.getContext('2d');
-const state={trace:null,time:0,playing:false,ready:false,dirty:false,tab:'jobs',selected:null,request:0,batchId:0,batchRunning:false,batch:null,hover:null};
+const state={trace:null,time:0,playing:false,ready:false,dirty:false,tab:'jobs',selected:null,request:0,batchId:0,batchRunning:false,batch:null,history:[],comparison:null,hover:null};
 let worker,lastFrame=0,lastUI=0,timelineSignature='';
-const fallback={machines:[{id:'P1',name:'מדפסת 01',kind:'print',position:[300,185],dock:[300,290]},{id:'P2',name:'מדפסת 02',kind:'print',position:[640,185],dock:[640,290]},{id:'F1',name:'עמדת כריכה',kind:'bind',position:[560,440],dock:[560,370]}],workers:[{id:'W1',name:'עובד 01',skills:['print'],home:[125,330],color:'#38bdf8'},{id:'W2',name:'עובד 02',skills:['print','bind'],home:[175,330],color:'#fb923c'}],jobs:[{id:'A',color:'#818cf8'},{id:'B',color:'#2dd4bf'},{id:'C',color:'#fbbf24'},{id:'D',color:'#fb7185'}],tasks:[]};
+const fallback={machines:[],workers:[],jobs:[],tasks:[]};
 const current=()=>state.trace||fallback;
 const color=id=>current().jobs.find(j=>j.id===id)?.color||'#94a3b8';
 const opName=op=>op==='print'?'הדפסה':'כריכה';
@@ -30,7 +31,9 @@ function initWorker(){
     }
     if(data.type==='batchProgress'&&data.id===state.batchId){$('batchProgress').textContent=`הושלמו ${data.done} מתוך ${data.total} הרצות`;}
     if(data.type==='batch'&&data.id===state.batchId){
-      state.batch={results:data.results,options:data.options};finishBatch();renderBatch();
+      state.batch={results:data.results,options:data.options,scenario:JSON.stringify([state.trace.jobs,state.trace.machines,state.trace.workers])};
+      state.history=retainExperiment(state.history,state.batch);state.comparison=state.batch;
+      finishBatch();renderBatch();renderComparison();
     }
     if(data.type==='batchCancelled'&&data.id===state.batchId){finishBatch();$('batchProgress').classList.remove('hidden');$('batchProgress').textContent='הניסוי בוטל.';}
     if(data.type==='error'){
@@ -78,7 +81,7 @@ function nextEvent(){
 
 function workerDescription(w){
   const tr=state.trace,t=state.time,task=tr&&activeTask(tr,'worker',w.id,t);
-  if(!task)return {label:tr&&tr.metrics.complete&&tr.end_time<=t+1e-7?'סיים פעילות':'פנוי',detail:w.skills.includes('bind')?'כשיר להדפסה ולכריכה':'כשיר להדפסה',task:null,phase:'idle'};
+  if(!task)return {label:tr&&tr.metrics.complete&&tr.end_time<=t+1e-7?'סיים פעילות':'פנוי',detail:'כשיר ל'+w.skills.map(opName).join(' ול'),task:null,phase:'idle'};
   if(t<task.start-1e-7)return {label:'בתנועה',detail:`אל ${task.machine} · מנה ${task.job}`,task,phase:'walk'};
   return {label:'בעבודה',detail:`${opName(task.operation)} · ${task.machine} · מנה ${task.job}`,task,phase:'work'};
 }
@@ -106,21 +109,24 @@ function renderUI(){
   $('playState').textContent=state.playing?'בהרצה':ended?(tr.metrics.complete?'הושלם':'אופק ההרצה הושג'):t>0?'מושהה':'מוכן לצפייה';
   $('playState').classList.toggle('running',state.playing);
   if(!tr)return;
+  $('scenarioSummary').textContent=`${tr.jobs.length} מנות / ${tr.machines.length} מכונות / ${tr.workers.length} עובדים`;
+  $('totalJobs').textContent='/ '+tr.jobs.length;$('totalWorkers').textContent='/ '+tr.workers.length;
+  $('jobCount').textContent=tr.jobs.length;
   const done=tr.jobs.filter(j=>tr.completions[j.id]<=t+1e-7);
   $('completed').textContent=done.length;$('flow').textContent=done.length?fmt(done.reduce((s,j)=>s+tr.completions[j.id]-j.release,0)/done.length):'—';
   $('activeWorkers').textContent=tr.workers.filter(w=>activeTask(tr,'worker',w.id,t)).length;
   if(ended&&!tr.metrics.complete)status(`${done.length} מתוך ${tr.jobs.length} מנות הושלמו · ההרצה נעצרה באופק`);
   else if(ended)status('כל המנות הושלמו');else status(state.playing?'הסימולציה פעילה':'מוכן לצפייה');
-  $('workerStrip').innerHTML=tr.workers.map(w=>{const d=workerDescription(w);return `<div class="worker-mini"><span class="worker-avatar" style="color:${w.color}">${w.id}</span><div><strong>${w.name}</strong><p>${d.detail}</p></div><span class="worker-state">${d.label}</span></div>`;}).join('');
+  $('workerStrip').innerHTML=tr.workers.map(w=>{const d=workerDescription(w);return `<div class="worker-mini"><span class="worker-avatar" style="color:${w.color}">${w.id}</span><div><strong>${escape(w.name)}</strong><p>${d.detail}</p></div><span class="worker-state">${d.label}</span></div>`;}).join('');
   if(state.tab==='jobs')$('jobCards').innerHTML=tr.jobs.map(j=>{
     const s=jobState(tr,j,t),late=j.due!==null&&(s.phase==='done'?tr.completions[j.id]:t)>j.due+1e-7;
     const label={done:'הושלמה',walk:'בתנועה',work:'בעבודה',waiting:'ממתינה'}[s.phase];
     const cls={done:'done',walk:'walk',work:'active',waiting:''}[s.phase];
-    return `<article class="job-card ${s.phase==='done'?'is-complete':''}" style="--job:${j.color}"><div class="job-top"><span class="job-id">${j.id}</span><span class="job-name">${j.name}</span><span class="badge ${cls}">${label}</span></div><div class="job-sub"><span>${j.source} · ${j.quantity} יח׳</span><span class="${late?'badge late':''}">${j.due===null?'למלאי':late?'באיחור':'יעד '+fmtTime(j.due)}</span></div><div class="operation-line">${j.operations.map(([op],i)=>`<span class="operation-chip ${i<s.completed?'done':s.task?.index===i?'current':''}">${i<s.completed?'✓ ':''}${opName(op)}</span>`).join('')}</div><div class="progress-track"><div class="progress-fill" style="width:${s.progress*100}%"></div></div><p class="job-detail">${jobDetail(j,s)}</p></article>`;
+    return `<article class="job-card ${s.phase==='done'?'is-complete':''}" style="--job:${j.color}"><div class="job-top"><span class="job-id">${j.id}</span><span class="job-name">${escape(j.name)}</span><span class="badge ${cls}">${label}</span></div><div class="job-sub"><span>${escape(j.source)} · ${j.quantity} יח׳</span><span class="${late?'badge late':''}">${j.due===null?'למלאי':late?'באיחור':'יעד '+fmtTime(j.due)}</span></div><div class="operation-line">${j.operations.map(([op],i)=>`<span class="operation-chip ${i<s.completed?'done':s.task?.index===i?'current':''}">${i<s.completed?'✓ ':''}${opName(op)}</span>`).join('')}</div><div class="progress-track"><div class="progress-fill" style="width:${s.progress*100}%"></div></div><p class="job-detail">${jobDetail(j,s)}</p></article>`;
   }).join('');
   if(state.tab==='resources'){
-    const machineCards=tr.machines.map(m=>{const d=machineDescription(m);return `<article class="resource-card ${state.selected===m.id?'selected':''}"><div class="title"><span><b dir="ltr">${m.id}</b> · ${m.name}</span><span class="badge ${d.phase==='work'?'active':d.phase==='walk'?'walk':''}">${d.label}</span></div><p>${d.detail}</p><small>${m.kind==='bind'?'עובד כשיר: W2':'עובדים כשירים: W1, W2'}</small></article>`;}).join('');
-    const workerCards=tr.workers.map(w=>{const d=workerDescription(w);return `<article class="resource-card ${state.selected===w.id?'selected':''}"><div class="title"><span style="color:${w.color}"><b dir="ltr">${w.id}</b> · ${w.name}</span><span class="badge ${d.phase==='work'?'active':d.phase==='walk'?'walk':''}">${d.label}</span></div><p>${d.detail}</p><small>${w.skills.map(opName).join(' / ')}${d.task?' · עד '+fmtTime(d.task.end):''}</small></article>`;}).join('');
+    const machineCards=tr.machines.map(m=>{const d=machineDescription(m);return `<article class="resource-card ${state.selected===m.id?'selected':''}"><div class="title"><span><b dir="ltr">${m.id}</b> · ${escape(m.name)}</span><span class="badge ${d.phase==='work'?'active':d.phase==='walk'?'walk':''}">${d.label}</span></div><p>${d.detail}</p><small>עובדים כשירים: ${tr.workers.filter(w=>w.skills.includes(m.kind)).map(w=>w.id).join(', ')}</small></article>`;}).join('');
+    const workerCards=tr.workers.map(w=>{const d=workerDescription(w);return `<article class="resource-card ${state.selected===w.id?'selected':''}"><div class="title"><span style="color:${w.color}"><b dir="ltr">${w.id}</b> · ${escape(w.name)}</span><span class="badge ${d.phase==='work'?'active':d.phase==='walk'?'walk':''}">${d.label}</span></div><p>${d.detail}</p><small>${w.skills.map(opName).join(' / ')}${d.task?' · עד '+fmtTime(d.task.end):''}</small></article>`;}).join('');
     $('resourceCards').innerHTML='<div class="resource-group-label">מכונות</div>'+machineCards+'<div class="resource-group-label">עובדים</div>'+workerCards;
   }
   renderTimeline();
@@ -130,7 +136,7 @@ function renderUI(){
 }
 function eventText(e){
   if(e.type==='walk')return `${e.worker} הולך אל ${e.machine} עבור <b>${e.job}</b>`;
-  if(e.type==='start')return `התחלת ${e.machine==='F1'?'כריכה':'הדפסה'} של <b>${e.job}</b> ב־${e.machine}`;
+  if(e.type==='start')return `התחלת ${opName(state.trace.machines.find(m=>m.id===e.machine).kind)} של <b>${e.job}</b> ב־${e.machine}`;
   if(e.type==='finish')return `סיום פעולה של <b>${e.job}</b> ב־${e.machine}`;
   return `מנה <b>${e.job}</b> הושלמה`;
 }
@@ -191,6 +197,21 @@ function exportBatch(){
   for(const r of state.batch.results)rows.push([r.replication,r.seed,state.batch.options.policy,state.batch.options.walking,state.batch.options.variation,state.batch.options.horizon,r.completed,r.complete,r.mean_flow??'',r.makespan??'',r.total_tardiness].join(','));
   const url=URL.createObjectURL(new Blob(['\uFEFF'+rows.join('\n')],{type:'text/csv;charset=utf-8'}));
   const a=document.createElement('a');a.href=url;a.download='printflow-replications.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function renderComparison(){
+  const reference=state.comparison;if(!reference)return;
+  const groups=[...new Map(state.history.map(b=>[comparisonKey(b),b])).values()];
+  const o=reference.options,rows=comparisonRows(state.history,reference);
+  const valid=rows.filter(r=>r.meanFlow!==null),best=valid[0]?.meanFlow;
+  const cell=v=>v===null?'—':fmt(v,2);
+  $('comparisonResults').innerHTML=`<h3>השוואת כללי שיבוץ</h3>
+    <label class="field">סדרת ניסויים<select id="comparisonGroup">${groups.map((b,i)=>`<option value="${i}" ${comparisonKey(b)===comparisonKey(reference)?'selected':''}>${b.results.length} הרצות · זרע ${b.results[0]?.seed} · אופק ${b.options.horizon} · שונות ${Math.round(b.options.variation*100)}% · הליכה ${b.options.walking?'כן':'לא'}</option>`).join('')}</select></label>
+    <p class="small-note">מושווים רק אותו תרחיש ואותה סדרת זרעים, אופק, שונות והליכה. אופק הסדרה המוצגת: ${o.horizon} דקות. החלפת ההגדרות אינה מוחקת את הטבלה.</p>
+    <div class="comparison-table" tabindex="0" role="region" aria-label="טבלת השוואה, ניתנת לגלילה אופקית"><table><thead><tr><th>כלל</th><th>שהייה</th><th>סיום כולל</th><th>איחור</th><th>הרצות מלאות</th><th>שיפור מול סדר קבוע</th></tr></thead><tbody>${rows.map(r=>`<tr class="${r.meanFlow!==null&&r.meanFlow===best?'best-policy':''}"><th>${policyNames[r.policy]}</th><td>${cell(r.meanFlow)}</td><td>${cell(r.makespan)}</td><td>${cell(r.tardiness)}</td><td>${r.completed}/${r.total}</td><td>${r.improvement===null?'—':cell(r.improvement)+'%'}</td></tr>`).join('')}</tbody></table></div>
+    <p class="small-note">הזמנים בדקות, כממוצע בין הרפליקציות. אחוז חיובי מציין ירידה בזמן השהייה. ${rows.some(r=>r.completed<r.total)?'סדרה הכוללת הרצות חלקיות אינה מדורגת; הארך את האופק והשווה מחדש. ':''}${valid.length>1?'מודגש הממוצע הנמוך מבין הכללים שנבדקו בתנאים האלה; אין זו הוכחת אופטימליות או מובהקות סטטיסטית.':'הרץ כלל נוסף באותם תנאים כדי להשוות.'} נשמרים עד 20 ניסויים שונים במהלך פתיחת הדף הנוכחית.</p>`;
+  $('comparisonResults').classList.remove('hidden');
+  $('comparisonGroup').addEventListener('change',e=>{state.comparison=groups[Number(e.target.value)];renderComparison();});
 }
 
 // The following canvas is an operational floor diagram. All motion follows
@@ -275,18 +296,20 @@ function draw(){
   text('אזור הדפסה',810,65,16,'#718aa4','right');text('כריכה וגימור',808,402,16,'#718aa4','right');
   text('כניסת עבודות',107,74,15,'#9aafc3');
   const tr=state.trace;
-  current().jobs.forEach((j,i)=>{
+  current().jobs.slice(0,4).forEach((j,i)=>{
     const done=tr&&tr.completions[j.id]<=state.time+1e-7;
     const processing=tr&&activeTask(tr,'job',j.id,state.time);
     const opacity=done?.15:processing?.35:1;
     ctx.globalAlpha=opacity;rect(72,98+i*37,72,27,5,'#1c3044',j.color+'77');
     rect(79,105+i*37,13,14,2,j.color);text(j.id,114,112+i*37,15,j.color,'center','600');ctx.globalAlpha=1;
   });
+  if(current().jobs.length>4)text(`ועוד ${current().jobs.length-4} בפאנל העבודות`,110,264,12,'#9aafc3');
   text('עבודות שהושלמו',165,412,15,'#9aafc3');
   if(tr){
     const done=tr.jobs.filter(j=>tr.completions[j.id]<=state.time+1e-7);
-    done.forEach((j,i)=>{rect(80+i*46,442,35,35,6,'#1c3044',j.color);text(j.id,97+i*46,460,17,j.color,'center','600');});
+    done.slice(0,4).forEach((j,i)=>{rect(80+i*46,442,35,35,6,'#1c3044',j.color);text(j.id,97+i*46,460,17,j.color,'center','600');});
     if(!done.length)text('—',165,457,24,'#385069');
+    if(done.length>4)text(`ועוד ${done.length-4}`,165,495,12,'#9aafc3');
   }
   current().machines.forEach(drawMachine);current().workers.forEach(drawWorker);
   text('מעבר עובדים',827,332,12,'#7192a4','right');

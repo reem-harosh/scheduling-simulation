@@ -12,25 +12,67 @@ import random
 import statistics
 import sys
 
-JOBS = [
-    dict(id="A", name="חוברות ללקוח", source="הזמנה רגילה", quantity=100,
-         release=0, due=25, color="#818cf8", operations=[("print", 8), ("bind", 6)]),
-    dict(id="B", name="עלונים לאירוע", source="הזמנה רגילה", quantity=200,
-         release=0, due=18, color="#2dd4bf", operations=[("print", 6)]),
-    dict(id="C", name="עלונים למלאי", source="השלמת מלאי", quantity=500,
-         release=0, due=None, color="#fbbf24", operations=[("print", 10)]),
-    dict(id="D", name="חוברות דחופות", source="הזמנה דחופה", quantity=50,
-         release=0, due=12, color="#fb7185", operations=[("print", 4), ("bind", 4)]),
-]
-MACHINES = [
-    dict(id="P1", name="מדפסת 01", kind="print", position=[300, 185], dock=[300, 290]),
-    dict(id="P2", name="מדפסת 02", kind="print", position=[640, 185], dock=[640, 290]),
-    dict(id="F1", name="עמדת כריכה", kind="bind", position=[560, 440], dock=[560, 370]),
-]
-WORKERS = [
-    dict(id="W1", name="עובד 01", skills=["print"], home=[125, 330], color="#38bdf8"),
-    dict(id="W2", name="עובד 02", skills=["print", "bind"], home=[175, 330], color="#fb923c"),
-]
+from pathlib import Path
+import copy
+import re
+
+
+def validate_scenario(scenario):
+    """Validate the small print-shop model before scheduling or rendering it."""
+    model = copy.deepcopy(scenario)
+    for group in ("jobs", "machines", "workers"):
+        rows = model.get(group)
+        if not isinstance(rows, list) or not rows:
+            raise ValueError(f"Scenario requires a nonempty {group} list")
+        ids = [row.get("id", "") for row in rows]
+        if any(not isinstance(i, str) or not re.fullmatch(r"[A-Za-z0-9_-]+", i) for i in ids) or len(set(ids)) != len(ids):
+            raise ValueError(f"Invalid or duplicate IDs in {group}")
+        for row in rows:
+            if not isinstance(row.get("name"), str):
+                raise ValueError(f"Missing name in {group}")
+    if set(m["id"] for m in model["machines"]) & set(w["id"] for w in model["workers"]):
+        raise ValueError("Machine and worker IDs must be distinct")
+    for row in model["machines"] + model["workers"]:
+        for field in (("position", "dock") if "kind" in row else ("home",)):
+            point = row.get(field, [])
+            if len(point) != 2 or any(not isinstance(v, (int, float)) or not math.isfinite(v) for v in point):
+                raise ValueError(f"Invalid coordinates: {field}")
+    for row in model["jobs"] + model["workers"]:
+        if not re.fullmatch(r"#[0-9a-fA-F]{6}", row.get("color", "")):
+            raise ValueError("Colors must use #RRGGBB")
+    for m in model["machines"]:
+        if m.get("kind") not in ("print", "bind"):
+            raise ValueError("This print-shop version supports print and bind operations")
+    for w in model["workers"]:
+        if not w.get("skills") or any(k not in ("print", "bind") for k in w["skills"]):
+            raise ValueError("Invalid worker skills")
+    for j in model["jobs"]:
+        if j.get("release") != 0:
+            raise ValueError("This initial scenario requires every job to be available at time 0")
+        if not isinstance(j.get("source"), str) or not isinstance(j.get("quantity"), int) or j["quantity"] <= 0:
+            raise ValueError("Each job needs a source and positive integer quantity")
+        due = j.get("due")
+        j["due"] = due
+        if due is not None and (not isinstance(due, (int, float)) or not math.isfinite(due) or due < 0):
+            raise ValueError("Invalid due date")
+        if not j.get("operations"):
+            raise ValueError("Every job needs at least one operation")
+        for operation in j["operations"]:
+            if not isinstance(operation, (list, tuple)) or len(operation) != 2:
+                raise ValueError("Operations must contain kind and duration")
+            kind, duration = operation
+            if not isinstance(duration, (int, float)) or not math.isfinite(duration) or duration <= 0:
+                raise ValueError("Operation duration must be finite and positive")
+            if not any(m["kind"] == kind for m in model["machines"]) or not any(kind in w["skills"] for w in model["workers"]):
+                raise ValueError(f"No feasible machine and worker for {kind}")
+    return model
+
+
+def load_scenario(path=None):
+    return validate_scenario(json.loads(Path(path or Path(__file__).with_name("scenario.json")).read_text(encoding="utf-8")))
+
+
+DEFAULT_SCENARIO = load_scenario()
 
 
 def travel_path(origin, destination):
@@ -62,7 +104,9 @@ def normalized_options(raw=None):
                 walking=bool(raw.get("walking", True)), variation=variation)
 
 
-def simulate(raw=None):
+def simulate(raw=None, scenario=None):
+    model = validate_scenario(DEFAULT_SCENARIO if scenario is None else scenario)
+    JOBS, MACHINES, WORKERS = model["jobs"], model["machines"], model["workers"]
     options = normalized_options(raw)
     rng = random.Random(options["seed"])
     # Sample in job/operation order, independently of scheduling decisions.
@@ -146,7 +190,7 @@ def simulate(raw=None):
             r["id"]: sum(max(0, min(end_time, x["end"])-x["start"])
                          for x in tasks if x[key] == r["id"])/end_time
             if end_time > 0 else 0 for r in group}
-    return dict(options=options, jobs=JOBS, machines=MACHINES, workers=WORKERS,
+    return dict(options=options, scenario_name=model.get("name", "בית הדפוס"), jobs=JOBS, machines=MACHINES, workers=WORKERS,
                 tasks=tasks, events=events, completions=completions,
                 end_time=end_time, metrics=metrics)
 

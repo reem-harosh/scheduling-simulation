@@ -1,0 +1,141 @@
+{
+  "name": "בית הדפוס",
+  "jobs": [
+    {
+      "id": "A",
+      "name": "חוברות ללקוח",
+      "source": "הזמנה רגילה",
+      "quantity": 100,
+      "release": 0,
+      "due": 25,
+      "color": "#818cf8",
+      "operations": [
+        [
+          "print",
+          8
+        ],
+        [
+          "bind",
+          6
+        ]
+      ]
+    },
+    {
+      "id": "B",
+      "name": "עלונים לאירוע",
+      "source": "הזמנה רגילה",
+      "quantity": 200,
+      "release": 0,
+      "due": 18,
+      "color": "#2dd4bf",
+      "operations": [
+        [
+          "print",
+          6
+        ]
+      ]
+    },
+    {
+      "id": "C",
+      "name": "עלונים למלאי",
+      "source": "השלמת מלאי",
+      "quantity": 500,
+      "release": 0,
+      "due": null,
+      "color": "#fbbf24",
+      "operations": [
+        [
+          "print",
+          10
+        ]
+      ]
+    },
+    {
+      "id": "D",
+      "name": "חוברות דחופות",
+      "source": "הזמנה דחופה",
+      "quantity": 50,
+      "release": 0,
+      "due": 12,
+      "color": "#fb7185",
+      "operations": [
+        [
+          "print",
+          4
+        ],
+        [
+          "bind",
+          4
+        ]
+      ]
+    }
+  ],
+  "machines": [
+    {
+      "id": "P1",
+      "name": "מדפסת 01",
+      "kind": "print",
+      "position": [
+        300,
+        185
+      ],
+      "dock": [
+        300,
+        290
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "מדפסת 02",
+      "kind": "print",
+      "position": [
+        640,
+        185
+      ],
+      "dock": [
+        640,
+        290
+      ]
+    },
+    {
+      "id": "F1",
+      "name": "עמדת כריכה",
+      "kind": "bind",
+      "position": [
+        560,
+        440
+      ],
+      "dock": [
+        560,
+        370
+      ]
+    }
+  ],
+  "workers": [
+    {
+      "id": "W1",
+      "name": "עובד 01",
+      "skills": [
+        "print"
+      ],
+      "home": [
+        125,
+        330
+      ],
+      "color": "#38bdf8"
+    },
+    {
+      "id": "W2",
+      "name": "עובד 02",
+      "skills": [
+        "print",
+        "bind"
+      ],
+      "home": [
+        175,
+        330
+      ],
+      "color": "#fb923c"
+    }
+  ]
+}

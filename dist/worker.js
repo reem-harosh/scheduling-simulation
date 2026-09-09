@@ -7,9 +7,11 @@ async function boot() {
     postMessage({type:'loading', message:'מכין את מנוע הסימולציה…'});
     importScripts('./runtime/pyodide.js');
     const runtime = await loadPyodide({indexURL:new URL('./runtime/', self.location.href).href});
-    const response = await fetch('./engine.py');
-    if (!response.ok) throw new Error('Engine source unavailable');
-    await runtime.runPythonAsync(await response.text());
+    const [response, scenario] = await Promise.all([fetch('./engine.py'), fetch('./scenario.json')]);
+    if (!response.ok || !scenario.ok) throw new Error('Engine or scenario source unavailable');
+    runtime.FS.writeFile('/home/pyodide/engine.py', await response.text());
+    runtime.FS.writeFile('/home/pyodide/scenario.json', await scenario.text());
+    await runtime.runPythonAsync('from engine import simulate_json, run_replication_json');
     python = runtime;
     postMessage({type:'ready'});
     return python;
