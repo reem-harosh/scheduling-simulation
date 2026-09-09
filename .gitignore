@@ -5,3 +5,9 @@ __pycache__/
 !dist/runtime/python_stdlib.zip
 !dist/printflow-source.zip
 .env
+
+# User project inputs: excluded from public source commits.
+data/
+docs/specification/
+results/
+__pycache__/
