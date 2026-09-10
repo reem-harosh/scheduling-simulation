@@ -10,8 +10,8 @@ realized arrivals, load and factor. Manual inputs are labeled separately.
 
 ```bash
 python -m factory.load_calibration --factors .25 1 2 4 --days 42 --warmup 14 --workers 3
-python -m factory.load_calibration --factors .25 .5 --replication-start 100 --replications 8 --days 364 --warmup 182 --out results/holdout
-python tools/confirm_operating_point.py results/holdout
+python -m factory.load_calibration --factors .3125 --replication-start 300 --replications 8 --days 728 --warmup 364 --max-events 6000000 --out results/holdout
+python tools/confirm_operating_point.py results/holdout --holdout-start 300
 ```
 
 Screening never installs a baseline. The separate confirmation uses eight
@@ -20,7 +20,7 @@ source/configuration consistency, sufficient completions, real concurrent
 activity in each department, moving workers, mean WIP >=3 and nonzero queues.
 Practical margins are explicit: upper drift CI <= max(.02 jobs/day, 5% arrival
 rate), and the flow-difference CI lies within ±10% arrival rate. These are
-finite-horizon equivalence criteria, not proof of infinite-horizon stationarity.
+finite-horizon equivalence criteria. A strictly positive drift CI also rejects the point. These are not proof of infinite-horizon stationarity.
 The 70–85% bottleneck target ranks passing candidates; it is not a gate.
 
 Within-run weekly OLS bands are heuristic diagnostics, never treated as

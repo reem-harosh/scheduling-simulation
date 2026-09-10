@@ -1,3 +1,28 @@
+## Confirmed demand baseline and validation
+
+The demand-intensity correction and reviewer procedure are documented in
+[docs/demand-calibration.md](docs/demand-calibration.md). The latest independent
+review scored **8.70/10**, with **41 passing tests**.
+
+The private `Simulation_Validation.zip` delivered with this revision contains the
+source-matched operating point, replication evidence and final replay. Extract it
+**inside this repository** after importing your original source ZIP:
+
+```bash
+python -m zipfile -e Simulation_Validation.zip .
+python run_factory.py
+```
+
+The server and CLI automatically load `results/load-calibration/operating_point.json`
+when its source/data hashes match. The UI labels an absent or incompatible point
+as uncalibrated. Raw data and this private evidence bundle are not in public git.
+The confirmed burn-in is long; load `results/final-baseline-replay.json` in the UI
+to inspect the saved replay immediately instead of rerunning it.
+
+```bash
+python tools/validate_replay.py results/final-baseline-replay.json
+```
+
 # Production Lab — Python production-floor simulation
 
 The new production world is in `factory/` and `dist/production/`. The original PrintFlow demo remains available unchanged at `dist/index.html` and through `python run.py`.

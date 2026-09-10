@@ -20,3 +20,23 @@ Prioritized notes:
 These corrections were implemented for the next review. Single-run and experiment cancellation now remain labeled CANCELLED and cancelled replications are not cached as valid observations.
 
 No claim of full production-grid completion is made. Public publication of internal project input files was denied by automatic approval review; this is handled through local ZIP import, not an upload workaround.
+
+
+## Demand correction review, 2026-09-10
+
+Round 1: **8.35/10**. The reviewer rejected calling residual positive WIP drift
+established stability. Corrections tightened the confirmation gate, selected a
+new prospective holdout point, fixed selected-factor metadata and CLI provenance.
+
+Round 2: **8.70/10**. Independently reran 41 tests, verified all eight evidence
+hashes and recomputed confirmation. No P0/P1 issue remains. Final replay screenshot
+was subsequently recaptured with correct burn-in control and full-precision factor.
+
+Weights: correctness 25% (9.0), demand/provenance 20% (8.8), stability/metrics
+20% (8.3), replay/UI 20% (8.4), reproducibility 15% (9.0).
+
+Limitations: stability is supported within the tested horizon, not proven
+indefinitely. The browser download event could not be verified; local server
+saving and incoming JSON replay were verified. A full production 25-point
+inferential comparison was not executed. Private evidence must be installed as
+explained in README; it is not included in public git.

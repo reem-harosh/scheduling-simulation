@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import statistics
 import math
+import hashlib
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from factory.experiments import confidence,atomic_json
@@ -60,9 +61,10 @@ def main():
     p.add_argument('directories',nargs='+')
     p.add_argument('--holdout-start',type=int,default=100)
     p.add_argument('--out',default='results/load-calibration/operating_point.json')
-    a=p.parse_args(); groups={}
+    a=p.parse_args(); groups={}; evidence=[]
     for directory in a.directories:
         for path in Path(directory).glob('factor-*-rep-*.json'):
+            evidence.append(dict(file=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
             r=json.loads(path.read_text());factor=r['config']['baseline_calibration_multiplier']
             groups.setdefault(factor,[]).append(r)
     if len({r['dataset_sha256'] for rows in groups.values() for r in rows})>1:raise ValueError('Mixed candidate datasets')
@@ -77,7 +79,7 @@ def main():
         warmup_days=metadata.get('config',{}).get('warmup_days'),measurement_days=metadata.get('config',{}).get('horizon_days'),replications=8,holdout_start=a.holdout_start,
         criterion='Independent replication mean drift and flow equivalence; see candidate CIs and margins',
         limitation='Finite-horizon practical stability; no proof of stationarity. 70-85% bottleneck is a ranking guideline only.',
-        candidates=assessments)
+        candidates=assessments,evidence_files=evidence)
     atomic_json(a.out,report);print(json.dumps(report,indent=2))
 
 if __name__=='__main__':main()
