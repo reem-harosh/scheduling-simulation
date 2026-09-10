@@ -1,3 +1,59 @@
+# Production Lab — Python production-floor simulation
+
+The new production world is in `factory/` and `dist/production/`. The original PrintFlow demo remains available unchanged at `dist/index.html` and through `python run.py`.
+
+## Start the production world
+
+Python 3.10+ is required (tested on Python 3.12). From the repository directory:
+
+```bash
+python -m pip install -r requirements.txt
+python tools/import_project.py /path/to/Simulation_Project_v0_3.zip
+python run_factory.py
+```
+
+On Windows, use `py` instead of `python` if needed. The last command opens the local browser interface. The numerical engine runs in Python; HTML/JavaScript replay and inspect its recorded events. There is no second JavaScript simulation engine.
+
+The ZIP is the source package supplied with this project. Input spreadsheets, the facility map, calibration and detailed specification are intentionally excluded from this **public** repository: publication of those inputs was blocked by automatic approval review. The import command installs them locally, verifies an existing file is identical before reuse, and leaves Git exclusions intact. It never overwrites differing source data. No secret credentials are stored in source.
+
+Without a Python backend, `/production/` can still open a saved result JSON for replay. The existing hosted PrintFlow demo has not been replaced or redeployed by this development work.
+
+## Run modes
+
+```bash
+# Single-run diagnostic, with seven days of event replay and full drain
+python -m factory --days 28 --out results/run.json
+
+# Shared warm-up and matched replications for FIFO and CYCLE_TRANSFER
+python -m factory --mode scenario --days 28 --out results/comparison.json
+
+# Full 5 x 5 response grid (can take considerable time)
+python -m factory --mode grid --out results/surface.json
+
+# Deterministic controlled jobs, read from your own JSON list
+python -m factory --manual jobs.json --out results/controlled.json
+
+# Verification
+python -m unittest discover -s tests -v
+python tools/verify_research_protocol.py
+```
+
+The browser offers arrival load, batch size, horizon, algorithm and seed controls; a floor replay with speed and precise-time controls; entity inspectors; and research scenario/grid controls. Source-data runs can be large. Cancellation preserves a clearly labeled partial diagnostic or completed replication checkpoints. Resuming an unchanged research request reuses compatible cached replications, keyed by code, input, configuration and seed. Changed code or data invalidates that cache.
+
+**A single run is not a steady-state research estimate.** The research runner first applies the shared pilot protocol, then runs matched replications and nominal Student-t confidence intervals. `NOT_STABILIZED`, `PRECISION_NOT_MET`, empty cohorts, cancellation and failures remain explicit. Missing surface cells are not interpolated. The controlled protocol verification uses generic test data and is not a production performance estimate.
+
+## Extending scheduling policies
+
+Implement `decide(snapshot)` and pass the policy to `Simulation(..., policy=policy)`. The snapshot contains released jobs, legal ready/output ranges, resource state, skills/ownership, known distribution definitions and calendar rules. It excludes future arrivals and sampled outcomes. Actions `allocate`, `split`, and `transfer` are validated atomically. Part ranges are half-open ordinal intervals. A transfer may request `preserve_batch=True` to retain one logical execution batch while moving it in several capacity-limited trips. Invalid actions return a reason code. See `factory/policies.py` and the extension tests.
+
+## Review and limitations
+
+See `docs/production-quality-review.md` for independent scores, evidence and remaining issues. Research computations and real source-derived replay exports live in the excluded `results/` directory. Keep those outputs with their source hashes. This is an experimental scheduling model, not a validated digital twin.
+
+---
+
+## Original PrintFlow documentation
+
 # PrintFlow — מעבדת סימולציה לבית דפוס
 
 מנוע סימולציה בפייתון ותצוגת רצפה מונפשת בדפדפן. זהו תרחיש אזרחי עצמאי עם ארבע מנות סינתטיות, שתי מדפסות, עמדת כריכה ושני עובדים. נתוני התרחיש אינם נגזרים מקובצי מפעל אחרים.

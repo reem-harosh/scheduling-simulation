@@ -20,6 +20,13 @@ ROOT = Path(__file__).resolve().parent
 class Service:
     def __init__(self, data):
         self.data = data
+        self.operating_point = None
+        point_path = ROOT/'results/load-calibration/operating_point.json'
+        if point_path.exists():
+            point = json.loads(point_path.read_text())
+            from factory.engine import ENGINE_SOURCE_SHA256
+            if point.get('status')=='CALIBRATED' and point.get('dataset_sha256')==data.digest and point.get('engine_source_sha256')==ENGINE_SOURCE_SHA256:
+                self.operating_point = point
         self.tasks = {}
         self.executor = ThreadPoolExecutor(max_workers=1)
         self.lock = threading.Lock()
@@ -33,6 +40,8 @@ class Service:
         if set(options)-allowed:
             raise ValueError('Unknown configuration fields')
         config = Config(**options)
+        if self.operating_point:
+            config.baseline_calibration_multiplier = self.operating_point['baseline_calibration_multiplier']
         config.validate()
         if config.horizon_days > 365 or config.trace_days > 28:
             raise ValueError('UI limit: 365 measurement days and 28 replay days; use CLI for larger studies')
@@ -83,7 +92,7 @@ class Handler(SimpleHTTPRequestHandler):
             data = self.service.data
             self.reply({'machines':list(data.machines.values()),'dataset_sha256':data.digest,
                         'world_version':'v0.3','templates':len(data.templates),'items':len({j['item'] for j in data.templates}),
-                        'mode':'calibrated production world','profiles':len(data.profiles)})
+                        'operating_point':{k:v for k,v in (self.service.operating_point or {'status':'NOT_CALIBRATED'}).items() if k!='results'},'mode':'production world','profiles':len(data.profiles)})
         elif self.path.startswith('/api/tasks/'):
             task = self.service.tasks.get(self.path.split('/')[-1])
             self.reply(task or {'message':'Unknown task'},200 if task else 404)

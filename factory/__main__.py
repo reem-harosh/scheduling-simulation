@@ -16,6 +16,7 @@ def main():
     parser.add_argument('--days', type=float, default=28)
     parser.add_argument('--warmup', type=float, default=0)
     parser.add_argument('--load', type=float, default=1)
+    parser.add_argument('--baseline-factor',type=float,default=1,help='Explicit intensity factor; use calibrated report value')
     parser.add_argument('--batch', type=float, default=1)
     parser.add_argument('--seed', type=int, default=20260909)
     parser.add_argument('--manual', help='JSON list of controlled jobs')
@@ -24,7 +25,7 @@ def main():
     args = parser.parse_args()
     data = Calibration.load(args.calibration, args.source)
     config = Config(algorithm=args.algorithm, horizon_days=args.days, warmup_days=args.warmup,
-                    arrival_load=args.load, batch_size=args.batch, seed=args.seed, trace_days=args.trace_days)
+                    arrival_load=args.load, baseline_calibration_multiplier=args.baseline_factor, batch_size=args.batch, seed=args.seed, trace_days=args.trace_days)
     if args.mode == 'run':
         jobs = json.loads(Path(args.manual).read_text()) if args.manual else None
         result = Simulation(data, config, jobs).run()

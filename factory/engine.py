@@ -10,12 +10,15 @@ import heapq
 import copy
 import math
 import platform
+import hashlib
+from pathlib import Path
 import statistics
 import numpy as np
 from .data import InputError
 from .randomness import Streams
 from .policies import BaselinePolicy
 
+ENGINE_SOURCE_SHA256 = hashlib.sha256(b''.join(p.read_bytes() for p in sorted(Path(__file__).parent.glob('*.py')))).hexdigest()
 HANDLING_MEAN = 11 / 6
 MANUAL = {'LOADING', 'UNLOADING', 'CYCLE_CHANGE'}
 WORK = MANUAL | {'WALKING', 'CARRYING'}
@@ -30,6 +33,7 @@ class Config:
     namespace: str = 'measurement'
     algorithm: str = 'FIFO'
     arrival_load: float = 1.0
+    baseline_calibration_multiplier: float = 1.0
     batch_size: float = 1.0
     horizon_days: float = 28
     warmup_days: float = 0
@@ -39,7 +43,7 @@ class Config:
     max_events: int = 5000000
 
     def validate(self):
-        for name in ('arrival_load', 'batch_size', 'horizon_days', 'warmup_days', 'trace_days'):
+        for name in ('baseline_calibration_multiplier', 'arrival_load', 'batch_size', 'horizon_days', 'warmup_days', 'trace_days'):
             value = getattr(self, name)
             if not math.isfinite(value) or value < 0:
                 raise InputError('INVALID_CONFIG_' + name)
@@ -102,6 +106,7 @@ class Worker:
     kind: str
     extended: bool
     node: int | None = None
+    home_node: int | None = None
     state: str = 'OFF_SHIFT'
     since: float = 0
     active: bool = False
@@ -130,6 +135,10 @@ class Simulation:
                                self.config.replication, self.config.namespace)
         self.measure_start = self.config.warmup_days * 1440
         self.arrivals_stop = self.measure_start + self.config.horizon_days * 1440
+        self.trace_start = self.measure_start
+        self.trace_stop = self.trace_start + self.config.trace_days * 1440
+        self.snapshots = []
+        self.replay_initial = {}
         self.time = 0.0
         self.events, self.sequence = [], 0
         self.jobs, self.batches, self.ready = {}, {}, []
@@ -155,11 +164,18 @@ class Simulation:
                     wid = kind + '_' + dept + '_' + pid
                     self.workers[wid] = Worker(wid, dept, set(profile['machines']), kind,
                                                kind == 'day' and i < (4 if dept == 'milling' else 3))
+        # Distinct existing service nodes, within department: no synthetic motion.
+        for dept in self.data.rosters:
+            nodes = sorted({m.node for m in self.machines.values() if m.department == dept})
+            for kind in ('day', 'night'):
+                for i, w in enumerate(w for w in self.workers.values() if w.department == dept and w.kind == kind):
+                    w.home_node = nodes[i % len(nodes)] if nodes else self.data.graph['handoff_node']
         self.manual_jobs = manual_jobs
         self._calendar_day(self.start.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1))
         self._event(0, 1, 'calendar_day', self.start.replace(hour=0, minute=0, second=0, microsecond=0))
         self._event(self.arrivals_stop, 1, 'arrivals_stop')
         self._event(7 * 1440, 1, 'monitor')
+        self._event(self.trace_start, 0, 'replay_start')
         if manual_jobs is not None:
             seen = set()
             for i, row in enumerate(manual_jobs):
@@ -187,7 +203,7 @@ class Simulation:
         heapq.heappush(self.events, (float(time), priority, key, self.sequence, kind, payload))
 
     def _log(self, kind, **fields):
-        if self.config.trace and self.time <= self.config.trace_days * 1440:
+        if self.config.trace and self.trace_start <= self.time <= self.trace_stop:
             self.log.append({'time': self.time, 'kind': kind, **fields})
 
     def _state(self, entity, state, kind, **metadata):
@@ -200,8 +216,8 @@ class Simulation:
         overlap = max(0, min(b, self.arrivals_stop) - max(a, self.measure_start))
         states = self.state_minutes[kind].setdefault(entity.id, {})
         states[entity.state] = states.get(entity.state, 0) + overlap
-        end = min(b, self.config.trace_days * 1440)
-        if self.config.trace and end > a:
+        end = min(b, self.trace_stop)
+        if self.config.trace and end > max(a, self.trace_start):
             self.intervals.append({'entity': entity.id, 'type': kind, 'state': entity.state,
                                    'start': a, 'end': end, **getattr(entity, '_metadata', {})})
         entity.since = b
@@ -247,7 +263,7 @@ class Simulation:
         date = day.date().isoformat()
         counts = self.data.raw['arrival_calibration']['daily_count_samples_by_weekday_monday0'][str(day.weekday())]
         n = int(self.streams.rng('demand_day', date).choice(counts))
-        n = self.streams.rounded(n * self.config.arrival_load, 'demand_scale', date)
+        n = self.streams.rounded(n * self.config.arrival_load * self.config.baseline_calibration_multiplier, 'demand_scale', date)
         templates = self.data.templates
         by_item = {}
         for j in templates:
@@ -571,7 +587,10 @@ class Simulation:
                           lo=start, hi=end, target=target.id, parent=b.id, second_leg=cross, group=group)
 
     def _handle(self, kind, payload):
-        if kind == 'calendar_day':
+        if kind == 'replay_start':
+            self.replay_initial = dict(job_completed={j.id:j.completed for j in self.jobs.values()},
+                batches={b.id:dict(state=b.state,completed=max(0,b.cursor-b.lo)) for b in self.batches.values()})
+        elif kind == 'calendar_day':
             day = payload
             self._calendar_day(day)
             if self.time < self.arrivals_stop:
@@ -580,6 +599,8 @@ class Simulation:
             self._event((nxt-self.start).total_seconds()/60, 1, 'calendar_day', nxt)
         elif kind == 'shift_start':
             w = self.workers[payload[0]]
+            if w.node is None:
+                w.node = w.home_node
             w.active, w.shift = True, payload[1]
             w.pending_break, w.break_until = 0, 0
             if not w.busy:
@@ -662,7 +683,9 @@ class Simulation:
             values = [x/duration for x in self.window_integrals]
             self.weekly.append(dict(time=self.time, wip=values[0], queue=values[1],
                                    machine_utilization=values[2], worker_utilization=values[3],
-                                   throughput=self.window_completions))
+                                   throughput=self.window_completions,
+                                   released=sum(self.last_monitor <= j.release < self.time for j in self.jobs.values()),
+                                   end_wip=sum(j.complete is None for j in self.jobs.values())))
             self.window_integrals = [0., 0., 0., 0.]
             self.window_completions, self.last_monitor = 0, self.time
             self._event(self.time + 7*1440, 1, 'monitor')
@@ -690,6 +713,10 @@ class Simulation:
                     last_progress = t
             self._allocate()
             self._dispatch()
+            if self.config.trace and self.trace_start <= self.time <= self.trace_stop:
+                wip, queue, _, _ = self._counts()
+                self.snapshots.append(dict(time=self.time,wip=wip,queue=queue,
+                    released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values())))
             if self.counters['events'] >= self.config.max_events:
                 status = 'EVENT_LIMIT'
                 break
@@ -712,12 +739,35 @@ class Simulation:
         complete = [j for j in measured if j.complete is not None]
         valid = status == 'COMPLETE' and len(complete) == len(measured) and bool(measured)
         flow = [j.complete-j.release for j in complete]
-        duration = self.arrivals_stop-self.measure_start
+        duration = max(0, min(self.time,self.arrivals_stop)-self.measure_start)
+        duration = duration or 1e-12
+        raw_rate = statistics.mean(statistics.mean(v) for v in self.data.raw['arrival_calibration']['daily_count_samples_by_weekday_monday0'].values())
+        machine_busy = {mid:sum(v for k,v in states.items() if k in MACHINE_BUSY) for mid,states in self.state_minutes['machine'].items()}
+        # Machines have no shutdown calendar in this world: autonomous processing
+        # continues off shift. Available machine time therefore equals calendar time.
+        worker_busy = sum(sum(v for k,v in states.items() if k in WORK) for states in self.state_minutes['worker'].values())
+        worker_available = sum(sum(v for k,v in states.items() if k not in ('OFF_SHIFT','ON_BREAK')) for states in self.state_minutes['worker'].values())
+        active = [v/duration for v in machine_busy.values() if v>0]
         return {
+            'demand_provenance':dict(raw_empirical_arrival_rate=raw_rate,
+                baseline_calibration_multiplier=self.config.baseline_calibration_multiplier,
+                arrival_load=self.config.arrival_load,
+                effective_arrival_rate=raw_rate*self.config.baseline_calibration_multiplier*self.config.arrival_load,
+                realized_arrival_rate=len(measured)/(duration/1440),rate_unit='jobs/day',
+                mode='manual' if self.manual_jobs is not None else 'empirical_mix_scaled_intensity'),
+            'machine_calendar_utilization':self.measure_integrals[2]/duration,
+            'machine_available_utilization':self.measure_integrals[2]/duration,
+            'machine_available_definition':'24/7 autonomous machine availability; identical to calendar denominator',
+            'worker_available_utilization':worker_busy/worker_available if worker_available else 0,
+            'worker_available_definition':'on-duty minutes excluding actual breaks; includes non-preemptive overtime',
+            'per_machine_utilization':{k:v/duration for k,v in machine_busy.items()},
+            'active_machine_utilization':statistics.mean(active) if active else 0,
+            'bottleneck_utilization':max(active,default=0),
+            'measurement_completed_in_window':self.measured_completions_in_window,
             'status': status if measured or status != 'COMPLETE' else 'NO_MEASUREMENT_JOBS',
             'config': asdict(self.config), 'dataset_sha256': self.data.digest,
             'source_sha256': self.data.raw.get('summary', {}).get('sha256'),
-            'world_version': 'v0.3', 'engine_version': '0.1.0',
+            'world_version': 'v0.3', 'engine_version': '0.1.0', 'engine_source_sha256': ENGINE_SOURCE_SHA256,
             'environment': {'python': platform.python_version(), 'numpy': np.__version__, 'rng': 'PCG64/SHA256-128'},
             'measurement': {'start_min': self.measure_start, 'stop_min': self.arrivals_stop,
                             'denominator_min': duration, 'cohort': 'release in [start,stop); drain included in flow only'},
@@ -737,8 +787,8 @@ class Simulation:
             'jobs': [asdict(j) for j in self.jobs.values()],
             'batches': [asdict(b) for b in self.batches.values()] if self.config.trace else [],
             'machines': list(self.data.machines.values()),
-            'workers': [{'id': w.id, 'department': w.department, 'kind': w.kind, 'skills': sorted(w.skills)} for w in self.workers.values()],
-            'trace': {'end_min': min(self.time, self.config.trace_days*1440), 'intervals': self.intervals, 'events': self.log,
+            'workers': [{'id': w.id, 'department': w.department, 'kind': w.kind, 'home_node':w.home_node, 'skills': sorted(w.skills)} for w in self.workers.values()],
+            'trace': {'initial':self.replay_initial, 'start_min':self.trace_start, 'snapshots':self.snapshots, 'end_min': min(self.time, self.trace_stop), 'intervals': self.intervals, 'events': self.log,
                       'nodes': self.data.graph['nodes'] if self.config.trace else []},
             'protocol': 'single_run_diagnostic; use experiment runner for inferential results',
         }

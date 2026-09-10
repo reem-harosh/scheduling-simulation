@@ -27,6 +27,31 @@ class ExtensionsTests(unittest.TestCase):
         self.assertTrue(all(e['quantity']==1 for e in carries))
         self.assertEqual(r['jobs'][0]['completed'],7)
 
+    def test_preserved_logical_batch_uses_multiple_trips(self):
+        class Preserve(BaselinePolicy):
+            def decide(self,state):
+                actions=super().decide(state)
+                for action in actions:
+                    if action['kind']=='transfer':action['preserve_batch']=True
+                return actions
+        r=Simulation(fixture(),Config(horizon_days=2),[manual(125)],policy=Preserve()).run()
+        self.assertEqual(r['status'],'COMPLETE')
+        operation_two=[b for b in r['batches'] if b['op_index']==1]
+        self.assertEqual(len(operation_two),1)
+        self.assertEqual(operation_two[0]['hi']-operation_two[0]['lo'],125)
+        self.assertTrue(all(e['quantity']<=60 for e in r['trace']['events'] if e['kind']=='carry_start'))
+
+    def test_shift_owner_finishes_then_hands_over(self):
+        r=Simulation(fixture(),Config(horizon_days=2),[manual(20,[1],719.9)]).run()
+        self.assertEqual(r['status'],'COMPLETE')
+        loading=[i for i in r['trace']['intervals'] if i['type']=='worker' and i['state']=='LOADING'][0]
+        self.assertLess(loading['start'],720)
+        self.assertGreater(loading['end'],720)
+        ownership=[e for e in r['trace']['events'] if e['kind']=='ownership_acquire']
+        self.assertTrue(ownership[0]['worker'].startswith('day_'))
+        self.assertTrue(ownership[1]['worker'].startswith('night_'))
+        self.assertGreaterEqual(ownership[1]['time'],loading['end'])
+
     def test_public_state_detached_no_future_information(self):
         sim=Simulation(fixture(),Config(horizon_days=1),[manual(3,release=40)])
         state=sim.public_state()
