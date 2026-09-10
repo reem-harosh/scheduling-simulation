@@ -41,6 +41,7 @@ def confirm(rows, holdout_start=100):
     rate=statistics.mean(arrivals)
     # Declared practical equivalence margins; report them with every decision.
     drift_tolerance=max(.02,.05*rate)
+    if slope_ci[0]>0:reasons.append('RESIDUAL_POSITIVE_WIP_TREND')
     if slope_ci[1]>drift_tolerance:reasons.append('WIP_STABILITY_UNCERTAIN')
     if balance_ci[0]<-.1*rate or balance_ci[1]>.1*rate:reasons.append('FLOW_EQUIVALENCE_NOT_ESTABLISHED')
     if sum(r['assessment']['completions'] for r in rows)<240:reasons.append('INSUFFICIENT_COMPLETIONS')
@@ -64,13 +65,16 @@ def main():
         for path in Path(directory).glob('factor-*-rep-*.json'):
             r=json.loads(path.read_text());factor=r['config']['baseline_calibration_multiplier']
             groups.setdefault(factor,[]).append(r)
+    if len({r['dataset_sha256'] for rows in groups.values() for r in rows})>1:raise ValueError('Mixed candidate datasets')
     assessments={str(f):confirm(rows,a.holdout_start) for f,rows in groups.items()}
     accepted=[f for f in groups if assessments[str(f)]['accepted']]
     factor=min(accepted,key=lambda f:abs(assessments[str(f)]['means']['bottleneck_utilization']-.775)) if accepted else None
+    selected_rows=groups[factor] if factor is not None else next(iter(groups.values()),[])
+    metadata=selected_rows[0] if selected_rows else {}
     report=dict(status='CALIBRATED' if factor is not None else 'NO_VALID_OPERATING_POINT',
         baseline_calibration_multiplier=factor,engine_source_sha256=ENGINE_SOURCE_SHA256,
-        dataset_sha256=next(iter(groups.values()))[0]['dataset_sha256'] if groups else None,
-        warmup_days=next(iter(groups.values()))[0]['config']['warmup_days'] if groups else None,measurement_days=next(iter(groups.values()))[0]['config']['horizon_days'] if groups else None,replications=8,holdout_start=a.holdout_start,
+        dataset_sha256=metadata.get('dataset_sha256'),
+        warmup_days=metadata.get('config',{}).get('warmup_days'),measurement_days=metadata.get('config',{}).get('horizon_days'),replications=8,holdout_start=a.holdout_start,
         criterion='Independent replication mean drift and flow equivalence; see candidate CIs and margins',
         limitation='Finite-horizon practical stability; no proof of stationarity. 70-85% bottleneck is a ranking guideline only.',
         candidates=assessments)

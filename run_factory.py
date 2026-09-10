@@ -42,6 +42,7 @@ class Service:
         config = Config(**options)
         if self.operating_point:
             config.baseline_calibration_multiplier = self.operating_point['baseline_calibration_multiplier']
+            if 'warmup_days' not in options:config.warmup_days=self.operating_point['warmup_days']
         config.validate()
         if config.horizon_days > 365 or config.trace_days > 28:
             raise ValueError('UI limit: 365 measurement days and 28 replay days; use CLI for larger studies')
@@ -63,6 +64,7 @@ class Service:
                 runner = ExperimentRunner(self.data, ROOT/'results'/'experiments',
                     progress=lambda message: task.update(message=message), cancel=lambda: task['cancel'])
                 result = runner.scenario(config) if mode == 'scenario' else runner.grid(config)
+            result['operating_point']={k:v for k,v in (self.operating_point or {'status':'NOT_CALIBRATED'}).items() if k!='results'}
             atomic_json(ROOT/'results'/(tid+'.json'), result)
             task.update(status='CANCELLED' if result.get('status')=='CANCELLED' else 'COMPLETE',result=result,
                         message='Cancelled; partial diagnostic saved' if result.get('status')=='CANCELLED' else 'Completed and saved')

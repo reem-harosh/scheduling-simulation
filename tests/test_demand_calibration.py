@@ -42,3 +42,11 @@ class DemandCalibrationTests(unittest.TestCase):
         a=assess(r)
         self.assertEqual(a['status'],'REJECTED')
         self.assertIn('WIP_GROWTH',a['reasons'])
+
+    def test_empty_system_screen_is_json_serializable(self):
+        import json
+        r=Simulation(fixture(),Config(horizon_days=42,arrival_load=0,trace=False)).run(until=42*1440)
+        a=assess(r)
+        json.dumps(a,allow_nan=False)
+        self.assertEqual(a['wip_slope_jobs_per_day'],0)
+        self.assertEqual(a['status'],'REJECTED')

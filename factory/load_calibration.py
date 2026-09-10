@@ -28,8 +28,9 @@ def assess(result, minimum_completions=30):
     ratio=completions/arrivals if arrivals else None
     slope=upper=lower=None
     if len(weeks)>=6:
-        fit=linregress(np.arange(len(weeks))*7,[w['wip'] for w in weeks])
-        margin=float(t.ppf(.975,len(weeks)-2))*fit.stderr
+        ys=[w['wip'] for w in weeks]
+        fit=linregress(np.arange(len(weeks))*7,ys)
+        margin=0. if max(ys)==min(ys) else float(t.ppf(.975,len(weeks)-2))*fit.stderr
         slope=float(fit.slope); lower=slope-margin; upper=slope+margin
         # Practical equivalence: drift below 5% of arrival rate, with CI.
         tolerance=max(.02,arrivals/(len(weeks)*7)*.05)

@@ -18,7 +18,7 @@ from .data import InputError
 from .randomness import Streams
 from .policies import BaselinePolicy
 
-ENGINE_SOURCE_SHA256 = hashlib.sha256(b''.join(p.read_bytes() for p in sorted(Path(__file__).parent.glob('*.py')))).hexdigest()
+ENGINE_SOURCE_SHA256 = hashlib.sha256(b''.join(p.read_bytes() for p in sorted(Path(__file__).parent/p for p in ('engine.py','data.py','randomness.py','policies.py','__init__.py')))).hexdigest()
 HANDLING_MEAN = 11 / 6
 MANUAL = {'LOADING', 'UNLOADING', 'CYCLE_CHANGE'}
 WORK = MANUAL | {'WALKING', 'CARRYING'}
