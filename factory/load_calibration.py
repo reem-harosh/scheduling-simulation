@@ -38,7 +38,9 @@ def assess(result, minimum_completions=30):
     if completions<minimum_completions: reasons.append('INSUFFICIENT_COMPLETIONS')
     if ratio is None or not .9<=ratio<=1.1: reasons.append('FLOW_IMBALANCE')
     active=result['active_machine_utilization']
-    if result['mean_wip']<3 or result['mean_queue']<.1 or active<.15:
+    activity=result.get('activity',{})
+    concurrent=activity.get('concurrent_machine_minutes',{})
+    if result['mean_wip']<3 or result['mean_queue']<.1 or not concurrent or min(concurrent.values())<=0 or activity.get('distinct_moving_workers',0)<2:
         reasons.append('LOW_ACTIVITY')
     return dict(status='ACCEPTED_SCREEN' if not reasons else 'REJECTED',reasons=reasons,
         completion_arrival_ratio=ratio,wip_slope_jobs_per_day=slope,wip_slope_ols_heuristic_interval=[lower,upper],
@@ -65,6 +67,7 @@ def main():
     p.add_argument('--calibration',default='data/calibration/Final_Baseline_Calibration.json')
     p.add_argument('--factors',type=float,nargs='+',default=[.25,1,2,4,8,16])
     p.add_argument('--replications',type=int,default=3)
+    p.add_argument('--replication-start',type=int,default=0)
     p.add_argument('--days',type=float,default=84)
     p.add_argument('--warmup',type=float,default=28)
     p.add_argument('--max-events',type=int,default=5000000)
@@ -73,7 +76,7 @@ def main():
     a=p.parse_args()
     if a.replications<3 or a.days<42 or a.warmup<0 or any(x<=0 for x in a.factors):
         p.error('At least 3 replications and 42 measurement days; positive factors required')
-    tasks=[(a.calibration,f,r,a.days,a.warmup,a.max_events,a.out) for f in a.factors for r in range(a.replications)]
+    tasks=[(a.calibration,f,r,a.days,a.warmup,a.max_events,a.out) for f in a.factors for r in range(a.replication_start,a.replication_start+a.replications)]
     rows=[]
     with ProcessPoolExecutor(max_workers=a.workers) as pool:
         for future in as_completed([pool.submit(replicate,x) for x in tasks]):
@@ -86,7 +89,7 @@ def main():
     report=dict(status='CANDIDATE_REQUIRES_CONFIRMATION' if selected is not None else 'NO_VALID_OPERATING_POINT',
         baseline_calibration_multiplier=selected,dataset_sha256=Calibration.load(a.calibration).digest,
         engine_source_sha256=ENGINE_SOURCE_SHA256,warmup_days=a.warmup,measurement_days=a.days,
-        replications=a.replications,criteria='6+ weekly windows; heuristic OLS WIP drift upper bound <= 5% arrival rate; completion/arrival 0.9..1.1; >=30 completions; WIP>=3, queue>=0.1, active utilization>=0.15 in every replication',
+        replications=a.replications,criteria='6+ weekly windows; heuristic OLS WIP drift upper bound <= 5% arrival rate; completion/arrival 0.9..1.1; >=30 completions; WIP>=3, queue>=0.1, concurrent busy machines in each department and >=2 moving workers in every replication',
         limitation='Finite-window screening; independent long-horizon confirmation required',results=rows)
     atomic_json(Path(a.out)/'operating_point.json',report)
     print(json.dumps({k:v for k,v in report.items() if k!='results'}),flush=True)

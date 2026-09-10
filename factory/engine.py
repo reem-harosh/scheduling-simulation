@@ -79,6 +79,7 @@ class Batch:
     target: str | None = None
     parent: str | None = None
     state: str = 'READY'
+    unloaded: int = 0
     cursor: int = 0
     cycle: tuple = (0, 0)
     owner: str | None = None
@@ -152,6 +153,9 @@ class Simulation:
         self.state_minutes = {'machine': {}, 'worker': {}}
         self.weekly, self.window_integrals = [], [0., 0., 0., 0.]
         self.measure_integrals = [0., 0., 0., 0.]
+        self.concurrent_machine_minutes = {d:0. for d in self.data.rosters}
+        self.peak_busy_machines = {d:0 for d in self.data.rosters}
+        self.moving_workers = set()
         self.window_completions, self.last_monitor = 0, 0.
         self.measured_completions_in_window = 0
         self.machines = {m['id']: Machine(m['id'], m['department'],
@@ -233,6 +237,12 @@ class Simulation:
         counts = self._counts()
         dt = until - self.time
         measured = max(0, min(until, self.arrivals_stop) - max(self.time, self.measure_start))
+        if measured:
+            for dept in self.data.rosters:
+                busy=sum(m.state in MACHINE_BUSY for m in self.machines.values() if m.department==dept)
+                self.peak_busy_machines[dept]=max(self.peak_busy_machines[dept],busy)
+                if busy>=2:self.concurrent_machine_minutes[dept]+=measured
+            self.moving_workers.update(w.id for w in self.workers.values() if w.state in ('WALKING','CARRYING'))
         for i, n in enumerate(counts):
             self.window_integrals[i] += dt * n
             self.measure_integrals[i] += measured * n
@@ -552,6 +562,7 @@ class Simulation:
         j = self.jobs[b.job]
         lo, hi = b.cycle
         op = j.route[b.op_index]
+        b.unloaded += hi-lo
         j.operation_counts[op] = j.operation_counts.get(op, 0) + hi-lo
         if j.operation_counts[op] > j.quantity:
             raise RuntimeError('QUANTITY_NOT_CONSERVED')
@@ -589,7 +600,7 @@ class Simulation:
     def _handle(self, kind, payload):
         if kind == 'replay_start':
             self.replay_initial = dict(job_completed={j.id:j.completed for j in self.jobs.values()},
-                batches={b.id:dict(state=b.state,completed=max(0,b.cursor-b.lo)) for b in self.batches.values()})
+                batches={b.id:dict(state=b.state,completed=b.unloaded) for b in self.batches.values()})
         elif kind == 'calendar_day':
             day = payload
             self._calendar_day(day)
@@ -749,6 +760,7 @@ class Simulation:
         worker_available = sum(sum(v for k,v in states.items() if k not in ('OFF_SHIFT','ON_BREAK')) for states in self.state_minutes['worker'].values())
         active = [v/duration for v in machine_busy.values() if v>0]
         return {
+            'activity':dict(peak_busy_machines=self.peak_busy_machines,concurrent_machine_minutes=self.concurrent_machine_minutes,distinct_moving_workers=len(self.moving_workers)),
             'demand_provenance':dict(raw_empirical_arrival_rate=raw_rate,
                 baseline_calibration_multiplier=self.config.baseline_calibration_multiplier,
                 arrival_load=self.config.arrival_load,
