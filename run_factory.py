@@ -18,9 +18,10 @@ from factory.world_engine import WorldConfig, WorldSimulation
 from factory.world_experiments import WorldExperimentRunner
 from factory.engine import Config, Simulation
 from factory.experiments import ExperimentRunner, atomic_json
+from factory.progress import TaskProgress
 
 ROOT = Path(__file__).resolve().parent
-APP_VERSION = '0.5.3'
+APP_VERSION = '0.6.2'
 
 
 class Service:
@@ -73,17 +74,19 @@ class Service:
 
     def execute(self, tid, mode, config, manual, replications=3, grid=None):
         task = self.tasks[tid]
+        progress=TaskProgress(task,1 if mode=='run' else 2*replications*(len(grid)**2 if mode=='grid' else 1))
         try:
             if mode == 'run':
-                result = (WorldSimulation if self.is_world else Simulation)(self.data, config, manual, cancel=lambda: task['cancel'], **({'observer':lambda live: task.update(live=live)} if self.is_world else {})).run()
+                result = (WorldSimulation if self.is_world else Simulation)(self.data, config, manual, cancel=lambda: task['cancel'], **({'observer':progress.observe} if self.is_world else {})).run()
             else:
                 runner = (WorldExperimentRunner if self.is_world else ExperimentRunner)(self.data, ROOT/'results'/('world-experiments' if self.is_world else 'experiments'),
-                    progress=lambda message: task.update(message=message), cancel=lambda: task['cancel'], **({'observer':lambda live: task.update(live=live), 'surface_observer':lambda surface: task.update(surface=surface)} if self.is_world else {}))
+                    progress=lambda message: task.update(message=message), cancel=lambda: task['cancel'], **({'observer':progress.observe, 'run_observer':progress.run_event, 'surface_observer':lambda surface: task.update(surface=surface)} if self.is_world else {}))
                 if self.is_world:
                     result = runner.scenario(config,replications=replications) if mode=='scenario' else runner.grid(config,grid=grid,replications=replications)
                 else:
                     result = runner.scenario(config) if mode == 'scenario' else runner.grid(config)
             result['operating_point']={k:v for k,v in (self.operating_point or {'status':'NOT_CALIBRATED'}).items() if k!='results'}
+            progress.publish('saving',.99 if mode=='run' else 0,None)
             atomic_json(ROOT/'results'/(tid+'.json'), result)
             task.update(status='CANCELLED' if result.get('status')=='CANCELLED' else 'COMPLETE',result=result,
                         message='Cancelled; partial diagnostic saved' if result.get('status')=='CANCELLED' else 'Completed and saved')
@@ -92,6 +95,8 @@ class Service:
         except Exception as exc:
             task.update(status='ERROR',message=str(exc))
             traceback.print_exc()
+        finally:
+            progress.finish(task['status'])
 
 
 class Handler(SimpleHTTPRequestHandler):

@@ -11,6 +11,7 @@ from .engine import Simulation, Config as LegacyConfig, Worker, MACHINE_BUSY, WO
 from .data import InputError
 from .world import demand_stream
 from .world_policies import make_policy, REGISTRY
+from .replay import capture_material
 
 @dataclass
 class WorldConfig(LegacyConfig):
@@ -32,10 +33,13 @@ class WorldConfig(LegacyConfig):
 class WorldSimulation(Simulation):
     def __init__(self,world,config=None,manual_jobs=None,policy=None,cancel=None,observer=None):
         self.observer=observer; self._observed_at=0.; self._wall_start=wallclock.monotonic()
+        self.material_frames=[]; self._material_previous={}; self._material_active=set()
         world.refresh_identity(); self.manual_input=manual_jobs is not None
         config=config or WorldConfig(); config.validate()
         self._calendar_ready=False
         self.demand=demand_stream(world,config) if manual_jobs is None else copy.deepcopy(manual_jobs)
+        self._work_total=sum(j['quantity']*len(j['route']) for j in self.demand)
+        self._work_done=0
         self.code_hash=hashlib.sha256(b''.join(p.read_bytes() for p in sorted(Path(__file__).parent.glob('*.py')))).hexdigest()
         self.setup_waits=[];self.queue_family_minutes={f:0. for f in {m['machine_family'] for m in world.machines.values()}}
         self.floor_local=world.raw['resources'].get('floor_local_workers',False);self.lift_available=0.;self.lift_transfers=[];self.floor_nodes={}
@@ -73,6 +77,12 @@ class WorldSimulation(Simulation):
                 elif self.time==0 and t<0<min(t+dur,end):
                     self._event(0,1,'break',(w.id,min(t+dur,end),token))
     def _demand_day(self,day):pass
+    def _new_batch(self,*args,**kwargs):
+        b=super()._new_batch(*args,**kwargs);self._material_active.add(b.id);return b
+    def _move(self,w,path,distance,state,event,rid):
+        super()._move(w,path,distance,state,event,rid)
+        r=self.requests[rid];b=self.batches[r['batch']]
+        w._metadata.update(batch=b.id,job=b.job,machine=None if r.get('floor_handoff') else r['machine'])
     def _integrate(self,until):
         dt=max(0,min(until,self.arrivals_stop)-max(self.time,self.measure_start))
         for bid in self.ready:
@@ -260,6 +270,7 @@ class WorldSimulation(Simulation):
         b.cycle=(b.cursor,b.cursor+q);b.cursor+=q;b.state='PROCESSING';self.processing_totals[b.id]=self.processing_totals.get(b.id,0)+duration
         self._state(m,'PROCESSING','machine',batch=b.id,job=b.job,lo=b.cycle[0],hi=b.cycle[1]);self._event(self.time+duration,0,'processing_end',m.id)
     def _finished_parts(self,b,m):
+        self._work_done+=b.cycle[1]-b.cycle[0]
         super()._finished_parts(b,m)
         self.output_ids.discard(b.id);b.available_output=[]
         if b.cursor==b.hi and b.unloaded==b.hi-b.lo:
@@ -304,7 +315,7 @@ class WorldSimulation(Simulation):
             batches=[b for b in self.batches.values() if b.job==j.id and b.state not in ('COMPLETE','SPLIT')]
             jobs.append(dict(id=j.id,item=j.item,quantity=j.quantity,release=j.release,route=j.route,operation_counts=dict(j.operation_counts),batches=[dict(id=b.id,operation=j.route[b.op_index],state=b.state,quantity=b.hi-b.lo,unloaded=b.unloaded,cycle_quantity=b.cycle[1]-b.cycle[0],owner=b.owner,machine=b.target,location=b.location) for b in batches]))
         phase='warmup' if self.time<self.measure_start else 'measurement' if self.time<self.arrivals_stop else 'drain'
-        self.observer(dict(algorithm=self.config.algorithm,replication=self.config.replication,arrival_scale=self.config.arrival_load,batch_scale=self.config.batch_size,time=self.time,phase=phase,window_end=self.arrivals_stop,elapsed_seconds=now-self._wall_start,events=self.counters['events'],machines=machines,workers=workers,jobs=jobs,released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values()),queue=self._counts()[1],ready_queue_by_family=self.ready_queue_counts()))
+        self.observer(dict(algorithm=self.config.algorithm,replication=self.config.replication,arrival_scale=self.config.arrival_load,batch_scale=self.config.batch_size,time=self.time,phase=phase,window_end=self.arrivals_stop,elapsed_seconds=now-self._wall_start,events=self.counters['events'],work_done=self._work_done,work_total=self._work_total,machines=machines,workers=workers,jobs=jobs,released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values()),queue=self._counts()[1],ready_queue_by_family=self.ready_queue_counts()))
 
     def ready_queue_counts(self):
         counts={f:0 for f in self.queue_family_minutes}
@@ -324,6 +335,7 @@ class WorldSimulation(Simulation):
             while self.events and self.events[0][0]==t:
                 _,_,_,_,kind,payload=heapq.heappop(self.events);self._handle(kind,payload);self.counters['events']+=1
             self._allocate();self._dispatch()
+            capture_material(self)
             self.observe()
             if self.config.trace and self.trace_start<=self.time<=self.trace_stop:
                 wip,queue,_,_=self._counts();self.snapshots.append(dict(time=self.time,wip=wip,queue=queue,released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values()),ready_queue_by_family=self.ready_queue_counts()))
@@ -336,6 +348,10 @@ class WorldSimulation(Simulation):
     def result(self,status):
         if self.time>=self.arrivals_stop and all(j.complete is not None for j in self.jobs.values()) and status not in ('CANCELLED','EVENT_LIMIT','DEADLOCK_INFEASIBLE'):status='COMPLETE'
         r=super().result(status);duration=r['measurement']['denominator_min'];families={m['machine_family'] for m in self.data.machines.values()}
+        r['trace'].update(material_version=1,material=self.material_frames,operator_assistance=False,
+                          end_resources=getattr(self,'_replay_end_resources',[]),
+                          floor_handoff_nodes=self.data.graph.get('floor_handoff_nodes',{}),
+                          cycle_capacity_units=self.data.raw['resources']['cycle_capacity_units'])
         resource={}
         for wid,states in self.state_minutes['worker'].items():
             on=sum(v for k,v in states.items() if k not in ('OFF_SHIFT','ON_BREAK'));busy=sum(v for k,v in states.items() if k in WORK or k=='SETUP');resource[wid]={'type':'setup' if self.workers[wid].kind.startswith('setup') else 'operator','busy_min':busy,'on_duty_min':on,'utilization':busy/on if on else 0.}

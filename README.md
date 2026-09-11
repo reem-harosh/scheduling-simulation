@@ -1,6 +1,14 @@
+## Replay and progress — v0.6.0
+
+The replay now shows material groups with exact quantities before processing, inside machines, after unloading and during capacity-limited transfers. Click a group or active job to inspect every part range. The replay resource strip and worker–machine links follow the displayed time, and the sidebar excludes inactive entities. The Gantt includes machine activity, queues and transfers, with a selected-job filter and adjustable time window; the full-trace overview opens into detailed segments.
+
+Single runs and algorithm experiments display progress, completed/total replications, cache hits and a changing ETA based on observed work. Fresh runs are required for the new material ledger; older JSON files remain viewable and explicitly identify missing material data. See [replay details and validation](docs/replay-v060.md).
+
+To update an existing checkout, stop the old server, run `git pull`, then `python run_factory.py` (Codespaces: `python run_factory.py --host 0.0.0.0 --no-browser`). Open `/production/` and verify **UI / server 0.6.2** before running a new simulation.
+
 ## Multi-agent review — v0.5.3
 
-The current release fixes operation-change setup, initialization during an active shift, configuration validation before demand generation, single-replication summaries, and replay export/live inspectors. Machine service, occupied time and waiting time are separate metrics. The floor now shows actual ready-queue counts and distinguishes setup specialists.
+The v0.5.3 release fixed operation-change setup, initialization during an active shift, configuration validation before demand generation, single-replication summaries, and replay export/live inspectors. Machine service, occupied time and waiting time are separate metrics. The floor now shows actual ready-queue counts and distinguishes setup specialists.
 
 Read [the three-round review and verification limits](docs/multi-agent-review-2026-09-11.md). Reproducible current finite-horizon evidence, including raw runs and a source manifest, is in `research/multi_agent_review/`:
 
@@ -10,11 +18,18 @@ python tools/run_review_verification.py
 
 These runs are implementation verification, not a new capacity calibration or proof of stationarity. Earlier v0.5 calibration/grid records predate the operation-setup correction. Codespaces user access remains unverified; the normal Python launch below is unchanged.
 
-## Run in your browser — no ZIP updates
+## Test v0.6.2 from your phone
 
-[Open in GitHub Codespaces](https://github.com/codespaces/new/reem-harosh/scheduling-simulation)
+[Open the mobile review in GitHub Codespaces](https://codespaces.new/reem-harosh/scheduling-simulation/tree/mobile-review-v062)
 
-Choose **main** and create the Codespace. Dependencies and the Python server start automatically. Open **Ports → 8000 → Open in Browser** if needed. To get later updates, stop and reopen this Codespace; clean main checkouts update automatically. GitHub account quotas apply. This is the full Python production engine; the old static PrintFlow link is a different demo.
+1. Open the link in your phone browser and sign in to GitHub. Verify the branch is **mobile-review-v062**, then choose **Create codespace**.
+2. Wait for the environment to finish preparing. Dependencies and the Python server start automatically.
+3. If the simulation does not open automatically, open **Ports → 8000 → Open in Browser**. Keep the port private and use the same GitHub account. Rotate the phone to landscape for the factory view.
+4. Verify **UI / server 0.6.2**, then run a new simulation. Saved v0.6.1 results that used operator assistance do not change when replayed; their policy warning explains why a new run is needed.
+
+This review branch restores exclusive operation ownership for loading, cycle changes and unloading, while preserving shift handoffs and the replay display fixes. A qualified free worker may therefore wait while another worker owns the operation. Setup and transport retain their original eligibility rules.
+
+The Python engine runs in the Codespace; nothing needs installing on the phone. GitHub account quotas apply. The app is available while the Codespace runs; resume it later at [your Codespaces](https://github.com/codespaces). This is a separate review branch, not a main release. Cloud account creation and phone-browser access must be completed in your own account; they have not been tested on your device.
 
 Version **0.5.2** adds backend version identification, cache prevention, and a processing-only flow-time lower bound (not a proven optimum). See [cloud launch and reference definition](docs/cloud-and-flow-reference-v052.md).
 

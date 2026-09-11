@@ -9,8 +9,9 @@ from .experiments import atomic_json, confidence
 from .world_engine import WorldSimulation, WorldConfig
 
 class WorldExperimentRunner:
-    def __init__(self,world,directory='results/world',progress=None,cancel=None,observer=None,surface_observer=None):
+    def __init__(self,world,directory='results/world',progress=None,cancel=None,observer=None,surface_observer=None,run_observer=None):
         self.observer=observer;self.surface_observer=surface_observer
+        self.run_observer=run_observer or (lambda event:None)
         world.refresh_identity()
         self.data=world;self.directory=Path(directory);self.progress=progress or (lambda s:None);self.cancel=cancel or (lambda:False)
         self.code_hash=hashlib.sha256(b''.join(p.read_bytes() for p in sorted(Path(__file__).parent.glob('*.py')))).hexdigest()
@@ -18,10 +19,12 @@ class WorldExperimentRunner:
         self.data.refresh_identity()
         if self.cancel():raise InterruptedError('Cancelled; completed raw runs retained')
         key=hashlib.sha256(json.dumps([asdict(config),self.data.digest,self.code_hash],sort_keys=True).encode()).hexdigest();p=self.directory/'raw'/(key+'.json')
-        if p.exists():return json.loads(p.read_text())
+        self.run_observer(dict(kind='start',config=asdict(config)))
+        if p.exists():
+            r=json.loads(p.read_text());self.run_observer(dict(kind='complete',cached=True));return r
         r=WorldSimulation(self.data,config,cancel=self.cancel,observer=self.observer).run();r['code_sha256']=self.code_hash
         if r['status']=='CANCELLED':raise InterruptedError('Cancelled; completed raw runs retained')
-        atomic_json(p,r);return r
+        atomic_json(p,r);self.run_observer(dict(kind='complete',cached=False));return r
     def scenario(self,config=None,algorithms=('FIFO','SPT'),replications=3):
         config=config or WorldConfig(trace=False)
         if type(replications)!=int or replications<1:raise ValueError('Positive replication count required')
