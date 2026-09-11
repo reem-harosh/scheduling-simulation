@@ -1,0 +1,32 @@
+{
+  "machine_counts": {
+    "Milling": 51,
+    "Turning": 13,
+    "Honing": 2,
+    "WireEDM": 2
+  },
+  "milling_four_axis": 22,
+  "required4_reference_min_per_job": 469.5885261172288,
+  "processing_min_per_job": {
+    "Milling": 2199.0093264783545,
+    "Turning": 356.73011076126204,
+    "Honing": 15.630946485752741,
+    "WireEDM": 117.9045928524163
+  },
+  "manual_min_per_job": 732.729469499554,
+  "workers": {
+    "milling": {
+      "day": 12,
+      "night": 6
+    },
+    "turning": {
+      "day": 12,
+      "night": 6
+    }
+  },
+  "analytical_rate": 17.098570558005914,
+  "configured_rate": 12.0,
+  "weighted_quantity_mean": 175.0,
+  "single_operation_share": 0.05,
+  "source_changed_machine_families": 6
+}

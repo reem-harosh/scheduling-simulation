@@ -1,0 +1,20 @@
+rank,part_family,route,jobs,items,cumulative_coverage,repeated_family,operation_count
+1,PF01,Milling,79,43,0.2303206997084548,False,1
+2,PF02,Milling → Milling,75,39,0.4489795918367347,True,2
+3,PF03,Turning → Turning → Turning → Turning,50,1,0.5947521865889213,True,4
+4,PF04,Turning,33,29,0.6909620991253644,False,1
+5,PF05,Milling → Milling → Milling,23,7,0.7580174927113703,True,3
+6,PF06,Turning → Turning → Turning → Turning → Turning → Honing → Honing → Turning → Turning → Turning,16,2,0.8046647230320699,True,10
+7,PF07,Turning → Turning,14,12,0.8454810495626822,True,2
+8,PF08,Turning → Milling,9,7,0.8717201166180758,False,2
+9,PF09,Milling → Milling → WireEDM,8,2,0.8950437317784257,True,3
+10,PF10,Turning → Turning → Milling,8,3,0.9183673469387755,True,3
+11,PF11,Turning → Turning → Milling → Milling → Milling,6,1,0.9358600583090378,True,5
+12,PF12,Turning → Turning → Turning → Turning → Turning → Turning → Turning → Turning → Turning → Turning → Milling,6,5,0.9533527696793003,True,11
+13,PF13,Turning → Turning → Turning → Turning → Honing → Honing → Turning,4,4,0.9650145772594753,True,7
+14,PF14,Milling → Milling → Milling → Milling → WireEDM,3,1,0.9737609329446064,True,5
+15,PF15,Turning → Milling → Milling,2,2,0.9795918367346939,True,3
+16,PF16,Turning → Turning → Milling → Milling,2,2,0.9854227405247813,True,4
+17,PF17,Turning → Turning → Turning → Milling → Turning,2,1,0.9912536443148688,True,5
+18,PF18,Turning → Turning → Turning → Turning → Turning → Turning → Turning → Turning → Turning → Turning,2,2,0.9970845481049563,True,10
+19,PF19,Milling → Milling → Milling → Milling → Milling,1,1,1.0,True,5

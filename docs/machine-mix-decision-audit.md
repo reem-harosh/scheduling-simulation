@@ -1,0 +1,15 @@
+# Machine selection and demand-mix audit
+
+User decision: exclude Inspection from the next world. Do not add a replacement merely to preserve six families. Runtime v0.4 has no Inspection; the earlier six-family proposal remains a historical discussion artifact, superseded by `research/machine-mix-audit/current_design_status.json` for current proposal status.
+
+Raw-source reconciliation: 20,821 non-serial reports,344 orders (including one zero-quantity order) identify62 stations:39Milling,20Turning,2Honing,1WireEDM.58 match68 map locations;10 map locations lack reports and4 reported stations lack map locations. Absence of reports is not evidence of spare capacity. Report frequency is not mechanical utilization.
+
+All68 map coordinates are preserved in v0.4, but family labels are reassigned to44Milling/20Turning/2Honing/2WireEDM.24 of58 positions with source process evidence receive a different synthetic family. Source classification has34Milling on the left; on the right2Milling,19Turning,2Honing,1WireEDM. The remaining6left/4right positions lack report classification. Original map department labels40milling/28turning are geographical labels, not exact process capabilities.
+
+The earlier six-family choice was a modeling proposal, not the result of optimizing a family count or fitting data: three retained categories, a proposed Honing-to-Grinding broadening, and synthetic Finishing/Inspection. Broadening has not been justified by machine capability evidence. Current recommendation (not accepted/activated yet): keep Milling,Turning,Honing,WireEDM and add a dedicated synthetic finishing equipment family. Finishing must represent distinct equipment eligibility, not merely another named Milling operation. Inspection is excluded. Machine counts must be designed after the new route/time/demand catalogue, not copied from44/20/2/2.
+
+Demand comparison holds the same19 old families, routes and conditional quantity distributions. Historical mix:2.8367operations/job,2397.708quantity mean. Uniform:4.5263operations/job,3490.402quantity mean. Half historical/half uniform:3.6815operations/job,2944.055quantity mean. Thus diversity can increase both route length and quantity. No mix is certified stable. For any comparison on the NEW catalogue, match overall quantity mean/concentration and report route workload explicitly; historical probabilities do not automatically map onto synthetic families.
+
+Independent review confirmed62/68/58 reconciliation from calibration summary,68coordinate preservation and mix arithmetic directly from world.json. The24relabels were checked for consistency against the generated audit; the reviewer did not independently re-extract XLSX classifications. Root extraction performed that source join and found no station with conflicting process families.
+
+Reproduce with `python tools/audit_machine_mix.py` and `python tools/render_machine_mix_discussion.py`. Output report: `../outputs/Simulation_Machines_and_Demand_Mix.html`. No new stability simulations, machine-layout changes or worker-floor corrections are claimed.

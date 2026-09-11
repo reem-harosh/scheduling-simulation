@@ -1,0 +1,998 @@
+{
+  "source_machine_statistics": [
+    {
+      "Family": "Honing",
+      "Reports": 688,
+      "Report share %": 3.304356178857884,
+      "Reported station IDs": 2,
+      "Reported IDs in map": 2,
+      "Reported IDs outside map": 0,
+      "Reported net minutes": 382605.5,
+      "Mapped stations left": 0,
+      "Mapped stations right": 2
+    },
+    {
+      "Family": "Milling",
+      "Reports": 15399,
+      "Report share %": 73.95898371836127,
+      "Reported station IDs": 39,
+      "Reported IDs in map": 36,
+      "Reported IDs outside map": 3,
+      "Reported net minutes": 7984376.390000001,
+      "Mapped stations left": 34,
+      "Mapped stations right": 2
+    },
+    {
+      "Family": "Turning",
+      "Reports": 4534,
+      "Report share %": 21.776091446136114,
+      "Reported station IDs": 20,
+      "Reported IDs in map": 19,
+      "Reported IDs outside map": 1,
+      "Reported net minutes": 2392673.59,
+      "Mapped stations left": 0,
+      "Mapped stations right": 19
+    },
+    {
+      "Family": "WireEDM",
+      "Reports": 200,
+      "Report share %": 0.9605686566447337,
+      "Reported station IDs": 1,
+      "Reported IDs in map": 1,
+      "Reported IDs outside map": 0,
+      "Reported net minutes": 97990.0,
+      "Mapped stations left": 0,
+      "Mapped stations right": 1
+    }
+  ],
+  "reconciliation": {
+    "report_rows": 20821,
+    "reported_jobs": 344,
+    "mapped_machines": 68,
+    "mapped_and_reported": 58,
+    "map_without_reports": 10,
+    "reported_without_map": 4,
+    "note": "All non-serial reports (344 orders), including the zero-quantity order; route-demand comparison below uses343 positive-quantity orders."
+  },
+  "mapping": [
+    {
+      "Machine": "M01",
+      "x": 2130.0,
+      "y": 612.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M02",
+      "x": 1461.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M03",
+      "x": 2130.0,
+      "y": 705.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M04",
+      "x": 1554.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M05",
+      "x": 374.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M06",
+      "x": 831.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M07",
+      "x": 946.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M08",
+      "x": 489.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M09",
+      "x": 2230.0,
+      "y": 705.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M10",
+      "x": 760.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M11",
+      "x": 1060.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M12",
+      "x": 1554.5,
+      "y": 241.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M13",
+      "x": 560.0,
+      "y": 660.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M14",
+      "x": 660.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M15",
+      "x": 460.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M16",
+      "x": 603.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M17",
+      "x": 260.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M18",
+      "x": 560.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M19",
+      "x": 460.0,
+      "y": 660.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M20",
+      "x": 660.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M21",
+      "x": 860.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M22",
+      "x": 1060.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M23",
+      "x": 960.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M24",
+      "x": 1646.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M25",
+      "x": 260.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M26",
+      "x": 1739.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M27",
+      "x": 360.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M28",
+      "x": 460.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M29",
+      "x": 260.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M30",
+      "x": 260.0,
+      "y": 660.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M31",
+      "x": 360.0,
+      "y": 660.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M32",
+      "x": 1673.0,
+      "y": 570.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M33",
+      "x": 1461.5,
+      "y": 241.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M34",
+      "x": 717.0,
+      "y": 370.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M35",
+      "x": 2230.0,
+      "y": 612.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M36",
+      "x": 960.0,
+      "y": 650.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M37",
+      "x": 360.0,
+      "y": 560.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M38",
+      "x": 2130.0,
+      "y": 148.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M39",
+      "x": 2130.0,
+      "y": 241.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M40",
+      "x": 560.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M41",
+      "x": 1276.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M42",
+      "x": 1831.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "WireEDM",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M43",
+      "x": 1439.0,
+      "y": 520.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M44",
+      "x": 1180.0,
+      "y": 241.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Milling"
+    },
+    {
+      "Machine": "M45",
+      "x": 1559.0,
+      "y": 520.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M46",
+      "x": 10.0,
+      "y": 380.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M47",
+      "x": 10.0,
+      "y": 490.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M48",
+      "x": 1320.0,
+      "y": 520.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Honing",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M49",
+      "x": 1200.0,
+      "y": 520.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Honing",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M50",
+      "x": 10.0,
+      "y": 269.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M51",
+      "x": 1060.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M52",
+      "x": 760.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M53",
+      "x": 1924.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M54",
+      "x": 2130.0,
+      "y": 519.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M55",
+      "x": 2130.0,
+      "y": 426.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M56",
+      "x": 2130.0,
+      "y": 334.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M57",
+      "x": 2130.0,
+      "y": 55.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "Turning",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M58",
+      "x": 1368.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M59",
+      "x": 1183.5,
+      "y": 153.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M60",
+      "x": 1884.5,
+      "y": 70.0,
+      "Floor": "Right",
+      "Source-map department": "turning",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M61",
+      "x": 10.0,
+      "y": 40.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M62",
+      "x": 260.0,
+      "y": 40.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M63",
+      "x": 540.0,
+      "y": 40.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "Milling",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M64",
+      "x": 700.0,
+      "y": 40.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Turning"
+    },
+    {
+      "Machine": "M65",
+      "x": 860.0,
+      "y": 40.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Honing"
+    },
+    {
+      "Machine": "M66",
+      "x": 1020.0,
+      "y": 40.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "Honing"
+    },
+    {
+      "Machine": "M67",
+      "x": 960.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "WireEDM"
+    },
+    {
+      "Machine": "M68",
+      "x": 860.0,
+      "y": 270.0,
+      "Floor": "Left",
+      "Source-map department": "milling",
+      "Reported process family": "No reports",
+      "v04 synthetic family": "WireEDM"
+    }
+  ],
+  "confusion": [
+    {
+      "Source process": "Honing",
+      "v04 family": "Turning",
+      "Count": 2
+    },
+    {
+      "Source process": "Milling",
+      "v04 family": "Milling",
+      "Count": 29
+    },
+    {
+      "Source process": "Milling",
+      "v04 family": "Turning",
+      "Count": 7
+    },
+    {
+      "Source process": "No reports",
+      "v04 family": "Honing",
+      "Count": 2
+    },
+    {
+      "Source process": "No reports",
+      "v04 family": "Turning",
+      "Count": 6
+    },
+    {
+      "Source process": "No reports",
+      "v04 family": "WireEDM",
+      "Count": 2
+    },
+    {
+      "Source process": "Turning",
+      "v04 family": "Milling",
+      "Count": 14
+    },
+    {
+      "Source process": "Turning",
+      "v04 family": "Turning",
+      "Count": 5
+    },
+    {
+      "Source process": "WireEDM",
+      "v04 family": "Milling",
+      "Count": 1
+    }
+  ],
+  "mix_comparison": [
+    {
+      "Mix": "Historical jobs",
+      "Most frequent family %": 23.03206997084548,
+      "Least frequent family %": 0.2915451895043732,
+      "Top3 share %": 59.475218658892125,
+      "Mean operations/job": 2.8367346938775513,
+      "Mean quantity if old family sizes retained": 2397.7084548104954,
+      "Expected families seen in100 jobs": 14.67324846403409,
+      "Effective family count (1/sum p^2)": 7.020048928933708
+    },
+    {
+      "Mix": "Uniform",
+      "Most frequent family %": 5.263157894736842,
+      "Least frequent family %": 5.263157894736842,
+      "Top3 share %": 15.789473684210526,
+      "Mean operations/job": 4.526315789473685,
+      "Mean quantity if old family sizes retained": 3490.402298686502,
+      "Expected families seen in100 jobs": 18.914759887151487,
+      "Effective family count (1/sum p^2)": 18.999999999999996
+    },
+    {
+      "Mix": "50% historical + 50% uniform",
+      "Most frequent family %": 14.147613932791161,
+      "Least frequent family %": 2.7773515421206074,
+      "Top3 share %": 37.632346171551326,
+      "Mean operations/job": 3.6815252416756175,
+      "Mean quantity if old family sizes retained": 2944.0553767484994,
+      "Expected families seen in100 jobs": 18.518953737559016,
+      "Effective family count (1/sum p^2)": 13.318066991575412
+    }
+  ],
+  "machine_reach": [
+    {
+      "Mix": "Historical jobs",
+      "Machine family": "Honing",
+      "Jobs visiting family %": 5.830903790087463,
+      "Mean visits/job": 0.11661807580174927
+    },
+    {
+      "Mix": "Historical jobs",
+      "Machine family": "Milling",
+      "Jobs visiting family %": 65.3061224489796,
+      "Mean visits/job": 1.1137026239067056
+    },
+    {
+      "Mix": "Historical jobs",
+      "Machine family": "Turning",
+      "Jobs visiting family %": 44.89795918367348,
+      "Mean visits/job": 1.5743440233236154
+    },
+    {
+      "Mix": "Historical jobs",
+      "Machine family": "WireEDM",
+      "Jobs visiting family %": 3.206997084548105,
+      "Mean visits/job": 0.03206997084548105
+    },
+    {
+      "Mix": "Uniform",
+      "Machine family": "Honing",
+      "Jobs visiting family %": 10.526315789473683,
+      "Mean visits/job": 0.21052631578947367
+    },
+    {
+      "Mix": "Uniform",
+      "Machine family": "Milling",
+      "Jobs visiting family %": 68.42105263157893,
+      "Mean visits/job": 1.4736842105263157
+    },
+    {
+      "Mix": "Uniform",
+      "Machine family": "Turning",
+      "Jobs visiting family %": 68.42105263157895,
+      "Mean visits/job": 2.736842105263158
+    },
+    {
+      "Mix": "Uniform",
+      "Machine family": "WireEDM",
+      "Jobs visiting family %": 10.526315789473683,
+      "Mean visits/job": 0.10526315789473684
+    },
+    {
+      "Mix": "50% historical + 50% uniform",
+      "Machine family": "Honing",
+      "Jobs visiting family %": 8.178609789780573,
+      "Mean visits/job": 0.16357219579561147
+    },
+    {
+      "Mix": "50% historical + 50% uniform",
+      "Machine family": "Milling",
+      "Jobs visiting family %": 66.86358754027925,
+      "Mean visits/job": 1.2936934172165107
+    },
+    {
+      "Mix": "50% historical + 50% uniform",
+      "Machine family": "Turning",
+      "Jobs visiting family %": 56.659505907626205,
+      "Mean visits/job": 2.1555930642933867
+    },
+    {
+      "Mix": "50% historical + 50% uniform",
+      "Machine family": "WireEDM",
+      "Jobs visiting family %": 6.866656437010894,
+      "Mean visits/job": 0.06866656437010894
+    }
+  ],
+  "probabilities": [
+    {
+      "Family": "PF01",
+      "Historical jobs": 79,
+      "Historical items": 43,
+      "Historical %": 23.03206997084548,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 14.147613932791161,
+      "Operations": 1
+    },
+    {
+      "Family": "PF02",
+      "Historical jobs": 75,
+      "Historical items": 39,
+      "Historical %": 21.865889212827987,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 13.564523553782415,
+      "Operations": 2
+    },
+    {
+      "Family": "PF03",
+      "Historical jobs": 50,
+      "Historical items": 1,
+      "Historical %": 14.577259475218659,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 9.920208684977752,
+      "Operations": 4
+    },
+    {
+      "Family": "PF04",
+      "Historical jobs": 33,
+      "Historical items": 29,
+      "Historical %": 9.620991253644315,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 7.4420745741905785,
+      "Operations": 1
+    },
+    {
+      "Family": "PF05",
+      "Historical jobs": 23,
+      "Historical items": 7,
+      "Historical %": 6.705539358600583,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 5.984348626668712,
+      "Operations": 3
+    },
+    {
+      "Family": "PF06",
+      "Historical jobs": 16,
+      "Historical items": 2,
+      "Historical %": 4.664723032069971,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 4.963940463403406,
+      "Operations": 10
+    },
+    {
+      "Family": "PF07",
+      "Historical jobs": 14,
+      "Historical items": 12,
+      "Historical %": 4.081632653061225,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 4.672395273899033,
+      "Operations": 2
+    },
+    {
+      "Family": "PF08",
+      "Historical jobs": 9,
+      "Historical items": 7,
+      "Historical %": 2.623906705539359,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 3.9435323001381,
+      "Operations": 2
+    },
+    {
+      "Family": "PF09",
+      "Historical jobs": 8,
+      "Historical items": 2,
+      "Historical %": 2.3323615160349855,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 3.7977597053859133,
+      "Operations": 3
+    },
+    {
+      "Family": "PF10",
+      "Historical jobs": 8,
+      "Historical items": 3,
+      "Historical %": 2.3323615160349855,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 3.7977597053859133,
+      "Operations": 3
+    },
+    {
+      "Family": "PF11",
+      "Historical jobs": 6,
+      "Historical items": 1,
+      "Historical %": 1.749271137026239,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 3.506214515881541,
+      "Operations": 5
+    },
+    {
+      "Family": "PF12",
+      "Historical jobs": 6,
+      "Historical items": 5,
+      "Historical %": 1.749271137026239,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 3.506214515881541,
+      "Operations": 11
+    },
+    {
+      "Family": "PF13",
+      "Historical jobs": 4,
+      "Historical items": 4,
+      "Historical %": 1.1661807580174928,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 3.2146693263771677,
+      "Operations": 7
+    },
+    {
+      "Family": "PF14",
+      "Historical jobs": 3,
+      "Historical items": 1,
+      "Historical %": 0.8746355685131195,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 3.0688967316249807,
+      "Operations": 5
+    },
+    {
+      "Family": "PF15",
+      "Historical jobs": 2,
+      "Historical items": 2,
+      "Historical %": 0.5830903790087464,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 2.923124136872794,
+      "Operations": 3
+    },
+    {
+      "Family": "PF16",
+      "Historical jobs": 2,
+      "Historical items": 2,
+      "Historical %": 0.5830903790087464,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 2.923124136872794,
+      "Operations": 4
+    },
+    {
+      "Family": "PF17",
+      "Historical jobs": 2,
+      "Historical items": 1,
+      "Historical %": 0.5830903790087464,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 2.923124136872794,
+      "Operations": 5
+    },
+    {
+      "Family": "PF18",
+      "Historical jobs": 2,
+      "Historical items": 2,
+      "Historical %": 0.5830903790087464,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 2.923124136872794,
+      "Operations": 10
+    },
+    {
+      "Family": "PF19",
+      "Historical jobs": 1,
+      "Historical items": 1,
+      "Historical %": 0.2915451895043732,
+      "Uniform %": 5.263157894736842,
+      "Mixed %": 2.7773515421206074,
+      "Operations": 5
+    }
+  ],
+  "scope": "Diagnostic comparison on the SAME19 old families; not a calibrated proposed-world mix or runtime change."
+}

@@ -10,19 +10,26 @@ import threading
 import traceback
 import uuid
 import webbrowser
+import hashlib
 from factory.data import Calibration
+from factory.world import World
+from factory.world_engine import WorldConfig, WorldSimulation
+from factory.world_experiments import WorldExperimentRunner
 from factory.engine import Config, Simulation
 from factory.experiments import ExperimentRunner, atomic_json
 
 ROOT = Path(__file__).resolve().parent
+APP_VERSION = '0.5.2'
 
 
 class Service:
     def __init__(self, data):
+        self.instance_id=uuid.uuid4().hex[:8]
         self.data = data
+        self.is_world = isinstance(data, World)
         self.operating_point = None
         point_path = ROOT/'results/load-calibration/operating_point.json'
-        if point_path.exists():
+        if point_path.exists() and not self.is_world:
             point = json.loads(point_path.read_text())
             from factory.engine import ENGINE_SOURCE_SHA256
             if point.get('status')=='CALIBRATED' and point.get('dataset_sha256')==data.digest and point.get('engine_source_sha256')==ENGINE_SOURCE_SHA256:
@@ -39,7 +46,7 @@ class Service:
         allowed = {'algorithm','arrival_load','batch_size','horizon_days','warmup_days','seed','trace_days','replication'}
         if set(options)-allowed:
             raise ValueError('Unknown configuration fields')
-        config = Config(**options)
+        config = (WorldConfig if self.is_world else Config)(**options)
         if self.operating_point:
             config.baseline_calibration_multiplier = self.operating_point['baseline_calibration_multiplier']
             if 'warmup_days' not in options:config.warmup_days=self.operating_point['warmup_days']
@@ -52,18 +59,27 @@ class Service:
             tid = uuid.uuid4().hex
             task = {'id':tid,'status':'RUNNING','message':'Preparing Python simulation','cancel':False}
             self.tasks[tid] = task
-        self.executor.submit(self.execute, tid, mode, config, request.get('manual_jobs'))
+        replications = request.get('replications', 3)
+        grid = request.get('grid', [.5,.75,1.,1.25,1.5])
+        if type(replications) is not int or not 1 <= replications <= 100:
+            task.update(status='ERROR');raise ValueError('Replication count must be 1–100')
+        if not isinstance(grid,list) or not grid or len(grid)>10 or any(type(x) not in (int,float) or not 0 < x <= 10 for x in grid):
+            task.update(status='ERROR');raise ValueError('Grid requires 1–10 positive scales, at most 10')
+        self.executor.submit(self.execute, tid, mode, config, request.get('manual_jobs'),replications,grid)
         return {'id': tid}
 
-    def execute(self, tid, mode, config, manual):
+    def execute(self, tid, mode, config, manual, replications=3, grid=None):
         task = self.tasks[tid]
         try:
             if mode == 'run':
-                result = Simulation(self.data, config, manual, cancel=lambda: task['cancel']).run()
+                result = (WorldSimulation if self.is_world else Simulation)(self.data, config, manual, cancel=lambda: task['cancel'], **({'observer':lambda live: task.update(live=live)} if self.is_world else {})).run()
             else:
-                runner = ExperimentRunner(self.data, ROOT/'results'/'experiments',
-                    progress=lambda message: task.update(message=message), cancel=lambda: task['cancel'])
-                result = runner.scenario(config) if mode == 'scenario' else runner.grid(config)
+                runner = (WorldExperimentRunner if self.is_world else ExperimentRunner)(self.data, ROOT/'results'/('world-experiments' if self.is_world else 'experiments'),
+                    progress=lambda message: task.update(message=message), cancel=lambda: task['cancel'], **({'observer':lambda live: task.update(live=live), 'surface_observer':lambda surface: task.update(surface=surface)} if self.is_world else {}))
+                if self.is_world:
+                    result = runner.scenario(config,replications=replications) if mode=='scenario' else runner.grid(config,grid=grid,replications=replications)
+                else:
+                    result = runner.scenario(config) if mode == 'scenario' else runner.grid(config)
             result['operating_point']={k:v for k,v in (self.operating_point or {'status':'NOT_CALIBRATED'}).items() if k!='results'}
             atomic_json(ROOT/'results'/(tid+'.json'), result)
             task.update(status='CANCELLED' if result.get('status')=='CANCELLED' else 'COMPLETE',result=result,
@@ -80,12 +96,20 @@ class Handler(SimpleHTTPRequestHandler):
         self.service = service
         super().__init__(*args,directory=str(ROOT/'dist'),**kwargs)
 
+    def end_headers(self):
+        self.send_header('Cache-Control','no-store, max-age=0')
+        super().end_headers()
+
+    def send_head(self):
+        # Do not reuse old assets through an If-Modified-Since 304 response.
+        if 'If-Modified-Since' in self.headers:del self.headers['If-Modified-Since']
+        return super().send_head()
+
     def reply(self, value, code=200):
         content = json.dumps(value, ensure_ascii=False, allow_nan=False).encode()
         self.send_response(code)
         self.send_header('Content-Type','application/json; charset=utf-8')
         self.send_header('Content-Length',str(len(content)))
-        self.send_header('Cache-Control','no-store')
         self.end_headers()
         self.wfile.write(content)
 
@@ -93,11 +117,19 @@ class Handler(SimpleHTTPRequestHandler):
         if self.path == '/api/config':
             data = self.service.data
             self.reply({'machines':list(data.machines.values()),'dataset_sha256':data.digest,
-                        'world_version':'v0.3','templates':len(data.templates),'items':len({j['item'] for j in data.templates}),
-                        'operating_point':{k:v for k,v in (self.service.operating_point or {'status':'NOT_CALIBRATED'}).items() if k!='results'},'mode':'production world','profiles':len(data.profiles)})
+                        'app_version':APP_VERSION,'server_instance':self.service.instance_id,'ui_sha256':hashlib.sha256((ROOT/'dist/production/production.js').read_bytes()).hexdigest()[:12],
+                        'world_version':data.raw['version'] if self.service.is_world else 'v0.3','templates':len(data.templates),'items':len({j['item'] for j in data.templates}),
+                        'operating_point':{k:v for k,v in (self.service.operating_point or {'status':'NOT_CALIBRATED'}).items() if k!='results'},'mode':'calibrated world' if self.service.is_world else 'historical world','profiles':len(data.profiles),'model_provenance':data.raw.get('provenance',{}),'part_families':data.raw.get('part_families',[]),'demand':data.raw.get('demand',{})})
+        elif self.path == '/api/surface':
+            path=ROOT/'results'/'world-experiments'/'surface.json'
+            if not path.exists():path=ROOT/'research'/'world_v05'/'response_surface.json'
+            if path.exists():self.reply(json.loads(path.read_text()))
+            else:self.reply({'message':'No saved grid yet; run a grid experiment or load a saved surface JSON'},404)
+        elif self.path == '/api/world' and self.service.is_world:
+            self.reply(self.service.data.raw)
         elif self.path.startswith('/api/tasks/'):
             task = self.service.tasks.get(self.path.split('/')[-1])
-            self.reply(task or {'message':'Unknown task'},200 if task else 404)
+            self.reply(dict(task) if task else {'message':'Unknown task'},200 if task else 404)
         elif self.path == '/':
             self.send_response(302)
             self.send_header('Location','/production/')
@@ -132,14 +164,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port',type=int,default=8000)
     parser.add_argument('--host',default='127.0.0.1')
-    parser.add_argument('--calibration',default=str(ROOT/'data/calibration/Final_Baseline_Calibration.json'))
+    parser.add_argument('--calibration',default=str(ROOT/'research/world_v05/world.json'))
     parser.add_argument('--no-browser',action='store_true')
     args = parser.parse_args()
-    data = Calibration.load(args.calibration)
+    raw = json.loads(Path(args.calibration).read_text())
+    data = World(raw) if 'part_families' in raw else Calibration.load(args.calibration)
     handler = partial(Handler,service=Service(data))
-    server = ThreadingHTTPServer((args.host,args.port),handler)
+    try:
+        server = ThreadingHTTPServer((args.host,args.port),handler)
+    except OSError as exc:
+        raise SystemExit(f'Cannot start version {APP_VERSION} on port {args.port}: another server may still be running. Stop the old server or choose --port 8001. Details: {exc}')
     url = f'http://127.0.0.1:{args.port}/production/'
-    print(f'Production simulation: {url}',flush=True)
+    print(f'Production simulation v{APP_VERSION}: {url}',flush=True)
     if not args.no_browser:
         webbrowser.open(url)
     try:

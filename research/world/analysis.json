@@ -1,0 +1,35 @@
+{
+  "raw_rows": 26222,
+  "raw_jobs": 365,
+  "excluded_serial_jobs": 21,
+  "retained_jobs": 343,
+  "zero_quantity_jobs_excluded": 1,
+  "retained_items": 164,
+  "patterns": 19,
+  "ambiguous_item_operations": 0,
+  "quantity": {
+    "mean": 2397.708454810496,
+    "median": 475.0,
+    "std": 5776.189845488731,
+    "quantiles": {
+      "min": 1.0,
+      "p25": 111.0,
+      "p50": 475.0,
+      "p75": 2017.0,
+      "p90": 6959.200000000013,
+      "p95": 9733.699999999997,
+      "p99": 34303.41999999996,
+      "max": 50300.0
+    }
+  },
+  "long_routes_over5": 28,
+  "one_operation_jobs": 112,
+  "processing_base": {
+    "Milling": 10.0,
+    "Turning": 2.5,
+    "Honing": 4.0,
+    "WireEDM": 12.0
+  },
+  "analytical_candidate_jobs_day": 0.9247027030846621,
+  "machine_only_candidate_jobs_day": 2.1830489787976326
+}

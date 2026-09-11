@@ -1,0 +1,19 @@
+id,complexity,demand_probability,popularity_rank,quantity_distribution,quantity_parameters,quantity_relative_mean,quantity_mean,provenance
+NF01,1,0.28100448214059254,1,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF02,0.9,0.0562008964281185,5,triangular,"[41.57376283214397, 83.14752566428794, 124.72128849643191]",0.5,83.14752566428794,Synthetic operation roles and parameters; source-informed transition skeleton
+NF03,1.1,0.09366816071353085,3,triangular,"[124.7212884964319, 249.4425769928638, 374.1638654892957]",1.5,249.4425769928638,Synthetic operation roles and parameters; source-informed transition skeleton
+NF04,1.15,0.03512556026757407,8,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF05,0.95,0.14050224107029627,2,triangular,"[124.7212884964319, 249.4425769928638, 374.1638654892957]",1.5,249.4425769928638,Synthetic operation roles and parameters; source-informed transition skeleton
+NF06,1.1,0.04014349744865607,7,triangular,"[41.57376283214397, 83.14752566428794, 124.72128849643191]",0.5,83.14752566428794,Synthetic operation roles and parameters; source-informed transition skeleton
+NF07,0.9,0.07025112053514813,4,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF08,1.05,0.031222720237843615,9,triangular,"[41.57376283214397, 83.14752566428794, 124.72128849643191]",0.5,83.14752566428794,Synthetic operation roles and parameters; source-informed transition skeleton
+NF09,1.15,0.04683408035676542,6,triangular,"[124.7212884964319, 249.4425769928638, 374.1638654892957]",1.5,249.4425769928638,Synthetic operation roles and parameters; source-informed transition skeleton
+NF10,1,0.02810044821405925,10,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF11,0.9,0.021615729395430196,13,triangular,"[41.57376283214397, 83.14752566428794, 124.72128849643191]",0.5,83.14752566428794,Synthetic operation roles and parameters; source-informed transition skeleton
+NF12,1.1,0.017562780133787034,16,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF13,1.05,0.02341704017838271,12,triangular,"[124.7212884964319, 249.4425769928638, 374.1638654892957]",1.5,249.4425769928638,Synthetic operation roles and parameters; source-informed transition skeleton
+NF14,1.15,0.018733632142706166,15,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF15,0.95,0.02554586201278114,11,triangular,"[41.57376283214397, 83.14752566428794, 124.72128849643191]",0.5,83.14752566428794,Synthetic operation roles and parameters; source-informed transition skeleton
+NF16,1.1,0.020071748724328035,14,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF17,0.85,0.025,,triangular,"[83.14752566428794, 166.29505132857588, 249.44257699286382]",1,166.29505132857588,Synthetic operation roles and parameters; source-informed transition skeleton
+NF18,0.9,0.025,,triangular,"[41.57376283214397, 83.14752566428794, 124.72128849643191]",0.5,83.14752566428794,Synthetic operation roles and parameters; source-informed transition skeleton

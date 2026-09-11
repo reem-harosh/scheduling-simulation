@@ -13,3 +13,4 @@ results/
 __pycache__/
 node_modules/
 dist/production/qa-result.json
+.simulation-server.lock

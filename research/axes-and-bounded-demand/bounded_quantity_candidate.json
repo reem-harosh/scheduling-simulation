@@ -1,0 +1,51 @@
+{
+  "status": "MATHEMATICALLY_DEFINED_CANDIDATE_NOT_ACTIVE",
+  "target_mean": 175,
+  "spread_fraction": 0.5,
+  "normalization": "mu_i = target * r_i / sum_j(p_j*r_j); r in {0.5,1,1.5}; a=(1-delta)*mu, mode=mu, b=(1+delta)*mu",
+  "illustrative_class_masses": [
+    0.25,
+    0.5,
+    0.25
+  ],
+  "classes": [
+    {
+      "class": "small",
+      "relative_mean": 0.5,
+      "illustrative_demand_mass": 0.25,
+      "minimum": 43.75,
+      "mode": 87.5,
+      "maximum": 131.25,
+      "continuous_mean": 87.5,
+      "rounded_mean": 87.5,
+      "rounded_min": 44,
+      "rounded_max": 131
+    },
+    {
+      "class": "medium",
+      "relative_mean": 1,
+      "illustrative_demand_mass": 0.5,
+      "minimum": 87.5,
+      "mode": 175,
+      "maximum": 262.5,
+      "continuous_mean": 175,
+      "rounded_mean": 175.0,
+      "rounded_min": 88,
+      "rounded_max": 262
+    },
+    {
+      "class": "large",
+      "relative_mean": 1.5,
+      "illustrative_demand_mass": 0.25,
+      "minimum": 131.25,
+      "mode": 262.5,
+      "maximum": 393.75,
+      "continuous_mean": 262.5,
+      "rounded_mean": 262.5,
+      "rounded_min": 131,
+      "rounded_max": 394
+    }
+  ],
+  "weighted_rounded_mean": 175.0,
+  "provenance": "Target175 retained from user engineering range150..200; 3relative size levels and delta0.5 are explicit engineering choices, NOT market estimates. Illustrative masses are not uniform family probabilities and must be recomputed from actual p_i."
+}

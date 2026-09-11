@@ -1,0 +1,236 @@
+[
+  {
+    "id": "130",
+    "label": "130-Haas UMC750ssx5",
+    "explicit_axes": 5,
+    "in_map": true
+  },
+  {
+    "id": "186",
+    "label": "186-Haas UMC500",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "136",
+    "label": "136-Haas VF3 x3",
+    "explicit_axes": 3,
+    "in_map": true
+  },
+  {
+    "id": "154",
+    "label": "154-Haas VF2ss x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "148",
+    "label": "148-Haas VF2ss x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "146",
+    "label": "146-Haas VF2ss x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "187",
+    "label": "187-Haas VF2ss x 4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "163",
+    "label": "163-Haas DT1x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "164",
+    "label": "164-Haas DT1x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "170",
+    "label": "170-HAAS VF3x3 40T",
+    "explicit_axes": 3,
+    "in_map": true
+  },
+  {
+    "id": "128",
+    "label": "128-Haas UMC x5",
+    "explicit_axes": 5,
+    "in_map": true
+  },
+  {
+    "id": "129",
+    "label": "129-Haas umc x5",
+    "explicit_axes": 5,
+    "in_map": true
+  },
+  {
+    "id": "126",
+    "label": "126-Haas VF3 x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "183",
+    "label": "183-Haas UMC750",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "149",
+    "label": "149-HaasVMC750x5-40T",
+    "explicit_axes": 5,
+    "in_map": true
+  },
+  {
+    "id": "145",
+    "label": "145-Haas EC400 Palet",
+    "explicit_axes": null,
+    "in_map": false
+  },
+  {
+    "id": "172",
+    "label": "172-Haas EC-300",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "156",
+    "label": "156-Haas VF3ss x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "157",
+    "label": "157-Haas DT1 x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "150",
+    "label": "150-Haas DT1 x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "166",
+    "label": "166- Haas EC400Palet",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "182",
+    "label": "182-Haas UMC500",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "173",
+    "label": "173-Haas VF 2SS-24T",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "162",
+    "label": "162-Haas DT1x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "176",
+    "label": "176-Haas VF3 x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "153",
+    "label": "153-Haas VF2ss x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "165",
+    "label": "165-Haas DT1x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "167",
+    "label": "167-Haas EC400 Palet",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "155",
+    "label": "155-Haas VF2ss x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "188",
+    "label": "188-Doosan T4000 x 4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "147",
+    "label": "147-Haas VF3 x5",
+    "explicit_axes": 5,
+    "in_map": false
+  },
+  {
+    "id": "151",
+    "label": "151-Haas VF5ss x5",
+    "explicit_axes": 5,
+    "in_map": true
+  },
+  {
+    "id": "142",
+    "label": "142-Haas EC400 Palet",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "132",
+    "label": "132-Haas VM2 x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "152",
+    "label": "152-Haas EC400 Palet",
+    "explicit_axes": null,
+    "in_map": true
+  },
+  {
+    "id": "160",
+    "label": "160-Haas DT1 x4",
+    "explicit_axes": 4,
+    "in_map": true
+  },
+  {
+    "id": "138",
+    "label": "138-Haas VF4 x5",
+    "explicit_axes": 5,
+    "in_map": false
+  },
+  {
+    "id": "203",
+    "label": "203-DVF5000-Doosa x5",
+    "explicit_axes": 5,
+    "in_map": true
+  },
+  {
+    "id": "202",
+    "label": "202-DVF5000-Doosa x5",
+    "explicit_axes": 5,
+    "in_map": true
+  }
+]

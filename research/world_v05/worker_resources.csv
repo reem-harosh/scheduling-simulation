@@ -1,0 +1,9 @@
+worker_type,floor,shift,count,restrictions
+operator,milling,day,12,floor-local; no setup
+operator,milling,night,6,floor-local; no setup
+operator,turning,day,12,floor-local; no setup
+operator,turning,night,6,floor-local; no setup
+setup,milling,day,1,setup only; floor-local
+setup,milling,night,1,setup only; floor-local
+setup,turning,day,1,setup only; floor-local
+setup,turning,night,1,setup only; floor-local

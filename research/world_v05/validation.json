@@ -1,0 +1,15 @@
+{
+  "tests_passed": 71,
+  "command": "python -m unittest discover -s tests -q",
+  "world_sha256": "df78cdc094fecc3231d7bc26d2429f53de4ddf32d5d5364a5b0e1c492d3f31da",
+  "replay_world_sha256": "df78cdc094fecc3231d7bc26d2429f53de4ddf32d5d5364a5b0e1c492d3f31da",
+  "engine_source_sha256": "d11fe87f0d19dd047ac6ba0fdc74f1f4bbf379525f59864e2c3e83a2f6139503",
+  "replay_status": "COMPLETE",
+  "replay_jobs": 116,
+  "floor_path_violations": 0,
+  "lift_transfers": 45,
+  "distinct_moving_workers": 40,
+  "processing_matrix_entries": 1306,
+  "baseline_rate": 12.0,
+  "note": "Finite-horizon behavioral validation, not stationarity proof. Initial trace conserves all job/operation quantities and has no overlapping resource states."
+}

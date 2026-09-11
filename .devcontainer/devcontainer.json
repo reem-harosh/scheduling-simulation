@@ -1,0 +1,9 @@
+{
+  "name": "Scheduling Simulation",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "postCreateCommand": "python -m pip install -r requirements.txt",
+  "postStartCommand": "bash tools/start_codespace.sh",
+  "forwardPorts": [8000],
+  "portsAttributes": {"8000": {"label": "Scheduling Simulation", "onAutoForward": "openBrowser", "visibility": "private"}},
+  "remoteUser": "vscode"
+}

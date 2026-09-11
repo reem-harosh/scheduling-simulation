@@ -1,0 +1,28 @@
+{
+  "source_sha256": "17164060f291c604cc8602ff6f8eb12611c097d09c59c019dbc58986a51a61d8",
+  "report_types": {
+    "ייצור": 26222
+  },
+  "standard_minutes_per_unit": {
+    "n": 25960,
+    "mean": 15.925092925012839,
+    "median": 8.5,
+    "std": 20.390194705993093,
+    "p25": 4.0,
+    "p75": 20.0,
+    "p95": 48.0,
+    "max": 147.0
+  },
+  "reported_net_minutes_per_good_unit": {
+    "n": 25935,
+    "mean": 120.07736667554393,
+    "median": 22.25,
+    "std": 209.61143007174408,
+    "p25": 10.28452380952381,
+    "p75": 65.89444444444445,
+    "p95": 675.0,
+    "max": 6797.0
+  },
+  "timestamp_interpretation": "Observed reporting timestamps, not order arrivals. No fitted hourly NHPP shape is justified.",
+  "setup_interpretation": "Report-type counts and descriptions are evidence of reporting categories, not a validated machine from-configuration/to-configuration changeover matrix. New setup classes remain synthetic."
+}

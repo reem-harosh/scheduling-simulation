@@ -1,0 +1,801 @@
+{
+  "status": "DISCUSSION_NOT_ACTIVE",
+  "skeleton_collapse": "Analysis only; never collapses runtime operations",
+  "skeletons": [
+    {
+      "skeleton": "Milling",
+      "jobs": 178,
+      "items": 90,
+      "source_families": [
+        "PF01",
+        "PF02",
+        "PF05",
+        "PF19"
+      ],
+      "probability": 0.5189504373177842
+    },
+    {
+      "skeleton": "Turning",
+      "jobs": 99,
+      "items": 44,
+      "source_families": [
+        "PF03",
+        "PF04",
+        "PF07",
+        "PF18"
+      ],
+      "probability": 0.2886297376093295
+    },
+    {
+      "skeleton": "Turning / Milling",
+      "jobs": 33,
+      "items": 20,
+      "source_families": [
+        "PF08",
+        "PF10",
+        "PF11",
+        "PF12",
+        "PF15",
+        "PF16"
+      ],
+      "probability": 0.09620991253644315
+    },
+    {
+      "skeleton": "Turning / Honing / Turning",
+      "jobs": 20,
+      "items": 6,
+      "source_families": [
+        "PF06",
+        "PF13"
+      ],
+      "probability": 0.05830903790087463
+    },
+    {
+      "skeleton": "Milling / WireEDM",
+      "jobs": 11,
+      "items": 3,
+      "source_families": [
+        "PF09",
+        "PF14"
+      ],
+      "probability": 0.03206997084548105
+    },
+    {
+      "skeleton": "Turning / Milling / Turning",
+      "jobs": 2,
+      "items": 1,
+      "source_families": [
+        "PF17"
+      ],
+      "probability": 0.0058309037900874635
+    }
+  ],
+  "jobs_missing_stages_relative_item_union": 118,
+  "retained_jobs": 343,
+  "one_operation_jobs": 112,
+  "over5_operation_jobs": 28,
+  "catalogue": [
+    {
+      "id": "NF01",
+      "skeleton": "Milling",
+      "operation_count": 2,
+      "route": "M3 rough / M3 finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF02",
+      "skeleton": "Milling",
+      "operation_count": 3,
+      "route": "M3 rough / M3 finish / M3 drill",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF03",
+      "skeleton": "Milling",
+      "operation_count": 2,
+      "route": "M3 rough / M4 multi-face finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF04",
+      "skeleton": "Milling",
+      "operation_count": 3,
+      "route": "M3 rough / M4 multi-face finish / M3 drill",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF05",
+      "skeleton": "Turning",
+      "operation_count": 2,
+      "route": "T rough / T finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF06",
+      "skeleton": "Turning",
+      "operation_count": 3,
+      "route": "T rough / T bore / T finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF07",
+      "skeleton": "Turning / Milling",
+      "operation_count": 2,
+      "route": "T rough / M3 finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF08",
+      "skeleton": "Turning / Milling",
+      "operation_count": 3,
+      "route": "T rough / T finish / M3 drill",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF09",
+      "skeleton": "Turning / Milling",
+      "operation_count": 2,
+      "route": "T rough / M4 multi-face finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF10",
+      "skeleton": "Turning / Milling",
+      "operation_count": 4,
+      "route": "T rough / T finish / M4 multi-face finish / M3 drill",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF11",
+      "skeleton": "Turning / Honing / Turning",
+      "operation_count": 4,
+      "route": "T rough / T bore / H bore finish / T external finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF12",
+      "skeleton": "Turning / Honing / Turning",
+      "operation_count": 5,
+      "route": "T rough / T bore / H bore finish / T external finish / T cutoff",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF13",
+      "skeleton": "Milling / WireEDM",
+      "operation_count": 3,
+      "route": "M3 rough / M3 finish / W profile",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF14",
+      "skeleton": "Milling / WireEDM",
+      "operation_count": 3,
+      "route": "M3 rough / M4 multi-face finish / W profile",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF15",
+      "skeleton": "Turning / Milling / Turning",
+      "operation_count": 3,
+      "route": "T rough / M3 features / T finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    },
+    {
+      "id": "NF16",
+      "skeleton": "Turning / Milling / Turning",
+      "operation_count": 4,
+      "route": "T rough / M4 features / M3 drill / T finish",
+      "provenance": "Synthetic candidate; broad skeleton source-informed",
+      "probability": null,
+      "quantity_class": null,
+      "complexity": null
+    }
+  ],
+  "operations": [
+    {
+      "part_family": "NF01",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "M3 rough",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF01",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M3 finish",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF02",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "M3 rough",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF02",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M3 finish",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF02",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "M3 drill",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF03",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "M3 rough",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF03",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M4 multi-face finish",
+      "machine_family": "Milling",
+      "required_axes": 4,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF04",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "M3 rough",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF04",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M4 multi-face finish",
+      "machine_family": "Milling",
+      "required_axes": 4,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF04",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "M3 drill",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF05",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF05",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "T finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF06",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF06",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "T bore",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF06",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "T finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF07",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF07",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M3 finish",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF08",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF08",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "T finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF08",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "M3 drill",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF09",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF09",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M4 multi-face finish",
+      "machine_family": "Milling",
+      "required_axes": 4,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF10",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF10",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "T finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF10",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "M4 multi-face finish",
+      "machine_family": "Milling",
+      "required_axes": 4,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF10",
+      "operation_id": "OP040",
+      "position": 4,
+      "name": "M3 drill",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF11",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF11",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "T bore",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF11",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "H bore finish",
+      "machine_family": "Honing",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF11",
+      "operation_id": "OP040",
+      "position": 4,
+      "name": "T external finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF12",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF12",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "T bore",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF12",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "H bore finish",
+      "machine_family": "Honing",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF12",
+      "operation_id": "OP040",
+      "position": 4,
+      "name": "T external finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF12",
+      "operation_id": "OP050",
+      "position": 5,
+      "name": "T cutoff",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF13",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "M3 rough",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF13",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M3 finish",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF13",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "W profile",
+      "machine_family": "WireEDM",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF14",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "M3 rough",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF14",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M4 multi-face finish",
+      "machine_family": "Milling",
+      "required_axes": 4,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF14",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "W profile",
+      "machine_family": "WireEDM",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF15",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF15",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M3 features",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF15",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "T finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF16",
+      "operation_id": "OP010",
+      "position": 1,
+      "name": "T rough",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF16",
+      "operation_id": "OP020",
+      "position": 2,
+      "name": "M4 features",
+      "machine_family": "Milling",
+      "required_axes": 4,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF16",
+      "operation_id": "OP030",
+      "position": 3,
+      "name": "M3 drill",
+      "machine_family": "Milling",
+      "required_axes": 3,
+      "setup_class": null,
+      "processing_parameters": null
+    },
+    {
+      "part_family": "NF16",
+      "operation_id": "OP040",
+      "position": 4,
+      "name": "T finish",
+      "machine_family": "Turning",
+      "required_axes": null,
+      "setup_class": null,
+      "processing_parameters": null
+    }
+  ],
+  "mix_comparisons": [
+    {
+      "alpha": 0.6,
+      "rank_probabilities": [
+        0.17482328743482387,
+        0.1153403553787868,
+        0.09043291494102139,
+        0.07609625567683306,
+        0.06656060794091212,
+        0.059663473329464985,
+        0.05439268012192894,
+        0.050204805672889,
+        0.04677930626249608,
+        0.043913624361943335,
+        0.04147282999783083,
+        0.03936321252120832,
+        0.037517446439845795,
+        0.035885785854512395,
+        0.034430594943406674,
+        0.033122819122096456
+      ],
+      "top4_share": 0.4566928134314651,
+      "minimum_probability": 0.033122819122096456,
+      "status": "Synthetic comparison; ranks NOT assigned to family IDs"
+    },
+    {
+      "alpha": 1.0,
+      "rank_probabilities": [
+        0.2957941917269395,
+        0.14789709586346975,
+        0.09859806390897984,
+        0.07394854793173487,
+        0.059158838345387904,
+        0.04929903195448992,
+        0.042256313103848496,
+        0.03697427396586744,
+        0.03286602130299328,
+        0.029579419172693952,
+        0.02689038106608541,
+        0.02464951597724496,
+        0.022753399363610732,
+        0.021128156551924248,
+        0.019719612781795966,
+        0.01848713698293372
+      ],
+      "top4_share": 0.616237899431124,
+      "minimum_probability": 0.01848713698293372,
+      "status": "Synthetic comparison; ranks NOT assigned to family IDs"
+    },
+    {
+      "alpha": 1.4,
+      "rank_probabilities": [
+        0.43648809398963384,
+        0.16539805878615896,
+        0.09375677179191644,
+        0.06267414444271045,
+        0.045857924606199134,
+        0.03552717305688564,
+        0.028630909619235645,
+        0.023749059755920465,
+        0.02013876753543307,
+        0.017376904007850216,
+        0.01520626808566958,
+        0.013462281190900854,
+        0.012035155579173505,
+        0.010849086006034346,
+        0.009850190718504296,
+        0.00899921082777351
+      ],
+      "top4_share": 0.7583170690104197,
+      "minimum_probability": 0.00899921082777351,
+      "status": "Synthetic comparison; ranks NOT assigned to family IDs"
+    }
+  ],
+  "limitations": [
+    "Inferred source routes combine stages across jobs of each item; missing stages need not imply erroneous or optional routes.",
+    "Synthetic operation roles, axis requirements and shortened/extended routes are not empirical reconstructions.",
+    "Candidate catalogue is not an executable world. No calibrated baseline or stability result.",
+    "Rank order, size assignments, setup classes and processing parameters remain to be designed."
+  ]
+}

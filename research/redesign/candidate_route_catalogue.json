@@ -1,0 +1,232 @@
+{
+  "status": "DISCUSSION_CANDIDATE_NOT_ACTIVE",
+  "families": [
+    {
+      "Family": "CF01",
+      "Operations": 3,
+      "Route": "Milling rough / Milling finish / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Small",
+      "Quantity mean": 70.0
+    },
+    {
+      "Family": "CF02",
+      "Operations": 3,
+      "Route": "Turning rough / Turning finish / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF03",
+      "Operations": 3,
+      "Route": "Turning / Grinding / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Large",
+      "Quantity mean": 280.0
+    },
+    {
+      "Family": "CF04",
+      "Operations": 3,
+      "Route": "WireEDM cut / Milling finish / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF05",
+      "Operations": 2,
+      "Route": "Milling / Finishing",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Small",
+      "Quantity mean": 70.0
+    },
+    {
+      "Family": "CF06",
+      "Operations": 3,
+      "Route": "Turning / Milling / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF07",
+      "Operations": 4,
+      "Route": "Milling rough / Grinding / Milling finish / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Large",
+      "Quantity mean": 280.0
+    },
+    {
+      "Family": "CF08",
+      "Operations": 3,
+      "Route": "WireEDM cut / Grinding / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF09",
+      "Operations": 2,
+      "Route": "Turning / Finishing",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Small",
+      "Quantity mean": 70.0
+    },
+    {
+      "Family": "CF10",
+      "Operations": 3,
+      "Route": "Milling rough / Milling drill / Finishing",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF11",
+      "Operations": 4,
+      "Route": "Turning / WireEDM cut / Finishing / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Large",
+      "Quantity mean": 280.0
+    },
+    {
+      "Family": "CF12",
+      "Operations": 4,
+      "Route": "Milling / WireEDM cut / Milling finish / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF13",
+      "Operations": 2,
+      "Route": "Grinding / Finishing",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Small",
+      "Quantity mean": 70.0
+    },
+    {
+      "Family": "CF14",
+      "Operations": 4,
+      "Route": "Turning rough / Grinding / Turning finish / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF15",
+      "Operations": 4,
+      "Route": "Milling / Grinding / Finishing / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Large",
+      "Quantity mean": 280.0
+    },
+    {
+      "Family": "CF16",
+      "Operations": 2,
+      "Route": "WireEDM cut / Finishing",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF17",
+      "Operations": 4,
+      "Route": "Turning / Milling / Grinding / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Small",
+      "Quantity mean": 70.0
+    },
+    {
+      "Family": "CF18",
+      "Operations": 4,
+      "Route": "Milling rough / Turning / Milling finish / Finishing",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    },
+    {
+      "Family": "CF19",
+      "Operations": 4,
+      "Route": "Turning rough / Turning drill / Finishing / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Large",
+      "Quantity mean": 280.0
+    },
+    {
+      "Family": "CF20",
+      "Operations": 5,
+      "Route": "WireEDM cut / Milling rough / Grinding / Finishing / Inspection",
+      "Baseline probability %": 5.0,
+      "Provenance": "Synthetic proposal; not an inferred historical route",
+      "Quantity class": "Medium",
+      "Quantity mean": 175.0
+    }
+  ],
+  "machine_families": [
+    {
+      "Machine family": "Milling",
+      "Old mapped machines": 44,
+      "Proposed route coverage": 11,
+      "Mean visits/job under uniform proposal": 0.8,
+      "Source interpretation": "Observed category / derived timing proxy"
+    },
+    {
+      "Machine family": "Turning",
+      "Old mapped machines": 20,
+      "Proposed route coverage": 9,
+      "Mean visits/job under uniform proposal": 0.6,
+      "Source interpretation": "Observed category / derived timing proxy"
+    },
+    {
+      "Machine family": "Grinding",
+      "Old mapped machines": 0,
+      "Proposed route coverage": 8,
+      "Mean visits/job under uniform proposal": 0.4,
+      "Source interpretation": "Synthetic broader process; Honing is evidence for a related operation, not equivalent equipment"
+    },
+    {
+      "Machine family": "WireEDM",
+      "Old mapped machines": 2,
+      "Proposed route coverage": 6,
+      "Mean visits/job under uniform proposal": 0.3,
+      "Source interpretation": "Observed category / derived timing proxy"
+    },
+    {
+      "Machine family": "Finishing",
+      "Old mapped machines": 0,
+      "Proposed route coverage": 10,
+      "Mean visits/job under uniform proposal": 0.5,
+      "Source interpretation": "Synthetic added stage; timing needs explicit engineering baseline"
+    },
+    {
+      "Machine family": "Inspection",
+      "Old mapped machines": 0,
+      "Proposed route coverage": 14,
+      "Mean visits/job under uniform proposal": 0.7,
+      "Source interpretation": "Synthetic added stage; timing needs explicit engineering baseline"
+    }
+  ],
+  "selection": "20 explicit archetypes covering repeat, reentrant, finishing and inspection cases; count is engineering design, not statistical optimum",
+  "quantity": "Synthetic triangular size classes; repeating Small/Medium/Large/Medium assigns 5/10/5 families. With fixed 5% family probabilities, overall theoretical mean=175; no historical mapping claimed",
+  "demand": "Fixed 5% each is an experimental reference; sensitivity can introduce predefined skew independently of scheduling"
+}

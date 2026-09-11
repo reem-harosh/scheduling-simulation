@@ -1,3 +1,52 @@
+## Run in your browser — no ZIP updates
+
+[Open in GitHub Codespaces](https://github.com/codespaces/new/reem-harosh/scheduling-simulation)
+
+Choose **main** and create the Codespace. Dependencies and the Python server start automatically. Open **Ports → 8000 → Open in Browser** if needed. To get later updates, stop and reopen this Codespace; clean main checkouts update automatically. GitHub account quotas apply. This is the full Python production engine; the old static PrintFlow link is a different demo.
+
+Version **0.5.2** adds backend version identification, cache prevention, and a processing-only flow-time lower bound (not a proven optimum). See [cloud launch and reference definition](docs/cloud-and-flow-reference-v052.md).
+
+# Scheduling Simulation — research world v0.5
+
+```bash
+pip install -r requirements.txt
+python run_factory.py
+```
+
+Open http://127.0.0.1:8000/production/ if the browser does not open automatically.
+The default world is `research/world_v05/world.json`; v0.4 remains available with
+`python run_factory.py --calibration research/world/world.json`.
+
+The new world has18 families (including two single-operation families with5%
+combined demand),50 operations,68 physical machines and4 setup specialists.
+Milling distinguishes3/4-axis capabilities; four-axis machines also accept
+three-axis work. Quantities follow bounded triangular distributions with a
+weighted mean175 at the base scale. Family frequencies remain nonuniform.
+Workers stay on their floor; parts may travel via a shared capacity-limited lift.
+
+Tables in the browser expose all families, operation requirements, quantity
+parameters, physical machines, processing entries, setup matrices and rosters.
+CSV exports and the complete frozen world are in `research/world_v05/`.
+
+```bash
+python tools/build_research_world.py --rate 12
+python tools/run_world_experiments.py run --days 28 --warmup 14
+python tools/run_world_experiments.py grid --scales .5 .75 1 1.25 1.5 --replications 3 --days 28 --warmup 14
+python -m unittest discover -s tests -p 'test_*.py'
+```
+
+The experiment axes remain arrival intensity and job size. All raw runs are
+retained. Same seed/replication yields identical demand across algorithms.
+Calibration is offline; the generator never responds to live queues or resources.
+Finite-horizon pilot results are not a proof of stationarity.
+Read [the v0.5 implementation and calibration record](docs/research-world-v05.md).
+
+The following documentation describes the retained **legacy v0.3** world and
+print-shop prototype. Its old arrivals, source-file requirements, splitting
+policies and operating-point approvals do not apply to the new default.
+
+---
+
 ## Confirmed demand baseline and validation
 
 The demand-intensity correction and reviewer procedure are documented in
@@ -190,3 +239,7 @@ python tools/package_source.py
 ## רכיבי צד שלישי
 
 קובצי `dist/runtime` הם Pyodide 0.27.7 (CPython 3.12.7), מההפצה הרשמית. המנוע משתמש בספרייה התקנית בלבד. ראו [Pyodide](https://pyodide.org/en/0.27.7/usage/index.html), [קוד ורישוי Pyodide](https://github.com/pyodide/pyodide/tree/0.27.7), ו[רישיון Python](https://docs.python.org/3.12/license.html). ההפצה כוללת רכיבים של CPython ו־Emscripten תחת רישיונותיהם. שימוש ב־Web Worker להרצת המנוע תואם את הנחיות [התיעוד הרשמי](https://pyodide.org/en/stable/usage/index.html#web-workers).
+
+### Live observability v0.5.1
+
+Run status, live resource counts, operation detail and preserved/partial response surfaces are now available. Restart the Python server after updating. See [design and validation notes](docs/live-observability-v051.md).

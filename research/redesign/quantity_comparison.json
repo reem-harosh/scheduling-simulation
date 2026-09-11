@@ -1,0 +1,54 @@
+{
+  "statistics": [
+    {
+      "Variant": "Historical proxy",
+      "Mean": 2397.708454810496,
+      "Median": 475.0,
+      "Std": 5776.189845488731,
+      "CV": 2.409045951312398,
+      "P25": 111.0,
+      "P75": 2017.0,
+      "P95": 9733.699999999997,
+      "Max": 50300.0,
+      "Share at minimum (%)": 0.5830903790087464,
+      "Share at maximum (%)": 0.2915451895043732
+    },
+    {
+      "Variant": "Linear rescale to 175",
+      "Mean": 175.0058309037901,
+      "Median": 35.0,
+      "Std": 421.5786607708734,
+      "CV": 2.4089406541124756,
+      "P25": 8.0,
+      "P75": 147.5,
+      "P95": 710.2999999999998,
+      "Max": 3671.0,
+      "Share at minimum (%)": 6.997084548104956,
+      "Share at maximum (%)": 0.2915451895043732
+    },
+    {
+      "Variant": "Sqrt + bounds 25..600",
+      "Mean": 175.02915451895043,
+      "Median": 118.0,
+      "Std": 157.12351929968767,
+      "CV": 0.897699127505503,
+      "P25": 57.0,
+      "P75": 244.0,
+      "P95": 535.8,
+      "Max": 600.0,
+      "Share at minimum (%)": 6.997084548104956,
+      "Share at maximum (%)": 3.498542274052478
+    }
+  ],
+  "power": 0.5,
+  "coefficient": 5.434023128537433,
+  "engineering_lower": 25,
+  "engineering_upper": 600,
+  "target_mean": 175,
+  "observations": 343,
+  "largest_order_unit_share": {
+    "17": 0.4624860471733215,
+    "35": 0.6439506136811873
+  },
+  "classification": "Historical proxy is inferred; transformations and bounds are synthetic engineering alternatives, not fitted distributions."
+}

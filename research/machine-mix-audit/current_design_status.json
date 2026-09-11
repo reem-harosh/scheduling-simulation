@@ -1,0 +1,19 @@
+{
+  "status": "IMPLEMENTED_V05_INITIAL_VALIDATION_COMPLETE",
+  "inspection": "EXCLUDED_BY_USER",
+  "recommended_machine_families": [
+    "Milling",
+    "Turning",
+    "Honing",
+    "WireEDM"
+  ],
+  "machine_counts": "51 Milling (29 three-axis,22 four-axis),13 Turning,2 Honing,2 WireEDM;68 positions",
+  "mix": "95% inverse-rank16multi-operation families;5%two single-operation families",
+  "floor_rules": "IMPLEMENTED: local workers, full-batch freight transfer, destination floor pool then fresh machine assignment",
+  "milling_capabilities": "IMPLEMENTED: 4-axis can serve3-axis; reverse rejected",
+  "quantity": "IMPLEMENTED: bounded triangular, weighted mean175, actual integer range42..374 atscale1",
+  "superseded": "Dedicated Finishing suggestion and uniform mix not adopted. Historical quantity tail is not the new target.",
+  "part_family_catalogue": "IMPLEMENTED:18families,50operations; research/world_v05/world.json",
+  "baseline": "12jobs/day conservative offline selection; four completed calibration runs; no stationarity proof",
+  "experiments": "25points x2replications x2algorithms =100complete gridruns"
+}

@@ -1,0 +1,45 @@
+{
+  "classes": [
+    {
+      "Class": "Small",
+      "Weight": 0.25,
+      "Min": 25,
+      "Mode": 50,
+      "Max": 135,
+      "Mean": 70.0,
+      "Variance": 554.1666666666666
+    },
+    {
+      "Class": "Medium",
+      "Weight": 0.5,
+      "Min": 50,
+      "Mode": 150,
+      "Max": 325,
+      "Mean": 175.0,
+      "Variance": 3229.1666666666665
+    },
+    {
+      "Class": "Large",
+      "Weight": 0.25,
+      "Min": 100,
+      "Mode": 240,
+      "Max": 500,
+      "Mean": 280.0,
+      "Variance": 6866.666666666667
+    }
+  ],
+  "statistics_before_integer_rounding": {
+    "Variant": "Synthetic triangular size-class mixture",
+    "Mean": 175.0,
+    "Median": 164.2613772234649,
+    "Std": 94.77495273893132,
+    "CV": 0.5415711585081789,
+    "P25": 96.58501483679524,
+    "P75": 235.91014780843307,
+    "P95": 355.7779511180447,
+    "Max": 500,
+    "Share at minimum (%)": 0.0,
+    "Share at maximum (%)": 0.0
+  },
+  "provenance": "Engineering alternative; triangular parameters selected, not fitted to historical quantities; mixture weights require matching demand mass by size class."
+}

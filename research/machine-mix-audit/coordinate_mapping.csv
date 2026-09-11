@@ -1,0 +1,69 @@
+Machine,x,y,Floor,Source-map department,Reported process family,v04 synthetic family
+M01,2130.0,612.0,Right,turning,Turning,Milling
+M02,1461.5,153.0,Right,turning,Turning,Milling
+M03,2130.0,705.0,Right,turning,Turning,Milling
+M04,1554.5,153.0,Right,turning,Turning,Milling
+M05,374.0,370.0,Left,milling,Milling,Milling
+M06,831.0,370.0,Left,milling,Milling,Milling
+M07,946.0,370.0,Left,milling,Milling,Milling
+M08,489.0,370.0,Left,milling,Milling,Milling
+M09,2230.0,705.0,Right,turning,Turning,Milling
+M10,760.0,560.0,Left,milling,Milling,Milling
+M11,1060.0,370.0,Left,milling,Milling,Milling
+M12,1554.5,241.0,Right,turning,Turning,Milling
+M13,560.0,660.0,Left,milling,Milling,Milling
+M14,660.0,270.0,Left,milling,Milling,Milling
+M15,460.0,560.0,Left,milling,Milling,Milling
+M16,603.0,370.0,Left,milling,Milling,Milling
+M17,260.0,560.0,Left,milling,Milling,Milling
+M18,560.0,560.0,Left,milling,Milling,Milling
+M19,460.0,660.0,Left,milling,Milling,Milling
+M20,660.0,560.0,Left,milling,Milling,Milling
+M21,860.0,560.0,Left,milling,Milling,Milling
+M22,1060.0,560.0,Left,milling,Milling,Milling
+M23,960.0,560.0,Left,milling,Milling,Milling
+M24,1646.5,153.0,Right,turning,Milling,Milling
+M25,260.0,370.0,Left,milling,Milling,Milling
+M26,1739.5,153.0,Right,turning,Milling,Milling
+M27,360.0,270.0,Left,milling,Milling,Milling
+M28,460.0,270.0,Left,milling,Milling,Milling
+M29,260.0,270.0,Left,milling,Milling,Milling
+M30,260.0,660.0,Left,milling,Milling,Milling
+M31,360.0,660.0,Left,milling,Milling,Milling
+M32,1673.0,570.0,Right,turning,Turning,Milling
+M33,1461.5,241.0,Right,turning,Turning,Milling
+M34,717.0,370.0,Left,milling,Milling,Milling
+M35,2230.0,612.0,Right,turning,Turning,Milling
+M36,960.0,650.0,Left,milling,Milling,Milling
+M37,360.0,560.0,Left,milling,Milling,Milling
+M38,2130.0,148.0,Right,turning,Turning,Milling
+M39,2130.0,241.0,Right,turning,Turning,Milling
+M40,560.0,270.0,Left,milling,Milling,Milling
+M41,1276.5,153.0,Right,turning,Turning,Milling
+M42,1831.5,153.0,Right,turning,WireEDM,Milling
+M43,1439.0,520.0,Right,turning,Turning,Milling
+M44,1180.0,241.0,Right,turning,Turning,Milling
+M45,1559.0,520.0,Right,turning,Turning,Turning
+M46,10.0,380.0,Left,milling,Milling,Turning
+M47,10.0,490.0,Left,milling,Milling,Turning
+M48,1320.0,520.0,Right,turning,Honing,Turning
+M49,1200.0,520.0,Right,turning,Honing,Turning
+M50,10.0,269.0,Left,milling,Milling,Turning
+M51,1060.0,270.0,Left,milling,Milling,Turning
+M52,760.0,270.0,Left,milling,Milling,Turning
+M53,1924.5,153.0,Right,turning,No reports,Turning
+M54,2130.0,519.0,Right,turning,Turning,Turning
+M55,2130.0,426.0,Right,turning,Turning,Turning
+M56,2130.0,334.0,Right,turning,Turning,Turning
+M57,2130.0,55.0,Right,turning,Turning,Turning
+M58,1368.5,153.0,Right,turning,No reports,Turning
+M59,1183.5,153.0,Right,turning,No reports,Turning
+M60,1884.5,70.0,Right,turning,No reports,Turning
+M61,10.0,40.0,Left,milling,No reports,Turning
+M62,260.0,40.0,Left,milling,Milling,Turning
+M63,540.0,40.0,Left,milling,Milling,Turning
+M64,700.0,40.0,Left,milling,No reports,Turning
+M65,860.0,40.0,Left,milling,No reports,Honing
+M66,1020.0,40.0,Left,milling,No reports,Honing
+M67,960.0,270.0,Left,milling,No reports,WireEDM
+M68,860.0,270.0,Left,milling,No reports,WireEDM

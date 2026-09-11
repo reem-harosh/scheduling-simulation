@@ -187,7 +187,7 @@ class Simulation:
                 if release < 0 or release >= self.arrivals_stop:
                     raise InputError('MANUAL_RELEASE_OUTSIDE_WINDOW')
                 item, route = row['item'], row['route']
-                if not route or route != sorted(set(route)) or not isinstance(row['quantity'], int) or row['quantity'] < 1:
+                if not route or len(route) != len(set(route)) or not isinstance(row['quantity'], int) or row['quantity'] < 1:
                     raise InputError('INVALID_MANUAL_JOB')
                 jid = str(row.get('id', 'manual-' + str(i)))
                 if jid in seen:
@@ -599,7 +599,7 @@ class Simulation:
 
     def _handle(self, kind, payload):
         if kind == 'replay_start':
-            self.replay_initial = dict(job_completed={j.id:j.completed for j in self.jobs.values()},
+            self.replay_initial = dict(operation_counts={j.id:dict(j.operation_counts) for j in self.jobs.values()},job_completed={j.id:j.completed for j in self.jobs.values()},
                 batches={b.id:dict(state=b.state,completed=b.unloaded) for b in self.batches.values()})
         elif kind == 'calendar_day':
             day = payload

@@ -1,0 +1,1388 @@
+{
+  "warmup_days": 7.0,
+  "measurement_days": 21.0,
+  "results": [
+    {
+      "rate": 12.0,
+      "replication": 0,
+      "elapsed_seconds": 97.20005692999985,
+      "status": "COMPLETE",
+      "mean_flow_min": 4354.335482294082,
+      "machine_utilization": 0.38499688875498167,
+      "worker_available_utilization": 0.45290010145147813,
+      "setup_worker_utilization": 0.1193389170191228,
+      "mean_setup_wait_min": 0.7958433605033045,
+      "mean_wip": 37.0281500145475,
+      "mean_queue": 10.507481688424402,
+      "throughput_jobs_per_day": 12.380952380952381,
+      "wip_slope_jobs_per_day": -0.7142857142857139,
+      "peak_processing_machines": 43,
+      "per_family": {
+        "Milling": {
+          "machine_count": 51,
+          "processing_utilization": 0.31290638364020906,
+          "busy_utilization": 0.3824813396300594,
+          "mean_ready_queue": 0.9049798918277019
+        },
+        "WireEDM": {
+          "machine_count": 2,
+          "processing_utilization": 0.4513326823371396,
+          "busy_utilization": 0.5193333294521705,
+          "mean_ready_queue": 0.22456754135232207
+        },
+        "Turning": {
+          "machine_count": 13,
+          "processing_utilization": 0.23231151206368314,
+          "busy_utilization": 0.42043268752884744,
+          "mean_ready_queue": 0.7375221154057312
+        },
+        "Honing": {
+          "machine_count": 2,
+          "processing_utilization": 0.0521980678612908,
+          "busy_utilization": 0.08447425871333246,
+          "mean_ready_queue": 5.604686175393865e-05
+        }
+      },
+      "observation_end": {
+        "wip": 30,
+        "unfinished_job_ages_min": [
+          9610.388243722857,
+          9560.596837298206,
+          8239.450720026962,
+          7642.016469728671,
+          7121.344874848881,
+          5882.878098790177,
+          5659.984679024536,
+          5624.975026227359,
+          5342.9601598520385,
+          4059.3859029612067,
+          3594.7354708090425,
+          3035.4074936934776,
+          2258.998880167892,
+          2258.6282079223747,
+          1962.5086130623167,
+          1761.631079285973,
+          1738.0001525416956,
+          1728.9711388763608,
+          1724.708094240399,
+          1717.1025404792526,
+          1667.8068029045971,
+          915.8494786124647,
+          879.3195863271831,
+          797.2615661783566,
+          757.0955542336742,
+          587.7237802116069,
+          572.4137344372211,
+          132.37626803145395,
+          129.57436826694902,
+          101.17017772683175
+        ],
+        "released": 337,
+        "completed": 307
+      },
+      "resource_statistics": {
+        "S01": {
+          "type": "setup",
+          "busy_min": 1374.9831607688175,
+          "on_duty_min": 11700.0,
+          "utilization": 0.1175199282708391
+        },
+        "S02": {
+          "type": "setup",
+          "busy_min": 1811.523163572756,
+          "on_duty_min": 11760.737004037495,
+          "utilization": 0.15403143212460704
+        },
+        "day_milling_milling_day00": {
+          "type": "operator",
+          "busy_min": 3351.2992813251294,
+          "on_duty_min": 11703.395253524071,
+          "utilization": 0.28635273856242716
+        },
+        "day_milling_milling_day01": {
+          "type": "operator",
+          "busy_min": 3159.6479323534113,
+          "on_duty_min": 11702.58107923689,
+          "utilization": 0.2699958163895454
+        },
+        "day_milling_milling_day02": {
+          "type": "operator",
+          "busy_min": 3884.814158267818,
+          "on_duty_min": 11705.170731657781,
+          "utilization": 0.33188872228586613
+        },
+        "day_milling_milling_day03": {
+          "type": "operator",
+          "busy_min": 3118.8415606034723,
+          "on_duty_min": 11705.707729870384,
+          "utilization": 0.26643767575410043
+        },
+        "day_milling_milling_day04": {
+          "type": "operator",
+          "busy_min": 3482.8981054768956,
+          "on_duty_min": 11702.548017524983,
+          "utilization": 0.29761878355560956
+        },
+        "day_milling_milling_day05": {
+          "type": "operator",
+          "busy_min": 2783.201155690096,
+          "on_duty_min": 11705.271739030737,
+          "utilization": 0.23777330571571687
+        },
+        "day_milling_milling_day06": {
+          "type": "operator",
+          "busy_min": 3633.4416088738144,
+          "on_duty_min": 11704.737988435792,
+          "utilization": 0.31042485636702266
+        },
+        "day_milling_milling_day07": {
+          "type": "operator",
+          "busy_min": 2772.2982324018376,
+          "on_duty_min": 11702.69499635683,
+          "utilization": 0.2368940003362373
+        },
+        "day_milling_milling_day08": {
+          "type": "operator",
+          "busy_min": 1999.6552563181322,
+          "on_duty_min": 11701.47953135809,
+          "utilization": 0.17088909577283593
+        },
+        "day_milling_milling_day09": {
+          "type": "operator",
+          "busy_min": 2883.092727550167,
+          "on_duty_min": 11705.251348045102,
+          "utilization": 0.24630763080808799
+        },
+        "day_milling_milling_day10": {
+          "type": "operator",
+          "busy_min": 2715.9824508552156,
+          "on_duty_min": 11701.72590476485,
+          "utilization": 0.23210101424006943
+        },
+        "day_milling_milling_day11": {
+          "type": "operator",
+          "busy_min": 3136.097084773299,
+          "on_duty_min": 11707.82848856421,
+          "utilization": 0.26786325814701906
+        },
+        "day_turning_turning_day00": {
+          "type": "operator",
+          "busy_min": 6141.6264507335345,
+          "on_duty_min": 11710.17488798227,
+          "utilization": 0.5244692337632347
+        },
+        "day_turning_turning_day01": {
+          "type": "operator",
+          "busy_min": 5295.282664427094,
+          "on_duty_min": 11706.249169797771,
+          "utilization": 0.4523466558433568
+        },
+        "day_turning_turning_day02": {
+          "type": "operator",
+          "busy_min": 5311.144626786774,
+          "on_duty_min": 11711.543969917311,
+          "utilization": 0.4534965364455079
+        },
+        "day_turning_turning_day03": {
+          "type": "operator",
+          "busy_min": 5578.261049185523,
+          "on_duty_min": 11709.104194333107,
+          "utilization": 0.4764037416188722
+        },
+        "day_turning_turning_day04": {
+          "type": "operator",
+          "busy_min": 6129.010356463163,
+          "on_duty_min": 11707.560812230244,
+          "utilization": 0.5235087354883113
+        },
+        "day_turning_turning_day05": {
+          "type": "operator",
+          "busy_min": 5119.197309163306,
+          "on_duty_min": 11706.553805905909,
+          "utilization": 0.43729327981909516
+        },
+        "day_turning_turning_day06": {
+          "type": "operator",
+          "busy_min": 5405.381498209139,
+          "on_duty_min": 11714.027839804003,
+          "utilization": 0.46144516404867797
+        },
+        "day_turning_turning_day07": {
+          "type": "operator",
+          "busy_min": 4900.267899911536,
+          "on_duty_min": 11704.647808323803,
+          "utilization": 0.41866000414183263
+        },
+        "day_turning_turning_day08": {
+          "type": "operator",
+          "busy_min": 5032.144563251404,
+          "on_duty_min": 11707.551997220193,
+          "utilization": 0.4298203898172925
+        },
+        "day_turning_turning_day09": {
+          "type": "operator",
+          "busy_min": 5429.24130410768,
+          "on_duty_min": 11708.24370796887,
+          "utilization": 0.4637109919750327
+        },
+        "day_turning_turning_day10": {
+          "type": "operator",
+          "busy_min": 4736.489401332761,
+          "on_duty_min": 11703.924262855668,
+          "utilization": 0.40469241725741434
+        },
+        "day_turning_turning_day11": {
+          "type": "operator",
+          "busy_min": 4486.6924521773435,
+          "on_duty_min": 11704.295352116871,
+          "utilization": 0.3833372550160286
+        },
+        "S03": {
+          "type": "setup",
+          "busy_min": 881.8697553419242,
+          "on_duty_min": 11700.0,
+          "utilization": 0.07537348336255763
+        },
+        "S04": {
+          "type": "setup",
+          "busy_min": 1536.26071668451,
+          "on_duty_min": 11803.295654897425,
+          "utilization": 0.13015523474133128
+        },
+        "night_milling_milling_night00": {
+          "type": "operator",
+          "busy_min": 6255.017568341731,
+          "on_duty_min": 11706.395201449574,
+          "utilization": 0.5343248250808402
+        },
+        "night_milling_milling_night01": {
+          "type": "operator",
+          "busy_min": 5685.42067115666,
+          "on_duty_min": 11704.103098145233,
+          "utilization": 0.48576303741357485
+        },
+        "night_milling_milling_night02": {
+          "type": "operator",
+          "busy_min": 6034.9184844741885,
+          "on_duty_min": 11709.006628212237,
+          "utilization": 0.5154082388110849
+        },
+        "night_milling_milling_night03": {
+          "type": "operator",
+          "busy_min": 5824.047481717198,
+          "on_duty_min": 11705.876945800172,
+          "utilization": 0.4975319242362911
+        },
+        "night_milling_milling_night04": {
+          "type": "operator",
+          "busy_min": 5764.343130596941,
+          "on_duty_min": 11710.114376398375,
+          "utilization": 0.49225335853379193
+        },
+        "night_milling_milling_night05": {
+          "type": "operator",
+          "busy_min": 5590.076179669617,
+          "on_duty_min": 11704.745137071384,
+          "utilization": 0.4775905937468619
+        },
+        "night_turning_turning_night00": {
+          "type": "operator",
+          "busy_min": 9627.923275866784,
+          "on_duty_min": 11710.467332848397,
+          "utilization": 0.8221638814413511
+        },
+        "night_turning_turning_night01": {
+          "type": "operator",
+          "busy_min": 9354.775380065374,
+          "on_duty_min": 11711.035127078261,
+          "utilization": 0.7988000444499784
+        },
+        "night_turning_turning_night02": {
+          "type": "operator",
+          "busy_min": 8477.740106120764,
+          "on_duty_min": 11711.307644711474,
+          "utilization": 0.7238935534196382
+        },
+        "night_turning_turning_night03": {
+          "type": "operator",
+          "busy_min": 9562.311004907748,
+          "on_duty_min": 11715.469957435314,
+          "utilization": 0.8162123277725579
+        },
+        "night_turning_turning_night04": {
+          "type": "operator",
+          "busy_min": 8902.53307774531,
+          "on_duty_min": 11712.24382284659,
+          "utilization": 0.760104828109837
+        },
+        "night_turning_turning_night05": {
+          "type": "operator",
+          "busy_min": 9311.880139448644,
+          "on_duty_min": 11711.927399144768,
+          "utilization": 0.7950766617737588
+        }
+      },
+      "measurement": {
+        "start_min": 10080.0,
+        "stop_min": 40320.0,
+        "denominator_min": 30240.0,
+        "cohort": "release in [start,stop); drain included in flow only"
+      },
+      "demand_sha256": "71d907208cc4c0c249b7cec7a77abdb3fc99412dd4317a90a9b90103980ed41e"
+    },
+    {
+      "rate": 12.0,
+      "replication": 1,
+      "elapsed_seconds": 138.80297357699965,
+      "status": "COMPLETE",
+      "mean_flow_min": 4926.1957562533935,
+      "machine_utilization": 0.42434949005272227,
+      "worker_available_utilization": 0.46665808715967566,
+      "setup_worker_utilization": 0.1139186524583802,
+      "mean_setup_wait_min": 0.9364864368415787,
+      "mean_wip": 41.773793489862676,
+      "mean_queue": 12.560677696626762,
+      "throughput_jobs_per_day": 12.666666666666666,
+      "wip_slope_jobs_per_day": -0.9285714285714283,
+      "peak_processing_machines": 52,
+      "per_family": {
+        "Milling": {
+          "machine_count": 51,
+          "processing_utilization": 0.36837691301682285,
+          "busy_utilization": 0.44675191950576076,
+          "mean_ready_queue": 1.2167018750490355
+        },
+        "WireEDM": {
+          "machine_count": 2,
+          "processing_utilization": 0.49737016202934564,
+          "busy_utilization": 0.5676003131018461,
+          "mean_ready_queue": 0.21207273128299492
+        },
+        "Turning": {
+          "machine_count": 13,
+          "processing_utilization": 0.19962009771309677,
+          "busy_utilization": 0.364808154322662,
+          "mean_ready_queue": 1.1062301566345794
+        },
+        "Honing": {
+          "machine_count": 2,
+          "processing_utilization": 0.06058807557180273,
+          "busy_utilization": 0.09685539819633508,
+          "mean_ready_queue": 0.0006632328608605219
+        }
+      },
+      "observation_end": {
+        "wip": 28,
+        "unfinished_job_ages_min": [
+          11151.121758789075,
+          8168.821476597452,
+          8123.0380706769065,
+          7572.573790490005,
+          5865.952642988013,
+          5409.781255447473,
+          4044.363090375722,
+          3616.095389030743,
+          3525.997459762897,
+          3460.374718296167,
+          2808.3923347073796,
+          2393.514087971038,
+          1727.5513441765142,
+          1697.3873303490182,
+          1600.8739169694745,
+          1116.088559035743,
+          937.1651990542887,
+          916.8625402953257,
+          899.5080956568345,
+          678.7477217729102,
+          532.1028267925794,
+          424.0972368383227,
+          402.9434421772894,
+          337.5893619592316,
+          269.89397867325897,
+          241.90862032266887,
+          233.3278272339594,
+          44.403248283211724
+        ],
+        "released": 341,
+        "completed": 313
+      },
+      "resource_statistics": {
+        "S01": {
+          "type": "setup",
+          "busy_min": 1336.5114910809662,
+          "on_duty_min": 11754.349259423896,
+          "utilization": 0.11370357146818957
+        },
+        "S02": {
+          "type": "setup",
+          "busy_min": 1725.4931032129025,
+          "on_duty_min": 11700.0,
+          "utilization": 0.14747804300964978
+        },
+        "day_milling_milling_day00": {
+          "type": "operator",
+          "busy_min": 3398.8518930214814,
+          "on_duty_min": 11703.462688450603,
+          "utilization": 0.29041421188752886
+        },
+        "day_milling_milling_day01": {
+          "type": "operator",
+          "busy_min": 3966.1116686122077,
+          "on_duty_min": 11706.87451853259,
+          "utilization": 0.33878484495017414
+        },
+        "day_milling_milling_day02": {
+          "type": "operator",
+          "busy_min": 4241.658742117275,
+          "on_duty_min": 11703.983017156785,
+          "utilization": 0.36241155988516544
+        },
+        "day_milling_milling_day03": {
+          "type": "operator",
+          "busy_min": 3772.019780625893,
+          "on_duty_min": 11703.733395941823,
+          "utilization": 0.32229201170404403
+        },
+        "day_milling_milling_day04": {
+          "type": "operator",
+          "busy_min": 4286.540218650847,
+          "on_duty_min": 11706.23788144204,
+          "utilization": 0.36617573144027094
+        },
+        "day_milling_milling_day05": {
+          "type": "operator",
+          "busy_min": 3044.380675571001,
+          "on_duty_min": 11704.01662398369,
+          "utilization": 0.26011417903598183
+        },
+        "day_milling_milling_day06": {
+          "type": "operator",
+          "busy_min": 4095.297590802349,
+          "on_duty_min": 11703.187963988848,
+          "utilization": 0.34993008771658923
+        },
+        "day_milling_milling_day07": {
+          "type": "operator",
+          "busy_min": 3527.201883951775,
+          "on_duty_min": 11701.502945556958,
+          "utilization": 0.30143152553673014
+        },
+        "day_milling_milling_day08": {
+          "type": "operator",
+          "busy_min": 3491.945005579426,
+          "on_duty_min": 11701.735166617018,
+          "utilization": 0.29841258205375626
+        },
+        "day_milling_milling_day09": {
+          "type": "operator",
+          "busy_min": 3047.605794186815,
+          "on_duty_min": 11703.583375257629,
+          "utilization": 0.26039937482991005
+        },
+        "day_milling_milling_day10": {
+          "type": "operator",
+          "busy_min": 3501.3711784667285,
+          "on_duty_min": 11704.692061522044,
+          "utilization": 0.29914252848882045
+        },
+        "day_milling_milling_day11": {
+          "type": "operator",
+          "busy_min": 4182.534434518444,
+          "on_duty_min": 11707.296965380196,
+          "utilization": 0.357258763221491
+        },
+        "day_turning_turning_day00": {
+          "type": "operator",
+          "busy_min": 5726.6664673599535,
+          "on_duty_min": 11707.021951196604,
+          "utilization": 0.48916509179130874
+        },
+        "day_turning_turning_day01": {
+          "type": "operator",
+          "busy_min": 6517.64998722953,
+          "on_duty_min": 11709.101748632067,
+          "utilization": 0.5566310829941301
+        },
+        "day_turning_turning_day02": {
+          "type": "operator",
+          "busy_min": 4839.256558801442,
+          "on_duty_min": 11705.420396806941,
+          "utilization": 0.41342014167398183
+        },
+        "day_turning_turning_day03": {
+          "type": "operator",
+          "busy_min": 4601.863502721344,
+          "on_duty_min": 11709.378231873776,
+          "utilization": 0.39300664916560113
+        },
+        "day_turning_turning_day04": {
+          "type": "operator",
+          "busy_min": 4113.43886966577,
+          "on_duty_min": 11705.50884178075,
+          "utilization": 0.35141051322635164
+        },
+        "day_turning_turning_day05": {
+          "type": "operator",
+          "busy_min": 5094.0721008036835,
+          "on_duty_min": 11706.426111442546,
+          "utilization": 0.43515177495755425
+        },
+        "day_turning_turning_day06": {
+          "type": "operator",
+          "busy_min": 5844.73150357757,
+          "on_duty_min": 11708.282306008183,
+          "utilization": 0.4991963253720238
+        },
+        "day_turning_turning_day07": {
+          "type": "operator",
+          "busy_min": 4223.859283993474,
+          "on_duty_min": 11708.872187836907,
+          "utilization": 0.3607400624272924
+        },
+        "day_turning_turning_day08": {
+          "type": "operator",
+          "busy_min": 4888.355683117408,
+          "on_duty_min": 11707.322423957337,
+          "utilization": 0.4175468570946758
+        },
+        "day_turning_turning_day09": {
+          "type": "operator",
+          "busy_min": 4775.165643872086,
+          "on_duty_min": 11707.83618395829,
+          "utilization": 0.4078606472487946
+        },
+        "day_turning_turning_day10": {
+          "type": "operator",
+          "busy_min": 4385.686681508647,
+          "on_duty_min": 11703.418717839979,
+          "utilization": 0.37473551850480863
+        },
+        "day_turning_turning_day11": {
+          "type": "operator",
+          "busy_min": 4635.896473091059,
+          "on_duty_min": 11708.820545287945,
+          "utilization": 0.3959319775343822
+        },
+        "S03": {
+          "type": "setup",
+          "busy_min": 1107.07648663496,
+          "on_duty_min": 11727.957883340807,
+          "utilization": 0.09439635592548701
+        },
+        "S04": {
+          "type": "setup",
+          "busy_min": 1171.688172914819,
+          "on_duty_min": 11700.0,
+          "utilization": 0.10014428828331787
+        },
+        "night_milling_milling_night00": {
+          "type": "operator",
+          "busy_min": 7177.529531837645,
+          "on_duty_min": 11706.470423725023,
+          "utilization": 0.6131249874677205
+        },
+        "night_milling_milling_night01": {
+          "type": "operator",
+          "busy_min": 6943.060376122328,
+          "on_duty_min": 11714.082768396844,
+          "utilization": 0.5927105445126145
+        },
+        "night_milling_milling_night02": {
+          "type": "operator",
+          "busy_min": 7101.340671247031,
+          "on_duty_min": 11706.73695710281,
+          "utilization": 0.6066029071353181
+        },
+        "night_milling_milling_night03": {
+          "type": "operator",
+          "busy_min": 6864.3861780191855,
+          "on_duty_min": 11711.972547888307,
+          "utilization": 0.5860999203978539
+        },
+        "night_milling_milling_night04": {
+          "type": "operator",
+          "busy_min": 7214.6543347923725,
+          "on_duty_min": 11705.829380193356,
+          "utilization": 0.6163300438155883
+        },
+        "night_milling_milling_night05": {
+          "type": "operator",
+          "busy_min": 6721.242309925687,
+          "on_duty_min": 11712.831496004856,
+          "utilization": 0.5738358237475066
+        },
+        "night_turning_turning_night00": {
+          "type": "operator",
+          "busy_min": 8536.312086132708,
+          "on_duty_min": 11715.513192544286,
+          "utilization": 0.7286332186937563
+        },
+        "night_turning_turning_night01": {
+          "type": "operator",
+          "busy_min": 8713.766598587863,
+          "on_duty_min": 11711.757176971814,
+          "utilization": 0.7440187212659484
+        },
+        "night_turning_turning_night02": {
+          "type": "operator",
+          "busy_min": 8686.45372664569,
+          "on_duty_min": 11722.149814201666,
+          "utilization": 0.7410290658563196
+        },
+        "night_turning_turning_night03": {
+          "type": "operator",
+          "busy_min": 8311.860131369038,
+          "on_duty_min": 11712.661627375843,
+          "utilization": 0.7096474222342292
+        },
+        "night_turning_turning_night04": {
+          "type": "operator",
+          "busy_min": 8592.173704849454,
+          "on_duty_min": 11710.641258389254,
+          "utilization": 0.7337065080611366
+        },
+        "night_turning_turning_night05": {
+          "type": "operator",
+          "busy_min": 7620.889965120721,
+          "on_duty_min": 11709.02418822209,
+          "utilization": 0.6508561125688378
+        }
+      },
+      "measurement": {
+        "start_min": 10080.0,
+        "stop_min": 40320.0,
+        "denominator_min": 30240.0,
+        "cohort": "release in [start,stop); drain included in flow only"
+      },
+      "demand_sha256": "d873cd800d784a87ef764fb542fd58216818720f2c710903d8915b0b444d0c42"
+    },
+    {
+      "rate": 17.0,
+      "replication": 0,
+      "elapsed_seconds": 578.0758351690001,
+      "status": "COMPLETE",
+      "mean_flow_min": 5812.156912971495,
+      "machine_utilization": 0.5709180239843069,
+      "worker_available_utilization": 0.6526602517262264,
+      "setup_worker_utilization": 0.17822378094641703,
+      "mean_setup_wait_min": 1.6792677299499192,
+      "mean_wip": 68.24354479507414,
+      "mean_queue": 28.800184087756733,
+      "throughput_jobs_per_day": 17.0,
+      "wip_slope_jobs_per_day": 0.500000000000002,
+      "peak_processing_machines": 60,
+      "per_family": {
+        "Milling": {
+          "machine_count": 51,
+          "processing_utilization": 0.4788466976645337,
+          "busy_utilization": 0.5796301678206358,
+          "mean_ready_queue": 3.0948101644675896
+        },
+        "WireEDM": {
+          "machine_count": 2,
+          "processing_utilization": 0.5692055092887436,
+          "busy_utilization": 0.6507421645475826,
+          "mean_ready_queue": 1.1113103357270064
+        },
+        "Turning": {
+          "machine_count": 13,
+          "processing_utilization": 0.3283499132592667,
+          "busy_utilization": 0.5896902292290751,
+          "mean_ready_queue": 7.293438145175613
+        },
+        "Honing": {
+          "machine_count": 2,
+          "processing_utilization": 0.09262987887855552,
+          "busy_utilization": 0.14691488150414725,
+          "mean_ready_queue": 0.05938459100007449
+        }
+      },
+      "observation_end": {
+        "wip": 73,
+        "unfinished_job_ages_min": [
+          15854.10683225263,
+          15829.394136160503,
+          13453.410974236165,
+          10692.42939310713,
+          10338.02887292386,
+          9875.420350431312,
+          9602.142868740972,
+          8577.794172508966,
+          8397.251469011859,
+          8113.518594521778,
+          7721.502816248878,
+          7721.151950470194,
+          7045.060418407535,
+          5644.232780023551,
+          5408.3212319308,
+          5364.285883269236,
+          5327.093706244559,
+          5316.302445898218,
+          4824.499956430045,
+          4734.41484601827,
+          4710.66325810604,
+          4475.630201849119,
+          4392.736717597938,
+          4345.466662489787,
+          4323.800368169665,
+          4183.531795658368,
+          4067.246774894629,
+          4062.412309572923,
+          3820.9222560924463,
+          3615.790202977303,
+          3599.2967515438722,
+          3565.285493624702,
+          3529.508829215556,
+          3345.7326300659333,
+          3172.7828421515806,
+          3171.9948443354297,
+          3014.169480183169,
+          2996.57460379057,
+          2872.384302445578,
+          2786.3547594622432,
+          2774.5002241919574,
+          2763.3791172478013,
+          2750.134932415931,
+          2353.9764749754468,
+          2352.489854926869,
+          2321.6540687003653,
+          2273.09716492764,
+          2188.777387573333,
+          2123.207830944797,
+          2081.273668951035,
+          2072.8052574035246,
+          1970.1723015942407,
+          1961.8163153449132,
+          1911.6449862053923,
+          1824.3597678354854,
+          1566.63051306321,
+          1563.4890578817285,
+          1497.6793231934644,
+          1442.7839959111006,
+          1058.4522560904225,
+          1041.079005667103,
+          1031.4894201723073,
+          919.2650615160092,
+          839.0276925136568,
+          805.6051826123148,
+          616.019683801067,
+          583.627687470238,
+          448.41535246850253,
+          338.67796719932085,
+          257.2092485700414,
+          255.78983322261047,
+          230.30792131999624,
+          62.28125871983502
+        ],
+        "released": 494,
+        "completed": 421
+      },
+      "resource_statistics": {
+        "S01": {
+          "type": "setup",
+          "busy_min": 1981.1992600579852,
+          "on_duty_min": 11721.174148977167,
+          "utilization": 0.16902737173569526
+        },
+        "S02": {
+          "type": "setup",
+          "busy_min": 2775.3679058524667,
+          "on_duty_min": 11728.379448889063,
+          "utilization": 0.23663694698378432
+        },
+        "day_milling_milling_day00": {
+          "type": "operator",
+          "busy_min": 5637.924621306931,
+          "on_duty_min": 11710.114467991678,
+          "utilization": 0.4814576865766414
+        },
+        "day_milling_milling_day01": {
+          "type": "operator",
+          "busy_min": 4670.040836093607,
+          "on_duty_min": 11704.382119510075,
+          "utilization": 0.39899934814235943
+        },
+        "day_milling_milling_day02": {
+          "type": "operator",
+          "busy_min": 6034.921647357156,
+          "on_duty_min": 11705.492166923606,
+          "utilization": 0.5155632553759789
+        },
+        "day_milling_milling_day03": {
+          "type": "operator",
+          "busy_min": 5327.473639223024,
+          "on_duty_min": 11704.612220608808,
+          "utilization": 0.45516019999728957
+        },
+        "day_milling_milling_day04": {
+          "type": "operator",
+          "busy_min": 5400.0028101614025,
+          "on_duty_min": 11702.57138477765,
+          "utilization": 0.4614372886616665
+        },
+        "day_milling_milling_day05": {
+          "type": "operator",
+          "busy_min": 5790.434812797666,
+          "on_duty_min": 11709.274740633637,
+          "utilization": 0.49451694840703025
+        },
+        "day_milling_milling_day06": {
+          "type": "operator",
+          "busy_min": 5373.0884669333645,
+          "on_duty_min": 11708.687964072771,
+          "utilization": 0.45889757105324547
+        },
+        "day_milling_milling_day07": {
+          "type": "operator",
+          "busy_min": 5534.814049891576,
+          "on_duty_min": 11709.513427962933,
+          "utilization": 0.47267669010687924
+        },
+        "day_milling_milling_day08": {
+          "type": "operator",
+          "busy_min": 5175.51818496363,
+          "on_duty_min": 11704.170759626113,
+          "utilization": 0.4421943503094414
+        },
+        "day_milling_milling_day09": {
+          "type": "operator",
+          "busy_min": 4922.573399100831,
+          "on_duty_min": 11704.895892023524,
+          "utilization": 0.4205567861953725
+        },
+        "day_milling_milling_day10": {
+          "type": "operator",
+          "busy_min": 3777.8633522045384,
+          "on_duty_min": 11707.133860823404,
+          "utilization": 0.32269754468655476
+        },
+        "day_milling_milling_day11": {
+          "type": "operator",
+          "busy_min": 4849.948044740971,
+          "on_duty_min": 11703.693940395584,
+          "utilization": 0.4143946406528334
+        },
+        "day_turning_turning_day00": {
+          "type": "operator",
+          "busy_min": 6740.286702317933,
+          "on_duty_min": 11711.235211376314,
+          "utilization": 0.5755402039718583
+        },
+        "day_turning_turning_day01": {
+          "type": "operator",
+          "busy_min": 7764.7226151820705,
+          "on_duty_min": 11707.787170325832,
+          "utilization": 0.6632100927545282
+        },
+        "day_turning_turning_day02": {
+          "type": "operator",
+          "busy_min": 7954.154470696314,
+          "on_duty_min": 11716.585842679533,
+          "utilization": 0.6788798868115691
+        },
+        "day_turning_turning_day03": {
+          "type": "operator",
+          "busy_min": 8369.378606745957,
+          "on_duty_min": 11711.900746655187,
+          "utilization": 0.7146046391433241
+        },
+        "day_turning_turning_day04": {
+          "type": "operator",
+          "busy_min": 6622.472665720312,
+          "on_duty_min": 11707.264784387145,
+          "utilization": 0.5656720666771001
+        },
+        "day_turning_turning_day05": {
+          "type": "operator",
+          "busy_min": 7361.8665440408695,
+          "on_duty_min": 11710.897673012105,
+          "utilization": 0.6286338374389842
+        },
+        "day_turning_turning_day06": {
+          "type": "operator",
+          "busy_min": 7409.024930663216,
+          "on_duty_min": 11710.567729049917,
+          "utilization": 0.6326785431831761
+        },
+        "day_turning_turning_day07": {
+          "type": "operator",
+          "busy_min": 7588.157972181687,
+          "on_duty_min": 11707.07977523828,
+          "utilization": 0.6481682979756787
+        },
+        "day_turning_turning_day08": {
+          "type": "operator",
+          "busy_min": 6674.691093504889,
+          "on_duty_min": 11711.435038580155,
+          "utilization": 0.5699293956305888
+        },
+        "day_turning_turning_day09": {
+          "type": "operator",
+          "busy_min": 7190.788582811509,
+          "on_duty_min": 11710.00121689788,
+          "utilization": 0.6140724026941164
+        },
+        "day_turning_turning_day10": {
+          "type": "operator",
+          "busy_min": 7430.776794016758,
+          "on_duty_min": 11713.423032817196,
+          "utilization": 0.6343813224535767
+        },
+        "day_turning_turning_day11": {
+          "type": "operator",
+          "busy_min": 6237.958524442318,
+          "on_duty_min": 11708.412557699485,
+          "utilization": 0.5327757707290746
+        },
+        "S03": {
+          "type": "setup",
+          "busy_min": 1512.1825260568312,
+          "on_duty_min": 11809.645973787312,
+          "utilization": 0.12804638931711174
+        },
+        "S04": {
+          "type": "setup",
+          "busy_min": 2114.877967545068,
+          "on_duty_min": 11780.693842081673,
+          "utilization": 0.1795206628654195
+        },
+        "night_milling_milling_night00": {
+          "type": "operator",
+          "busy_min": 9637.334677086526,
+          "on_duty_min": 11714.648914734516,
+          "utilization": 0.822673794770309
+        },
+        "night_milling_milling_night01": {
+          "type": "operator",
+          "busy_min": 9843.071562492254,
+          "on_duty_min": 11711.798680858145,
+          "utilization": 0.8404406385997607
+        },
+        "night_milling_milling_night02": {
+          "type": "operator",
+          "busy_min": 9670.19153173136,
+          "on_duty_min": 11709.70888844387,
+          "utilization": 0.8258268095182726
+        },
+        "night_milling_milling_night03": {
+          "type": "operator",
+          "busy_min": 9335.267803683957,
+          "on_duty_min": 11715.19971799278,
+          "utilization": 0.7968509311323471
+        },
+        "night_milling_milling_night04": {
+          "type": "operator",
+          "busy_min": 9474.466156577537,
+          "on_duty_min": 11710.48805613695,
+          "utilization": 0.8090581802534171
+        },
+        "night_milling_milling_night05": {
+          "type": "operator",
+          "busy_min": 9329.333557554623,
+          "on_duty_min": 11712.567019388322,
+          "utilization": 0.796523387410409
+        },
+        "night_turning_turning_night00": {
+          "type": "operator",
+          "busy_min": 11240.252555292558,
+          "on_duty_min": 11715.842000052633,
+          "utilization": 0.9594062940795942
+        },
+        "night_turning_turning_night01": {
+          "type": "operator",
+          "busy_min": 11385.224260977762,
+          "on_duty_min": 11721.216937234083,
+          "utilization": 0.9713346593569996
+        },
+        "night_turning_turning_night02": {
+          "type": "operator",
+          "busy_min": 11366.879431661857,
+          "on_duty_min": 11714.281907209186,
+          "utilization": 0.9703436814736778
+        },
+        "night_turning_turning_night03": {
+          "type": "operator",
+          "busy_min": 11369.697017106697,
+          "on_duty_min": 11713.080926752498,
+          "utilization": 0.9706837243084765
+        },
+        "night_turning_turning_night04": {
+          "type": "operator",
+          "busy_min": 11280.229141917334,
+          "on_duty_min": 11714.018774786513,
+          "utilization": 0.9629683338221314
+        },
+        "night_turning_turning_night05": {
+          "type": "operator",
+          "busy_min": 11373.820535161214,
+          "on_duty_min": 11720.10429557927,
+          "utilization": 0.970453866989164
+        }
+      },
+      "measurement": {
+        "start_min": 10080.0,
+        "stop_min": 40320.0,
+        "denominator_min": 30240.0,
+        "cohort": "release in [start,stop); drain included in flow only"
+      },
+      "demand_sha256": "8f227d6c0e651c4e631a377e1cdfab14d83f8861303e98e933a131de988a1218"
+    },
+    {
+      "rate": 17.0,
+      "replication": 1,
+      "elapsed_seconds": 614.4801705070004,
+      "status": "COMPLETE",
+      "mean_flow_min": 5809.566402953363,
+      "machine_utilization": 0.5782809836581315,
+      "worker_available_utilization": 0.6234146832485976,
+      "setup_worker_utilization": 0.14798661981888186,
+      "mean_setup_wait_min": 1.180262266254173,
+      "mean_wip": 66.76445525220178,
+      "mean_queue": 26.823697285938902,
+      "throughput_jobs_per_day": 16.523809523809526,
+      "wip_slope_jobs_per_day": -2.5000000000000004,
+      "peak_processing_machines": 62,
+      "per_family": {
+        "Milling": {
+          "machine_count": 51,
+          "processing_utilization": 0.5121320297378948,
+          "busy_utilization": 0.617055728806892,
+          "mean_ready_queue": 3.759173366435164
+        },
+        "WireEDM": {
+          "machine_count": 2,
+          "processing_utilization": 0.6031601029498737,
+          "busy_utilization": 0.6896362328897032,
+          "mean_ready_queue": 1.3236049408039463
+        },
+        "Turning": {
+          "machine_count": 13,
+          "processing_utilization": 0.2659915154777402,
+          "busy_utilization": 0.4799968861221307,
+          "mean_ready_queue": 5.0096126472173905
+        },
+        "Honing": {
+          "machine_count": 2,
+          "processing_utilization": 0.07241498789304539,
+          "busy_utilization": 0.11701636711698912,
+          "mean_ready_queue": 0.0019722264901474774
+        }
+      },
+      "observation_end": {
+        "wip": 43,
+        "unfinished_job_ages_min": [
+          17592.732755771962,
+          12023.525525106354,
+          11052.829421831084,
+          9370.563810537591,
+          7436.425894560125,
+          7034.95439259438,
+          6878.271254464242,
+          6149.13236248921,
+          6083.929148011375,
+          5893.142627962014,
+          5588.459084137619,
+          5329.59934750972,
+          5133.897977072549,
+          4823.131766097358,
+          4584.24954810139,
+          4279.750946036358,
+          4136.074982234204,
+          4117.939055985604,
+          4049.7283992071098,
+          3468.4105895202956,
+          2989.81815056684,
+          2895.3087052811316,
+          2707.971878381548,
+          1998.6269158702999,
+          1998.0812311117115,
+          1957.3430370128335,
+          1684.587758149144,
+          1589.300889532773,
+          1510.5623490671205,
+          1477.792597999287,
+          1209.0628341163247,
+          1146.7551306728346,
+          1122.2356819380147,
+          862.8778144291864,
+          763.5963783086554,
+          734.9133539924078,
+          656.3777227534592,
+          536.287781736035,
+          457.0936131717899,
+          289.2059123590443,
+          259.609445272843,
+          248.5978589154256,
+          49.67771050980082
+        ],
+        "released": 457,
+        "completed": 414
+      },
+      "resource_statistics": {
+        "S01": {
+          "type": "setup",
+          "busy_min": 1928.4589698709005,
+          "on_duty_min": 11751.683602204346,
+          "utilization": 0.16410065443807267
+        },
+        "S02": {
+          "type": "setup",
+          "busy_min": 1900.9116291628743,
+          "on_duty_min": 11751.568592717576,
+          "utilization": 0.16175811885579816
+        },
+        "day_milling_milling_day00": {
+          "type": "operator",
+          "busy_min": 6224.287354455333,
+          "on_duty_min": 11710.8375215827,
+          "utilization": 0.5314980540874357
+        },
+        "day_milling_milling_day01": {
+          "type": "operator",
+          "busy_min": 5506.016412383811,
+          "on_duty_min": 11710.300510639414,
+          "utilization": 0.47018574863909857
+        },
+        "day_milling_milling_day02": {
+          "type": "operator",
+          "busy_min": 5434.544078926378,
+          "on_duty_min": 11705.646936581663,
+          "utilization": 0.46426687122629023
+        },
+        "day_milling_milling_day03": {
+          "type": "operator",
+          "busy_min": 5137.093973634062,
+          "on_duty_min": 11704.303957839129,
+          "utilization": 0.4389064050402945
+        },
+        "day_milling_milling_day04": {
+          "type": "operator",
+          "busy_min": 5176.2699841089725,
+          "on_duty_min": 11702.567237575122,
+          "utilization": 0.4423191833915532
+        },
+        "day_milling_milling_day05": {
+          "type": "operator",
+          "busy_min": 6045.567193321316,
+          "on_duty_min": 11709.24009996663,
+          "utilization": 0.5163073898654231
+        },
+        "day_milling_milling_day06": {
+          "type": "operator",
+          "busy_min": 5811.545430755694,
+          "on_duty_min": 11704.993796772176,
+          "utilization": 0.4965013678485086
+        },
+        "day_milling_milling_day07": {
+          "type": "operator",
+          "busy_min": 5014.134138082076,
+          "on_duty_min": 11709.371504318779,
+          "utilization": 0.42821547990280334
+        },
+        "day_milling_milling_day08": {
+          "type": "operator",
+          "busy_min": 5602.0673098261705,
+          "on_duty_min": 11710.17096705618,
+          "utilization": 0.47839329806424463
+        },
+        "day_milling_milling_day09": {
+          "type": "operator",
+          "busy_min": 6057.782353220418,
+          "on_duty_min": 11702.61404934217,
+          "utilization": 0.5176435220095924
+        },
+        "day_milling_milling_day10": {
+          "type": "operator",
+          "busy_min": 5384.060685754919,
+          "on_duty_min": 11711.186370899928,
+          "utilization": 0.45973657281497
+        },
+        "day_milling_milling_day11": {
+          "type": "operator",
+          "busy_min": 5414.55567363796,
+          "on_duty_min": 11705.71687367699,
+          "utilization": 0.462556521063126
+        },
+        "day_turning_turning_day00": {
+          "type": "operator",
+          "busy_min": 6273.561975603287,
+          "on_duty_min": 11708.170173864379,
+          "utilization": 0.5358277068441896
+        },
+        "day_turning_turning_day01": {
+          "type": "operator",
+          "busy_min": 6395.341718038961,
+          "on_duty_min": 11709.882860793896,
+          "utilization": 0.5461490771569832
+        },
+        "day_turning_turning_day02": {
+          "type": "operator",
+          "busy_min": 6972.147049576828,
+          "on_duty_min": 11711.675263409727,
+          "utilization": 0.5953159469302911
+        },
+        "day_turning_turning_day03": {
+          "type": "operator",
+          "busy_min": 6153.9656475561205,
+          "on_duty_min": 11707.358677944183,
+          "utilization": 0.5256493643736864
+        },
+        "day_turning_turning_day04": {
+          "type": "operator",
+          "busy_min": 5904.036065870716,
+          "on_duty_min": 11705.58690827564,
+          "utilization": 0.5043776200317361
+        },
+        "day_turning_turning_day05": {
+          "type": "operator",
+          "busy_min": 6161.39130062557,
+          "on_duty_min": 11711.360234381658,
+          "utilization": 0.5261038152115967
+        },
+        "day_turning_turning_day06": {
+          "type": "operator",
+          "busy_min": 6009.42268360201,
+          "on_duty_min": 11702.033927385659,
+          "utilization": 0.5135365972182384
+        },
+        "day_turning_turning_day07": {
+          "type": "operator",
+          "busy_min": 7220.837239005121,
+          "on_duty_min": 11710.169441654374,
+          "utilization": 0.6166296119780983
+        },
+        "day_turning_turning_day08": {
+          "type": "operator",
+          "busy_min": 6405.687360108141,
+          "on_duty_min": 11711.848538275792,
+          "utilization": 0.5469407616716994
+        },
+        "day_turning_turning_day09": {
+          "type": "operator",
+          "busy_min": 5833.378831751255,
+          "on_duty_min": 11704.780009407663,
+          "utilization": 0.4983757769956124
+        },
+        "day_turning_turning_day10": {
+          "type": "operator",
+          "busy_min": 5963.678461677831,
+          "on_duty_min": 11706.211093373171,
+          "utilization": 0.5094456621454435
+        },
+        "day_turning_turning_day11": {
+          "type": "operator",
+          "busy_min": 5266.830531910506,
+          "on_duty_min": 11707.012524000373,
+          "utilization": 0.4498868110983101
+        },
+        "S03": {
+          "type": "setup",
+          "busy_min": 1605.5350574520817,
+          "on_duty_min": 11700.000000000004,
+          "utilization": 0.13722521858564796
+        },
+        "S04": {
+          "type": "setup",
+          "busy_min": 1513.413944789343,
+          "on_duty_min": 11749.098022814791,
+          "utilization": 0.12881107484596224
+        },
+        "night_milling_milling_night00": {
+          "type": "operator",
+          "busy_min": 10146.44932354709,
+          "on_duty_min": 11714.055966849728,
+          "utilization": 0.8661772960843882
+        },
+        "night_milling_milling_night01": {
+          "type": "operator",
+          "busy_min": 9575.77359943934,
+          "on_duty_min": 11711.611772113218,
+          "utilization": 0.8176307228899468
+        },
+        "night_milling_milling_night02": {
+          "type": "operator",
+          "busy_min": 10189.757165066918,
+          "on_duty_min": 11714.810826101979,
+          "utilization": 0.869818327954809
+        },
+        "night_milling_milling_night03": {
+          "type": "operator",
+          "busy_min": 10298.45203892357,
+          "on_duty_min": 11714.78409838708,
+          "utilization": 0.87909874842179
+        },
+        "night_milling_milling_night04": {
+          "type": "operator",
+          "busy_min": 9882.156248516974,
+          "on_duty_min": 11712.210961000073,
+          "utilization": 0.8437481429785623
+        },
+        "night_milling_milling_night05": {
+          "type": "operator",
+          "busy_min": 9732.304364751188,
+          "on_duty_min": 11712.516406238801,
+          "utilization": 0.830931972873666
+        },
+        "night_turning_turning_night00": {
+          "type": "operator",
+          "busy_min": 10260.83037273788,
+          "on_duty_min": 11712.475455748803,
+          "utilization": 0.8760599252911633
+        },
+        "night_turning_turning_night01": {
+          "type": "operator",
+          "busy_min": 10239.8899799966,
+          "on_duty_min": 11714.078028912007,
+          "utilization": 0.8741524475697617
+        },
+        "night_turning_turning_night02": {
+          "type": "operator",
+          "busy_min": 10116.230197128434,
+          "on_duty_min": 11714.431866742225,
+          "utilization": 0.8635698523160006
+        },
+        "night_turning_turning_night03": {
+          "type": "operator",
+          "busy_min": 10328.722933800229,
+          "on_duty_min": 11712.15992687321,
+          "utilization": 0.8818802849593331
+        },
+        "night_turning_turning_night04": {
+          "type": "operator",
+          "busy_min": 10318.44893257959,
+          "on_duty_min": 11709.701236123008,
+          "utilization": 0.881188061463808
+        },
+        "night_turning_turning_night05": {
+          "type": "operator",
+          "busy_min": 10335.516287184702,
+          "on_duty_min": 11711.732823505547,
+          "utilization": 0.8824924921819626
+        }
+      },
+      "measurement": {
+        "start_min": 10080.0,
+        "stop_min": 40320.0,
+        "denominator_min": 30240.0,
+        "cohort": "release in [start,stop); drain included in flow only"
+      },
+      "demand_sha256": "c6136ecb2629dd2cd4bf1130055a31a1f8b3361b9f2f25384332e1917137c5a3"
+    }
+  ],
+  "expected_runs": 6,
+  "complete": false,
+  "selected_baseline_validation_complete": true,
+  "interrupted_runs": [
+    {
+      "rate": 22,
+      "replication": 0,
+      "status": "INTERRUPTED_NO_RESULT"
+    },
+    {
+      "rate": 22,
+      "replication": 1,
+      "status": "INTERRUPTED_NO_RESULT"
+    }
+  ],
+  "stopping_reason": "Selected12baseline and17comparison completed;100replicatedgridruns completed. Higher22stress runs were stopped and are excluded from conclusions. No claim about their WIP or sustainable capacity."
+}

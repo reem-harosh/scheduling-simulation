@@ -1,0 +1,394 @@
+{
+  "rows": [
+    {
+      "Target quantity mean": 150,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Manual min/job (approx.)": 709.7351797862005,
+      "Machine-only lambda at 75%": 23.441251875965616,
+      "Human-only lambda at 75%": 12.36376644404659,
+      "Joint analytical candidate jobs/day": 12.36376644404659,
+      "Binding analytical resource": "human",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 150,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Manual min/job (approx.)": 709.7351797862005,
+      "Machine-only lambda at 75%": 23.441251875965616,
+      "Human-only lambda at 75%": 17.66252349149513,
+      "Joint analytical candidate jobs/day": 17.66252349149513,
+      "Binding analytical resource": "human",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 150,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Manual min/job (approx.)": 709.7351797862005,
+      "Machine-only lambda at 75%": 23.441251875965616,
+      "Human-only lambda at 75%": 24.72753288809318,
+      "Joint analytical candidate jobs/day": 23.441251875965616,
+      "Binding analytical resource": "machine",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 175,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Manual min/job (approx.)": 835.0860058309037,
+      "Machine-only lambda at 75%": 19.823866881105808,
+      "Human-only lambda at 75%": 10.507899711801478,
+      "Joint analytical candidate jobs/day": 10.507899711801478,
+      "Binding analytical resource": "human",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 175,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Manual min/job (approx.)": 835.0860058309037,
+      "Machine-only lambda at 75%": 19.823866881105808,
+      "Human-only lambda at 75%": 15.01128530257354,
+      "Joint analytical candidate jobs/day": 15.01128530257354,
+      "Binding analytical resource": "human",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 175,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Manual min/job (approx.)": 835.0860058309037,
+      "Machine-only lambda at 75%": 19.823866881105808,
+      "Human-only lambda at 75%": 21.015799423602957,
+      "Joint analytical candidate jobs/day": 19.823866881105808,
+      "Binding analytical resource": "machine",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 200,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Manual min/job (approx.)": 961.4096209912536,
+      "Machine-only lambda at 75%": 17.18854395320176,
+      "Human-only lambda at 75%": 9.127222994661325,
+      "Joint analytical candidate jobs/day": 9.127222994661325,
+      "Binding analytical resource": "human",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 200,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Manual min/job (approx.)": 961.4096209912536,
+      "Machine-only lambda at 75%": 17.18854395320176,
+      "Human-only lambda at 75%": 13.038889992373322,
+      "Joint analytical candidate jobs/day": 13.038889992373322,
+      "Binding analytical resource": "human",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    },
+    {
+      "Target quantity mean": 200,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Manual min/job (approx.)": 961.4096209912536,
+      "Machine-only lambda at 75%": 17.18854395320176,
+      "Human-only lambda at 75%": 18.25444598932265,
+      "Joint analytical candidate jobs/day": 17.18854395320176,
+      "Binding analytical resource": "machine",
+      "Walking/setup/transport": "excluded; not stable-rate confirmation"
+    }
+  ],
+  "family_loads": [
+    {
+      "Target mean": 150,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Honing",
+      "Processing min/job": 61.6241489703113,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Milling",
+      "Processing min/job": 2006.469186192877,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Turning",
+      "Processing min/job": 921.4524938468215,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "WireEDM",
+      "Processing min/job": 51.492273844771276,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Honing",
+      "Processing min/job": 61.6241489703113,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Milling",
+      "Processing min/job": 2006.469186192877,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Turning",
+      "Processing min/job": 921.4524938468215,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "WireEDM",
+      "Processing min/job": 51.492273844771276,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Honing",
+      "Processing min/job": 61.6241489703113,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Milling",
+      "Processing min/job": 2006.469186192877,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Turning",
+      "Processing min/job": 921.4524938468215,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 150,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "WireEDM",
+      "Processing min/job": 51.492273844771276,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Honing",
+      "Processing min/job": 72.95156472247915,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Milling",
+      "Processing min/job": 2376.7065810726035,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Turning",
+      "Processing min/job": 1089.5956943994127,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "WireEDM",
+      "Processing min/job": 61.21285940825315,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Honing",
+      "Processing min/job": 72.95156472247915,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Milling",
+      "Processing min/job": 2376.7065810726035,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Turning",
+      "Processing min/job": 1089.5956943994127,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "WireEDM",
+      "Processing min/job": 61.21285940825315,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Honing",
+      "Processing min/job": 72.95156472247915,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Milling",
+      "Processing min/job": 2376.7065810726035,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Turning",
+      "Processing min/job": 1089.5956943994127,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 175,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "WireEDM",
+      "Processing min/job": 61.21285940825315,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Honing",
+      "Processing min/job": 84.50452636351756,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Milling",
+      "Processing min/job": 2764.632078748492,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "Turning",
+      "Processing min/job": 1255.3326890181004,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 14,
+      "Night workers": 7,
+      "Family": "WireEDM",
+      "Processing min/job": 71.75897240812414,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Honing",
+      "Processing min/job": 84.50452636351756,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Milling",
+      "Processing min/job": 2764.632078748492,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "Turning",
+      "Processing min/job": 1255.3326890181004,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 20,
+      "Night workers": 10,
+      "Family": "WireEDM",
+      "Processing min/job": 71.75897240812414,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Honing",
+      "Processing min/job": 84.50452636351756,
+      "Machine count": 2
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Milling",
+      "Processing min/job": 2764.632078748492,
+      "Machine count": 44
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "Turning",
+      "Processing min/job": 1255.3326890181004,
+      "Machine count": 20
+    },
+    {
+      "Target mean": 200,
+      "Day workers": 28,
+      "Night workers": 14,
+      "Family": "WireEDM",
+      "Processing min/job": 71.75897240812414,
+      "Machine count": 2
+    }
+  ],
+  "status": "Analytical only, OLD 19 routes and mix held fixed; floor restrictions not applied; NOT new-world calibration."
+}

@@ -1,0 +1,7 @@
+Machine family,Old mapped machines,Proposed route coverage,Mean visits/job under uniform proposal,Source interpretation
+Milling,44,11,0.8,Observed category / derived timing proxy
+Turning,20,9,0.6,Observed category / derived timing proxy
+Grinding,0,8,0.4,"Synthetic broader process; Honing is evidence for a related operation, not equivalent equipment"
+WireEDM,2,6,0.3,Observed category / derived timing proxy
+Finishing,0,10,0.5,Synthetic added stage; timing needs explicit engineering baseline
+Inspection,0,14,0.7,Synthetic added stage; timing needs explicit engineering baseline

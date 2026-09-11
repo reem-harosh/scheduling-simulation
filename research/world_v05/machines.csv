@@ -1,0 +1,69 @@
+x,y,w,h,id,department,machine_family,speed,technology_source,axis_capability,source_reported_family
+2130.0,612.0,80.0,70.0,M01,turning,Turning,0.8607079764250578,Synthetic speed independent of axis capability,,Turning
+1461.5,153.0,80.0,70.0,M02,turning,Turning,0.8824969025845955,Synthetic speed independent of axis capability,,Turning
+2130.0,705.0,80.0,70.0,M03,turning,Turning,0.9048374180359595,Synthetic speed independent of axis capability,,Turning
+1554.5,153.0,80.0,70.0,M04,turning,Turning,0.9277434863285529,Synthetic speed independent of axis capability,,Turning
+374.0,370.0,80.0,70.0,M05,milling,Milling,0.8607079764250578,Synthetic speed independent of axis capability,3,Milling
+831.0,370.0,80.0,70.0,M06,milling,Milling,0.865887748059205,Synthetic speed independent of axis capability,4,Milling
+946.0,370.0,80.0,70.0,M07,milling,Milling,0.8710986917457983,Synthetic speed independent of axis capability,3,Milling
+489.0,370.0,80.0,70.0,M08,milling,Milling,0.8763409950793732,Synthetic speed independent of axis capability,4,Milling
+2230.0,705.0,80.0,70.0,M09,turning,Turning,0.951229424500714,Synthetic speed independent of axis capability,,Turning
+760.0,560.0,80.0,70.0,M10,milling,Milling,0.8816148467834161,Synthetic speed independent of axis capability,3,Milling
+1060.0,370.0,80.0,70.0,M11,milling,Milling,0.8869204367171575,Synthetic speed independent of axis capability,4,Milling
+1554.5,241.0,80.0,70.0,M12,turning,Turning,0.9753099120283327,Synthetic speed independent of axis capability,,Turning
+560.0,660.0,80.0,70.0,M13,milling,Milling,0.8922579558824083,Synthetic speed independent of axis capability,3,Milling
+660.0,270.0,80.0,70.0,M14,milling,Milling,0.8976275964304349,Synthetic speed independent of axis capability,4,Milling
+460.0,560.0,80.0,70.0,M15,milling,Milling,0.9030295516688768,Synthetic speed independent of axis capability,3,Milling
+603.0,370.0,80.0,70.0,M16,milling,Milling,0.9084640160687062,Synthetic speed independent of axis capability,4,Milling
+260.0,560.0,80.0,70.0,M17,milling,Milling,0.9139311852712282,Synthetic speed independent of axis capability,3,Milling
+560.0,560.0,80.0,70.0,M18,milling,Milling,0.9194312560951247,Synthetic speed independent of axis capability,4,Milling
+460.0,660.0,80.0,70.0,M19,milling,Milling,0.9249644265435393,Synthetic speed independent of axis capability,3,Milling
+660.0,560.0,80.0,70.0,M20,milling,Milling,0.9305308958112057,Synthetic speed independent of axis capability,4,Milling
+860.0,560.0,80.0,70.0,M21,milling,Milling,0.9361308642916188,Synthetic speed independent of axis capability,3,Milling
+1060.0,560.0,80.0,70.0,M22,milling,Milling,0.9417645335842487,Synthetic speed independent of axis capability,4,Milling
+960.0,560.0,80.0,70.0,M23,milling,Milling,0.9474321065017983,Synthetic speed independent of axis capability,3,Milling
+1646.5,153.0,80.0,70.0,M24,turning,Milling,0.9531337870775047,Synthetic speed independent of axis capability,4,Milling
+260.0,370.0,80.0,70.0,M25,milling,Milling,0.9588697805724845,Synthetic speed independent of axis capability,4,Milling
+1739.5,153.0,80.0,70.0,M26,turning,Milling,0.9646402934831231,Synthetic speed independent of axis capability,3,Milling
+360.0,270.0,80.0,70.0,M27,milling,Milling,0.9704455335485082,Synthetic speed independent of axis capability,3,Milling
+460.0,270.0,80.0,70.0,M28,milling,Milling,0.9762857097579093,Synthetic speed independent of axis capability,4,Milling
+260.0,270.0,80.0,70.0,M29,milling,Milling,0.9821610323583008,Synthetic speed independent of axis capability,3,Milling
+260.0,660.0,80.0,70.0,M30,milling,Milling,0.9880717128619305,Synthetic speed independent of axis capability,4,Milling
+360.0,660.0,80.0,70.0,M31,milling,Milling,0.9940179640539353,Synthetic speed independent of axis capability,3,Milling
+1673.0,570.0,80.0,70.0,M32,turning,Turning,1.0,Synthetic speed independent of axis capability,,Turning
+1461.5,241.0,80.0,70.0,M33,turning,Turning,1.0253151205244289,Synthetic speed independent of axis capability,,Turning
+717.0,370.0,80.0,70.0,M34,milling,Milling,1.0,Synthetic speed independent of axis capability,4,Milling
+2230.0,612.0,80.0,70.0,M35,turning,Turning,1.0512710963760241,Synthetic speed independent of axis capability,,Turning
+960.0,650.0,80.0,70.0,M36,milling,Milling,1.006018036054065,Synthetic speed independent of axis capability,3,Milling
+360.0,560.0,80.0,70.0,M37,milling,Milling,1.0120722888660778,Synthetic speed independent of axis capability,4,Milling
+2130.0,148.0,80.0,70.0,M38,turning,Turning,1.0778841508846315,Synthetic speed independent of axis capability,,Turning
+2130.0,241.0,80.0,70.0,M39,turning,Turning,1.1051709180756477,Synthetic speed independent of axis capability,,Turning
+560.0,270.0,80.0,70.0,M40,milling,Milling,1.0181629763897937,Synthetic speed independent of axis capability,3,Milling
+1276.5,153.0,80.0,70.0,M41,turning,Turning,1.1331484530668263,Synthetic speed independent of axis capability,,Turning
+1831.5,153.0,80.0,70.0,M42,turning,WireEDM,0.8607079764250578,Synthetic speed independent of axis capability,,WireEDM
+1439.0,520.0,70.0,120.0,M43,turning,Turning,1.161834242728283,Synthetic speed independent of axis capability,,Turning
+1180.0,241.0,80.0,70.0,M44,turning,WireEDM,1.161834242728283,Synthetic speed independent of axis capability,,Turning
+1559.0,520.0,70.0,120.0,M45,turning,Milling,1.0242903178906215,Synthetic speed independent of axis capability,4,Turning
+10.0,380.0,120.0,70.0,M46,milling,Milling,1.030454533953517,Synthetic speed independent of axis capability,4,Milling
+10.0,490.0,120.0,70.0,M47,milling,Milling,1.0366558464909237,Synthetic speed independent of axis capability,3,Milling
+1320.0,520.0,70.0,120.0,M48,turning,Honing,0.8607079764250578,Synthetic speed independent of axis capability,,Honing
+1200.0,520.0,70.0,120.0,M49,turning,Honing,1.161834242728283,Synthetic speed independent of axis capability,,Honing
+10.0,269.0,120.0,70.0,M50,milling,Milling,1.0428944787507632,Synthetic speed independent of axis capability,4,Milling
+1060.0,270.0,80.0,70.0,M51,milling,Milling,1.0491706553244706,Synthetic speed independent of axis capability,3,Milling
+760.0,270.0,80.0,70.0,M52,milling,Milling,1.05548460215508,Synthetic speed independent of axis capability,4,Milling
+1924.5,153.0,80.0,70.0,M53,turning,Milling,1.0618365465453596,Synthetic speed independent of axis capability,3,No reports
+2130.0,519.0,80.0,70.0,M54,turning,Milling,1.0682267171659934,Synthetic speed independent of axis capability,4,Turning
+2130.0,426.0,80.0,70.0,M55,turning,Milling,1.0746553440638136,Synthetic speed independent of axis capability,3,Turning
+2130.0,334.0,80.0,70.0,M56,turning,Milling,1.081122658670083,Synthetic speed independent of axis capability,4,Turning
+2130.0,55.0,80.0,70.0,M57,turning,Milling,1.087628893808826,Synthetic speed independent of axis capability,3,Turning
+1368.5,153.0,80.0,70.0,M58,turning,Milling,1.0941742837052104,Synthetic speed independent of axis capability,4,No reports
+1183.5,153.0,80.0,70.0,M59,turning,Milling,1.1007590639939788,Synthetic speed independent of axis capability,3,No reports
+1884.5,70.0,120.0,70.0,M60,turning,Milling,1.1073834717279334,Synthetic speed independent of axis capability,4,No reports
+10.0,40.0,120.0,70.0,M61,milling,Milling,1.1140477453864677,Synthetic speed independent of axis capability,3,No reports
+260.0,40.0,120.0,70.0,M62,milling,Milling,1.120752124884153,Synthetic speed independent of axis capability,3,Milling
+540.0,40.0,120.0,70.0,M63,milling,Milling,1.1274968515793757,Synthetic speed independent of axis capability,3,Milling
+700.0,40.0,120.0,70.0,M64,milling,Milling,1.1342821682830249,Synthetic speed independent of axis capability,3,No reports
+860.0,40.0,120.0,70.0,M65,milling,Milling,1.141108319267235,Synthetic speed independent of axis capability,3,No reports
+1020.0,40.0,120.0,70.0,M66,milling,Milling,1.1479755502741786,Synthetic speed independent of axis capability,3,No reports
+960.0,270.0,80.0,70.0,M67,milling,Milling,1.1548841085249135,Synthetic speed independent of axis capability,3,No reports
+860.0,270.0,80.0,70.0,M68,milling,Milling,1.161834242728283,Synthetic speed independent of axis capability,3,No reports

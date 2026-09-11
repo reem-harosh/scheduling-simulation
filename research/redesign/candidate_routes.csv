@@ -1,0 +1,21 @@
+Family,Operations,Route,Baseline probability %,Provenance,Quantity class,Quantity mean
+CF01,3,Milling rough / Milling finish / Inspection,5.0,Synthetic proposal; not an inferred historical route,Small,70.0
+CF02,3,Turning rough / Turning finish / Inspection,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF03,3,Turning / Grinding / Inspection,5.0,Synthetic proposal; not an inferred historical route,Large,280.0
+CF04,3,WireEDM cut / Milling finish / Inspection,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF05,2,Milling / Finishing,5.0,Synthetic proposal; not an inferred historical route,Small,70.0
+CF06,3,Turning / Milling / Inspection,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF07,4,Milling rough / Grinding / Milling finish / Inspection,5.0,Synthetic proposal; not an inferred historical route,Large,280.0
+CF08,3,WireEDM cut / Grinding / Inspection,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF09,2,Turning / Finishing,5.0,Synthetic proposal; not an inferred historical route,Small,70.0
+CF10,3,Milling rough / Milling drill / Finishing,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF11,4,Turning / WireEDM cut / Finishing / Inspection,5.0,Synthetic proposal; not an inferred historical route,Large,280.0
+CF12,4,Milling / WireEDM cut / Milling finish / Inspection,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF13,2,Grinding / Finishing,5.0,Synthetic proposal; not an inferred historical route,Small,70.0
+CF14,4,Turning rough / Grinding / Turning finish / Inspection,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF15,4,Milling / Grinding / Finishing / Inspection,5.0,Synthetic proposal; not an inferred historical route,Large,280.0
+CF16,2,WireEDM cut / Finishing,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF17,4,Turning / Milling / Grinding / Inspection,5.0,Synthetic proposal; not an inferred historical route,Small,70.0
+CF18,4,Milling rough / Turning / Milling finish / Finishing,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
+CF19,4,Turning rough / Turning drill / Finishing / Inspection,5.0,Synthetic proposal; not an inferred historical route,Large,280.0
+CF20,5,WireEDM cut / Milling rough / Grinding / Finishing / Inspection,5.0,Synthetic proposal; not an inferred historical route,Medium,175.0
