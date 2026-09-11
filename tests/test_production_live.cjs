@@ -31,3 +31,39 @@ assert.equal((element('resultsTable').innerHTML.match(/<tr>/g)||[]).length,50,'R
 vm.runInContext('select("jobs",result.jobs[0].id)',context);
 assert(element('inspector').innerHTML.includes('פריקות שהושלמו'));
 console.log('Production UI: 25 points/50 rows rendered, live job and resources rendered, replay retains grid and shows operation history.');
+
+// Save/load must preserve the actual event replay, even with a grid loaded.
+let exportedText=null,exportedFilename=null;
+context.Blob=class{constructor(parts){exportedText=parts.join('')}};
+context.URL={createObjectURL:()=> 'blob:test',revokeObjectURL(){}};
+context.document.createElement=()=>({click(){exportedFilename=this.download},remove(){}});
+context.document.body.appendChild=()=>{};
+vm.runInContext("$('download').onclick()",context);
+const exportedRun=JSON.parse(exportedText);
+assert.equal(exportedFilename,'production-run.json');
+assert(exportedRun.trace.intervals.length>0);
+context.roundTrip=exportedRun;
+vm.runInContext('loadRun(roundTrip)',context);
+assert.equal(element('seek').disabled,false);
+assert.equal(+element('horizon').value,context.fixture.result.config.horizon_days);
+assert.equal(+element('arrivalLoad').value,context.fixture.result.config.arrival_load);
+assert.equal(+element('batchSize').value,context.fixture.result.config.batch_size);
+vm.runInContext("$('downloadSurface').onclick()",context);
+assert.equal(exportedFilename,'production-experiment.json');
+assert.equal(JSON.parse(exportedText).points.length,25);
+// Live sidebar and inspector must use this snapshot, not the previous replay.
+vm.runInContext('currentTab="workers";renderLive(fixture.live,"RUNNING")',context);
+assert(element('entities').innerHTML.includes(context.fixture.live.workers[0].id));
+vm.runInContext('select("jobs",fixture.live.jobs[0].id)',context);
+assert(element('inspector').innerHTML.includes(context.fixture.live.jobs[0].id));
+assert(element('inspector').innerHTML.includes('נפרקו'));
+assert(element('queueCounts').innerHTML.includes('Milling'));
+// A disappeared task must release the controls instead of retrying forever.
+context.fetch=async()=>({ok:false,status:404,json:async()=>({message:'Unknown task'})});
+(async()=>{
+ await vm.runInContext('taskId="missing";busy(true);poll()',context);
+ assert.equal(vm.runInContext('taskId',context),null);
+ assert.equal(vm.runInContext('computing',context),false);
+ assert(element('notice').textContent.includes('אינה קיימת'));
+ console.log('Review UI regressions: full replay round-trip, separate exports, synced controls, live job/worker inspectors, actual queues, terminal 404 recovery passed.');
+})().catch(e=>{console.error(e);process.exitCode=1});

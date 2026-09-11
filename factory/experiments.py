@@ -36,9 +36,11 @@ def atomic_json(path, value):
 
 
 def confidence(values):
-    if len(values) < 2 or any(v is None or not math.isfinite(v) for v in values):
+    if not values or any(v is None or not math.isfinite(v) for v in values):
         return {'n': len(values), 'mean': None, 'half_width': None, 'relative_half_width': None, 'ci95': None}
     mean = statistics.mean(values)
+    if len(values)==1:
+        return {'n':1,'mean':mean,'half_width':None,'relative_half_width':None,'ci95':None}
     half = float(student_t.ppf(.975, len(values)-1)) * statistics.stdev(values)/math.sqrt(len(values))
     return {'n': len(values), 'mean': mean, 'half_width': half,
             'relative_half_width': half/abs(mean) if mean else None, 'ci95': [mean-half, mean+half]}

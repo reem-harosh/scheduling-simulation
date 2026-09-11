@@ -3,3 +3,6 @@
 .workspace{align-items:start}.floor-wrap{overflow:auto;max-height:700px}.floor-wrap canvas{max-width:none;aspect-ratio:auto;touch-action:pan-x pan-y}.zoom-label{flex-direction:row;align-items:center;margin-inline-start:auto;font-size:12px}.zoom-label select{min-height:30px;padding:3px;font-size:12px}.tabs button{font-size:14px}@media(max-width:560px){.floor-wrap{max-height:400px}.floor-panel .panel-head{flex-wrap:wrap}.zoom-label{margin:0}}
 
 .seek-label input{width:92px;padding:5px;min-height:32px;font-size:13px}.playback{flex-wrap:wrap}
+
+/* Review: readable entity labels, explicit state legend and accessible uploads. */
+.queue-counts{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 16px;font-size:14px;color:#cbd5e1;background:#102034}.queue-badge{padding:5px 9px;border:1px solid #58708a;border-radius:5px}.legend,.entity,.entity span,.charts small{font-size:14px}.manual{background:#38bdf8}.carrying{background:#fbbf24}.break{background:#c084fc}.file-button input{display:block;max-width:230px;margin-top:6px;font-size:14px}.surface-controls{flex-wrap:wrap}.metrics strong{font-size:28px}#liveResources{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}#liveResources>div{padding:10px}#livePanel{padding:14px}#livePanel>h2{margin-top:0}.table-wrap{max-width:100%}

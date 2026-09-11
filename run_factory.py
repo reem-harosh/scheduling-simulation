@@ -20,7 +20,7 @@ from factory.engine import Config, Simulation
 from factory.experiments import ExperimentRunner, atomic_json
 
 ROOT = Path(__file__).resolve().parent
-APP_VERSION = '0.5.2'
+APP_VERSION = '0.5.3'
 
 
 class Service:
@@ -40,10 +40,12 @@ class Service:
         self.lock = threading.Lock()
 
     def submit(self, request):
+        if not isinstance(request,dict):raise ValueError('Request must be a JSON object')
         mode = request.get('mode', 'run')
         if mode not in ('run', 'scenario', 'grid'):
             raise ValueError('Unknown run mode')
         options = request.get('config', {})
+        if not isinstance(options,dict):raise ValueError('Config must be a JSON object')
         allowed = {'algorithm','arrival_load','batch_size','horizon_days','warmup_days','seed','trace_days','replication'}
         if set(options)-allowed:
             raise ValueError('Unknown configuration fields')
@@ -52,8 +54,8 @@ class Service:
             config.baseline_calibration_multiplier = self.operating_point['baseline_calibration_multiplier']
             if 'warmup_days' not in options:config.warmup_days=self.operating_point['warmup_days']
         config.validate()
-        if config.horizon_days > 365 or config.trace_days > 28:
-            raise ValueError('UI limit: 365 measurement days and 28 replay days; use CLI for larger studies')
+        if config.horizon_days > 365 or config.trace_days > 28 or config.warmup_days > 730 or config.arrival_load > 10 or config.batch_size > 10:
+            raise ValueError('UI limits: 365 measurement days, 730 warmup days, 28 replay days, scales at most 10; use CLI for larger studies')
         with self.lock:
             if any(t['status']=='RUNNING' for t in self.tasks.values()):
                 raise ValueError('A run is already in progress; cancel or wait for completion')
@@ -124,7 +126,13 @@ class Handler(SimpleHTTPRequestHandler):
         elif self.path == '/api/surface':
             path=ROOT/'results'/'world-experiments'/'surface.json'
             if not path.exists():path=ROOT/'research'/'world_v05'/'response_surface.json'
-            if path.exists():self.reply(json.loads(path.read_text()))
+            if path.exists():
+                surface=json.loads(path.read_text())
+                code=hashlib.sha256(b''.join(p.read_bytes() for p in sorted((ROOT/'factory').glob('*.py')))).hexdigest()
+                surface['source_compatibility']={'matches_current_code':surface.get('code_sha256')==code,
+                    'matches_current_world':surface.get('dataset_sha256')==self.service.data.digest,
+                    'archival_reference':path.parent.name=='world_v05','current_code_sha256':code}
+                self.reply(surface)
             else:self.reply({'message':'No saved grid yet; run a grid experiment or load a saved surface JSON'},404)
         elif self.path == '/api/world' and self.service.is_world:
             self.reply(self.service.data.raw)

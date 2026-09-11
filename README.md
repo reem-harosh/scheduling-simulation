@@ -1,3 +1,15 @@
+## Multi-agent review — v0.5.3
+
+The current release fixes operation-change setup, initialization during an active shift, configuration validation before demand generation, single-replication summaries, and replay export/live inspectors. Machine service, occupied time and waiting time are separate metrics. The floor now shows actual ready-queue counts and distinguishes setup specialists.
+
+Read [the three-round review and verification limits](docs/multi-agent-review-2026-09-11.md). Reproducible current finite-horizon evidence, including raw runs and a source manifest, is in `research/multi_agent_review/`:
+
+```bash
+python tools/run_review_verification.py
+```
+
+These runs are implementation verification, not a new capacity calibration or proof of stationarity. Earlier v0.5 calibration/grid records predate the operation-setup correction. Codespaces user access remains unverified; the normal Python launch below is unchanged.
+
 ## Run in your browser — no ZIP updates
 
 [Open in GitHub Codespaces](https://github.com/codespaces/new/reem-harosh/scheduling-simulation)

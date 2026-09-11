@@ -1,0 +1,43 @@
+{
+  "baseline_commit": "653497b4a052806585b756fa30ee28ee0cd17aa4",
+  "weights": {
+    "logic": 0.3,
+    "data": 0.2,
+    "qa": 0.2,
+    "visualization": 0.15,
+    "ux": 0.15
+  },
+  "scores": {
+    "logic": [
+      7.6,
+      8.7,
+      8.7
+    ],
+    "data": [
+      7.3,
+      8.4,
+      8.6
+    ],
+    "qa": [
+      7.4,
+      8.6,
+      8.6
+    ],
+    "visualization": [
+      6.7,
+      8.1,
+      8.3
+    ],
+    "ux": [
+      6,
+      8,
+      8.4
+    ]
+  },
+  "weighted": [
+    7.13,
+    8.43,
+    8.56
+  ],
+  "interpretation": "Expert judgment on reviewed research-prototype scope; not full master-spec/cloud/stationarity acceptance."
+}

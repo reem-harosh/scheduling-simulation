@@ -35,6 +35,7 @@ class WorldExperimentRunner:
                 hashes[rep]=r['demand_sha256'];v=r['mean_flow_min'] if r['status']=='COMPLETE' else None;vals[algorithm].append(v)
                 row={k:r.get(k) for k in ['flow_reference','status','mean_flow_min','median_flow_min','p95_flow_min','mean_wip','mean_queue','machine_utilization','worker_available_utilization','setup_worker_utilization','mean_setup_wait_min','throughput_jobs_per_day','wip_slope_jobs_per_day','per_family','resource_statistics','observation_end','demand_sha256','peak_processing_machines']}
                 row.update(algorithm=algorithm,seed=c.seed,replication=rep,arrival_scale=c.arrival_load,batch_scale=c.batch_size,lambda_jobs_day=r['demand_provenance']['effective_arrival_rate'],world_sha256=self.data.digest,code_sha256=self.code_hash,arrival_rate_realized=r['demand_provenance']['realized_arrival_rate']);rows.append(row)
+                row.update({k:r.get(k) for k in ['machine_occupied_utilization','machine_waiting_utilization','utilization_definitions','setup_wait_sample_count','setup_wait_definition']})
         for a in algorithms:
             rr=[r for r in rows if r['algorithm']==a];valid=all(v is not None for v in vals[a]);summary=confidence(vals[a])
             if replications==1 and valid:summary.update(mean=vals[a][0])
@@ -43,6 +44,8 @@ class WorldExperimentRunner:
             overloaded=slope_ci['ci95'] is not None and slope_ci['ci95'][0]>.1*rr[0]['lambda_jobs_day']
             summary.update(status='CENSORED_OR_NO_COMPLETIONS' if not valid else 'WIP_GROWTH_DETECTED' if overloaded else 'FINITE_HORIZON_NOT_CONFIRMED',values=vals[a],wip_slope=slope_ci,throughput=confidence([r['throughput_jobs_per_day'] for r in rr]),mean_wip=confidence([r['mean_wip'] for r in rr]),resource_diagnostics=rr)
             point['algorithms'][a]=summary
+            summary['precision_status']='INSUFFICIENT_REPLICATIONS' if replications<2 else 'INCOMPLETE_COHORT' if not valid else 'REPORTED_NOT_TARGETED'
+            summary['stability_evidence']='INSUFFICIENT_WEEKLY_OBSERVATIONS' if any(v is None for v in slopes) else 'FINITE_WINDOW_DIAGNOSTIC_ONLY'
         if 'FIFO' in vals:
             for a in vals:
                 if a=='FIFO':continue

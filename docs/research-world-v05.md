@@ -48,7 +48,7 @@ The time for a family/operation/machine combination never resamples at runtime.
 
 Each operation has an independent identity, setup class, owner and routing
 decision. Classes A/B/C depend on role: rough A; bore/drill C; other B.
-Same-class continuation has no setup. A↔C is Major, other changed classes Minor,
+As of engine v0.5.3, only same-operation continuation has no setup. A distinct operation within the same setup class uses the lightest positive configured tier (Minor: 8/15/25 minutes in this world), an explicit engineering assumption. A↔C is Major, other changed classes Minor,
 and INITIAL preparation Medium. Triangular duration parameters retain the
 approved8/15/25,15/30/45 and30/50/80 minutes. Setup type is determined by the
 actual transition, not randomized. Four specialists perform setup only.

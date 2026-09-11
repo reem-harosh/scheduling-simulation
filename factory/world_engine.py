@@ -4,7 +4,7 @@ Legacy factory.engine remains available solely for reproducing v0.3 experiments.
 import copy, hashlib, heapq, json, math, statistics
 import time as wallclock
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 import numpy as np
 from .engine import Simulation, Config as LegacyConfig, Worker, MACHINE_BUSY, WORK
@@ -18,7 +18,13 @@ class WorldConfig(LegacyConfig):
     drain_days: float=730
     def validate(self):
         for name in ('arrival_load','batch_size','horizon_days','warmup_days','trace_days','drain_days'):
-            if not math.isfinite(getattr(self,name)) or getattr(self,name)<0:raise InputError('INVALID_CONFIG_'+name)
+            v=getattr(self,name)
+            if type(v) not in (int,float) or not math.isfinite(v) or v<0:raise InputError('INVALID_CONFIG_'+name)
+        for name,minimum in [('seed',0),('replication',0),('max_events',1)]:
+            v=getattr(self,name)
+            if type(v) is not int or v<minimum:raise InputError('INVALID_CONFIG_'+name)
+        if not isinstance(self.start_date,str):raise InputError('INVALID_START_DATE')
+        if datetime.fromisoformat(self.start_date).tzinfo is not None:raise InputError('START_DATE_REQUIRES_LOCAL_NAIVE_TIME')
         if self.batch_size<=0 or self.horizon_days<=0:raise InputError('Positive quantity and horizon required')
         if self.algorithm not in REGISTRY:raise InputError('UNKNOWN_ALGORITHM')
         if self.baseline_calibration_multiplier!=1:raise InputError('v0.4 uses world baseline rate, not historical multiplier')
@@ -27,7 +33,9 @@ class WorldSimulation(Simulation):
     def __init__(self,world,config=None,manual_jobs=None,policy=None,cancel=None,observer=None):
         self.observer=observer; self._observed_at=0.; self._wall_start=wallclock.monotonic()
         world.refresh_identity(); self.manual_input=manual_jobs is not None
-        config=config or WorldConfig(); self.demand=demand_stream(world,config) if manual_jobs is None else copy.deepcopy(manual_jobs)
+        config=config or WorldConfig(); config.validate()
+        self._calendar_ready=False
+        self.demand=demand_stream(world,config) if manual_jobs is None else copy.deepcopy(manual_jobs)
         self.code_hash=hashlib.sha256(b''.join(p.read_bytes() for p in sorted(Path(__file__).parent.glob('*.py')))).hexdigest()
         self.setup_waits=[];self.queue_family_minutes={f:0. for f in {m['machine_family'] for m in world.machines.values()}}
         self.floor_local=world.raw['resources'].get('floor_local_workers',False);self.lift_available=0.;self.lift_transfers=[];self.floor_nodes={}
@@ -45,8 +53,11 @@ class WorldSimulation(Simulation):
             skills={m.id for m in self.machines.values() if not self.floor_local or m.department==dept}
             w=Worker(wid,dept,skills,kind,False)
             w.home_node=self.machines[sorted(skills)[0]].node;self.workers[wid]=w
+        self._calendar_ready=True
+        self._calendar_day(self.start.replace(hour=0,minute=0,second=0,microsecond=0)-timedelta(days=1))
         self._event(self.arrivals_stop+config.drain_days*1440,1,'drain_limit')
     def _calendar_day(self,day):
+        if not self._calendar_ready:return
         res=self.data.raw['resources']
         if day.weekday() not in res['working_weekdays']:return
         def at(h):return (day.replace(hour=h,minute=0,second=0,microsecond=0)-self.start).total_seconds()/60
@@ -54,9 +65,13 @@ class WorldSimulation(Simulation):
             night=w.kind.endswith('night');begin=at(res['day_end_hour'] if night else res['day_start_hour']);end=at(res['day_start_hour'])+1440 if night else at(res['day_end_hour']);token=w.id+':'+day.date().isoformat()
             for t,kind,val in [(begin,'shift_start',token),(end,'shift_end',token)]:
                 if t>=self.time:self._event(t,1,kind,(w.id,val))
+                elif kind=='shift_start' and self.time==0 and begin<0<end:
+                    self._event(0,1,kind,(w.id,val))
             for offset,dur in [(180,20),(360,30),(540,20)]:
                 t=begin+offset
                 if self.time<=t<end:self._event(t,1,'break',(w.id,dur,token))
+                elif self.time==0 and t<0<min(t+dur,end):
+                    self._event(0,1,'break',(w.id,min(t+dur,end),token))
     def _demand_day(self,day):pass
     def _integrate(self,until):
         dt=max(0,min(until,self.arrivals_stop)-max(self.time,self.measure_start))
@@ -289,7 +304,13 @@ class WorldSimulation(Simulation):
             batches=[b for b in self.batches.values() if b.job==j.id and b.state not in ('COMPLETE','SPLIT')]
             jobs.append(dict(id=j.id,item=j.item,quantity=j.quantity,release=j.release,route=j.route,operation_counts=dict(j.operation_counts),batches=[dict(id=b.id,operation=j.route[b.op_index],state=b.state,quantity=b.hi-b.lo,unloaded=b.unloaded,cycle_quantity=b.cycle[1]-b.cycle[0],owner=b.owner,machine=b.target,location=b.location) for b in batches]))
         phase='warmup' if self.time<self.measure_start else 'measurement' if self.time<self.arrivals_stop else 'drain'
-        self.observer(dict(algorithm=self.config.algorithm,replication=self.config.replication,arrival_scale=self.config.arrival_load,batch_scale=self.config.batch_size,time=self.time,phase=phase,window_end=self.arrivals_stop,elapsed_seconds=now-self._wall_start,events=self.counters['events'],machines=machines,workers=workers,jobs=jobs,released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values()),queue=self._counts()[1]))
+        self.observer(dict(algorithm=self.config.algorithm,replication=self.config.replication,arrival_scale=self.config.arrival_load,batch_scale=self.config.batch_size,time=self.time,phase=phase,window_end=self.arrivals_stop,elapsed_seconds=now-self._wall_start,events=self.counters['events'],machines=machines,workers=workers,jobs=jobs,released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values()),queue=self._counts()[1],ready_queue_by_family=self.ready_queue_counts()))
+
+    def ready_queue_counts(self):
+        counts={f:0 for f in self.queue_family_minutes}
+        for bid in self.ready:
+            counts[self.data.operations[self._key(self.batches[bid])]['machine_family']]+=1
+        return counts
 
     def run(self,until=None):
         self.observe(force=True)
@@ -305,7 +326,7 @@ class WorldSimulation(Simulation):
             self._allocate();self._dispatch()
             self.observe()
             if self.config.trace and self.trace_start<=self.time<=self.trace_stop:
-                wip,queue,_,_=self._counts();self.snapshots.append(dict(time=self.time,wip=wip,queue=queue,released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values())))
+                wip,queue,_,_=self._counts();self.snapshots.append(dict(time=self.time,wip=wip,queue=queue,released=len(self.jobs),completed=sum(j.complete is not None for j in self.jobs.values()),ready_queue_by_family=self.ready_queue_counts()))
             if self.counters['events']>=self.config.max_events:status='EVENT_LIMIT';break
             if until is None and self.time>=self.arrivals_stop and all(j.complete is not None for j in self.jobs.values()):break
         for m in self.machines.values():self._close_interval(m,'machine')
@@ -325,6 +346,16 @@ class WorldSimulation(Simulation):
         for f in families:
             ids=[m for m in self.machines if self.data.machines[m]['machine_family']==f]
             per_family[f]={'machine_count':len(ids),'processing_utilization':sum(self.state_minutes['machine'].get(m,{}).get('PROCESSING',0) for m in ids)/(duration*len(ids)),'busy_utilization':sum(r['per_machine_utilization'].get(m,0) for m in ids)/len(ids),'mean_ready_queue':self.queue_family_minutes[f]/duration}
+            per_family[f]['occupied_utilization']=sum(v for m in ids for k,v in self.state_minutes['machine'].get(m,{}).items() if k!='IDLE_AVAILABLE')/(duration*len(ids))
+            per_family[f]['waiting_utilization']=sum(v for m in ids for k,v in self.state_minutes['machine'].get(m,{}).items() if k.startswith('WAITING'))/(duration*len(ids))
+        r['machine_occupied_utilization']=sum(v for states in self.state_minutes['machine'].values() for k,v in states.items() if k!='IDLE_AVAILABLE')/(duration*len(self.machines))
+        r['machine_waiting_utilization']=sum(v for states in self.state_minutes['machine'].values() for k,v in states.items() if k.startswith('WAITING'))/(duration*len(self.machines))
+        r['utilization_definitions']={'service':'setup + manual handling + automatic processing; excludes waiting',
+            'occupied':'all non-idle machine states, including waiting for service',
+            'waiting':'machine WAITING states only','denominator':'calendar minutes in measurement window per machine; excludes drain'}
+        r['setup_wait_definition']='Requests whose setup service starts in the measurement window; includes waits begun in warmup, excludes still-pending requests. Not an uncensored all-request mean.'
+        r['setup_wait_sample_count']=len(self.setup_waits)
+        r['setup_transition_rule']='Distinct operation identity with zero class transition uses lightest positive configured setup tier; same-operation continuation unchanged. Engineering assumption.'
         windows=[w for w in self.weekly if self.measure_start<w['time']<=self.arrivals_stop]
         slope=float(np.polyfit([w['time']/1440 for w in windows],[w['end_wip'] for w in windows],1)[0]) if len(windows)>=3 else None
         code=self.code_hash

@@ -97,7 +97,17 @@ class World:
         raise InputError('UNREACHABLE_PATH')
     def transition(self,mid,old,new):
         o=self.operations[new]; fr='INITIAL' if old is None else self.operations[tuple(old)]['setup_class']
-        return self.setup[o['machine_family'],fr,o['setup_class']]
+        row=self.setup[o['machine_family'],fr,o['setup_class']]
+        if old is not None and tuple(old)!=tuple(new) and max(row['triangular'])==0:
+            # Different operations require preparation even within one setup class.
+            # Reuse the world's lightest positive tier: an engineering assumption,
+            # not an empirical duration estimate. Same-operation continuation is zero.
+            tiers=[r for r in self.setup.values() if r['machine_family']==o['machine_family'] and min(r['triangular'])>0]
+            if not tiers:raise InputError('MISSING_OPERATION_CHANGE_SETUP')
+            tier=min(tiers,key=lambda r:sum(r['triangular']))
+            return {**row,'type':tier['type'],'triangular':list(tier['triangular']),
+                    'reason':'distinct_operation_same_class','duration_basis':'lightest positive configured setup tier'}
+        return row
 
 
 def demand_stream(world,config):
