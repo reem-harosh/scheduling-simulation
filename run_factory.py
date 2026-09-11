@@ -11,6 +11,7 @@ import traceback
 import uuid
 import webbrowser
 import hashlib
+import os
 from factory.data import Calibration
 from factory.world import World
 from factory.world_engine import WorldConfig, WorldSimulation
@@ -140,7 +141,11 @@ class Handler(SimpleHTTPRequestHandler):
     def do_POST(self):
         # This local application accepts same-origin browser requests only.
         origin = self.headers.get('Origin')
-        if origin and origin.split('://')[-1] != self.headers.get('Host'):
+        allowed_hosts={self.headers.get('Host')}
+        if os.environ.get('CODESPACE_NAME'):
+            domain=os.environ.get('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN','app.github.dev')
+            allowed_hosts.add(f"{os.environ['CODESPACE_NAME']}-{self.server.server_port}.{domain}")
+        if origin and origin.split('://')[-1] not in allowed_hosts:
             self.reply({'message':'Origin denied'},403)
             return
         try:
